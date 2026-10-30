@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>李嘉蕊 · 个人主页</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+      background: #faf7f2;
+      color: #3d3a36;
+      line-height: 1.7;
+    }
+    .hero {
+      text-align: center;
+      padding: 72px 24px 48px;
+      background: linear-gradient(135deg, #fdf6ec 0%, #f6ead8 100%);
+      border-bottom: 1px solid #eadfc9;
+    }
+    .avatar {
+      width: 96px; height: 96px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8b57d, #d9946a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; color: #fff;
+      box-shadow: 0 6px 18px rgba(150,100,60,.25);
+    }
+    .hero h1 { font-size: 30px; letter-spacing: 2px; }
+    .hero .sub { color: #8a7f6f; margin-top: 6px; font-size: 15px; }
+    .tag { display: inline-block; margin-top: 16px; padding: 5px 14px; background: #fff; border: 1px solid #e0d4bc; border-radius: 20px; font-size: 13px; color: #6b5f4d; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 64px; }
+    h2 { font-size: 20px; margin: 34px 0 16px; padding-left: 12px; border-left: 4px solid #d9946a; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .card { background: #fff; border: 1px solid #efe6d4; border-radius: 12px; padding: 20px; transition: transform .15s ease, box-shadow .15s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(150,100,60,.12); }
+    .card h3 { font-size: 16px; color: #b07b46; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #6f685c; }
+    .list { font-size: 15px; color: #5a554a; }
+    .list li { margin: 10px 0 10px 18px; }
+    footer { text-align: center; padding: 24px; color: #a79d8b; font-size: 13px; border-top: 1px solid #eadfc9; background: #fdf9f3; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="avatar">李</div>
+    <h1>李嘉蕊</h1>
+    <div class="sub">@li-jiaru-i · 高级网页设计 · 课堂项目</div>
+    <span class="tag">GitHub Pages 在线发布</span>
+  </section>
+
+  <div class="wrap">
+    <h2>关于我</h2>
+    <p>你好呀，我是李嘉蕊，一名正在学习 <strong>高级网页设计</strong> 的学生。这个页面是用我的 GitHub Skill 项目发布的在线页面，用来练习「Git 上传 + GitHub Pages 部署」的完整流程。</p>
+
+    <h2>这个仓库里有什么</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>🌐 网页页面</h3>
+        <p>一个可直接在浏览器打开的落地页，展示个人主页的基本结构与样式。</p>
+      </div>
+      <div class="card">
+        <h3>🧩 自定义 Skill</h3>
+        <p>一个可复用的 Skill 项目，含 <code>SKILL.md</code> 定义与使用说明，演示如何组织一个技能仓库。</p>
+      </div>
+      <div class="card">
+        <h3>🚀 GitHub Pages</h3>
+        <p>通过仓库 Settings → Pages 部署，把静态网页变成人人可访问的在线链接。</p>
+      </div>
+    </div>
+
+    <h2>我常做的事</h2>
+    <ul class="list">
+      <li>网页设计与前端小项目</li>
+      <li>小红书图文与内容运营</li>
+      <li>大连本地陪拍与图片精修</li>
+    </ul>
+  </div>
+
+  <footer>© 2026 李嘉蕊 · 课堂作业 · 使用 GitHub Pages 发布</footer>
+</body>
+</html>
