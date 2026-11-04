@@ -1,83 +1,229 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>李嘉蕊 · 个人主页</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
-      background: #faf7f2;
-      color: #3d3a36;
-      line-height: 1.7;
-    }
-    .hero {
-      text-align: center;
-      padding: 72px 24px 48px;
-      background: linear-gradient(135deg, #fdf6ec 0%, #f6ead8 100%);
-      border-bottom: 1px solid #eadfc9;
-    }
-    .avatar {
-      width: 96px; height: 96px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #e8b57d, #d9946a);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 40px; color: #fff;
-      box-shadow: 0 6px 18px rgba(150,100,60,.25);
-    }
-    .hero h1 { font-size: 30px; letter-spacing: 2px; }
-    .hero .sub { color: #8a7f6f; margin-top: 6px; font-size: 15px; }
-    .tag { display: inline-block; margin-top: 16px; padding: 5px 14px; background: #fff; border: 1px solid #e0d4bc; border-radius: 20px; font-size: 13px; color: #6b5f4d; }
-    .wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 64px; }
-    h2 { font-size: 20px; margin: 34px 0 16px; padding-left: 12px; border-left: 4px solid #d9946a; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-    .card { background: #fff; border: 1px solid #efe6d4; border-radius: 12px; padding: 20px; transition: transform .15s ease, box-shadow .15s ease; }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(150,100,60,.12); }
-    .card h3 { font-size: 16px; color: #b07b46; margin-bottom: 8px; }
-    .card p { font-size: 14px; color: #6f685c; }
-    .list { font-size: 15px; color: #5a554a; }
-    .list li { margin: 10px 0 10px 18px; }
-    footer { text-align: center; padding: 24px; color: #a79d8b; font-size: 13px; border-top: 1px solid #eadfc9; background: #fdf9f3; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音乐手机 - 李嘉蕊</title>
+<style>
+/* ============ 李嘉蕊 音乐手机资讯站 样式 ============ */
+/* 说明：所有 class / id 均以 LJR_ 开头（LJR = 李嘉蕊姓名首字母） */
+
+/* 页面整体 */
+body {
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;          /* 浅灰背景，贴近原站 */
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  color: #333;
+}
+
+.LJR_wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* 顶部站点栏 */
+.LJR_header {
+  background: #e02d2d;          /* 红色站点栏，模拟原站风格 */
+  padding: 14px 20px;
+}
+.LJR_siteName {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* 栏目导航 */
+.LJR_nav {
+  display: flex;
+  border-bottom: 2px solid #e02d2d;
+  background: #fff;
+}
+.LJR_navItem {
+  padding: 12px 22px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  background: transparent;
+}
+.LJR_navItem:hover {
+  color: #e02d2d;
+}
+.LJR_navItemActive {
+  color: #e02d2d;
+  font-weight: bold;
+  border-bottom: 3px solid #e02d2d;
+}
+
+/* 内容区 */
+.LJR_content {
+  padding: 8px 20px 40px;
+}
+
+/* 资讯列表 */
+.LJR_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.LJR_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 2px;
+  border-bottom: 1px dashed #e0e0e0;
+}
+.LJR_itemTitle {
+  color: #0040ff;               /* 蓝色标题，贴近原站 */
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.LJR_itemTitle:hover {
+  text-decoration: underline;
+  color: #e02d2d;
+}
+.LJR_itemDate {
+  color: #999;                  /* 灰色日期 */
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* 页脚 */
+.LJR_footer {
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+</style>
 </head>
 <body>
-  <section class="hero">
-    <div class="avatar">李</div>
-    <h1>李嘉蕊</h1>
-    <div class="sub">@li-jiaru-i · 高级网页设计 · 课堂项目</div>
-    <span class="tag">GitHub Pages 在线发布</span>
-  </section>
-
-  <div class="wrap">
-    <h2>关于我</h2>
-    <p>你好呀，我是李嘉蕊，一名正在学习 <strong>高级网页设计</strong> 的学生。这个页面是用我的 GitHub Skill 项目发布的在线页面，用来练习「Git 上传 + GitHub Pages 部署」的完整流程。</p>
-
-    <h2>这个仓库里有什么</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>🌐 网页页面</h3>
-        <p>一个可直接在浏览器打开的落地页，展示个人主页的基本结构与样式。</p>
-      </div>
-      <div class="card">
-        <h3>🧩 自定义 Skill</h3>
-        <p>一个可复用的 Skill 项目，含 <code>SKILL.md</code> 定义与使用说明，演示如何组织一个技能仓库。</p>
-      </div>
-      <div class="card">
-        <h3>🚀 GitHub Pages</h3>
-        <p>通过仓库 Settings → Pages 部署，把静态网页变成人人可访问的在线链接。</p>
-      </div>
-    </div>
-
-    <h2>我常做的事</h2>
-    <ul class="list">
-      <li>网页设计与前端小项目</li>
-      <li>小红书图文与内容运营</li>
-      <li>大连本地陪拍与图片精修</li>
-    </ul>
+<div class="LJR_wrap">
+  <!-- 顶部站点名 -->
+  <div class="LJR_header">
+    <div class="LJR_siteName">音乐手机</div>
   </div>
 
-  <footer>© 2026 李嘉蕊 · 课堂作业 · 使用 GitHub Pages 发布</footer>
+  <!-- 栏目导航：行情 / 导购 / 新品 / 评测 -->
+  <nav class="LJR_nav" id="LJR_navBar">
+    <!-- 导航项由 JS 根据 LJR_tabNames 渲染 -->
+  </nav>
+
+  <!-- 资讯内容 -->
+  <main class="LJR_content">
+    <ul class="LJR_list" id="LJR_listBox"></ul>
+  </main>
+
+  <div class="LJR_footer">李嘉蕊 · 高级网页设计课堂作业</div>
+</div>
+
+<script>
+/* ============ 李嘉蕊 音乐手机资讯站 脚本 ============ */
+/* 说明：所有 JS 变量均以 LJR_ 开头（LJR = 李嘉蕊姓名首字母） */
+
+/* 四个栏目的文章数据（取自课堂素材，一比一还原） */
+var LJR_articles = {
+  market: [ /* 行情 */
+    { title: '音乐强机苹果iPhone 5s价格稳定', date: '(12/19)' },
+    { title: '高性能四核音乐机 魅族MX3低价热卖', date: '(12/19)' },
+    { title: '音乐品质最出色 vivo X3促销2199', date: '(12/12)' },
+    { title: '时尚音乐手机 vivo Xplay济南2798元', date: '(11/27)' },
+    { title: '好音乐好拍照 OPPO Find5今报价2580元', date: '(08/27)' },
+    { title: '1.5GHz四核1080p OPPO Find5降价热卖', date: '(07/30)' },
+    { title: '彩色呼吸带双核机 索尼M35h促销2299', date: '(06/08)' },
+    { title: '1.7GHz四核1080p屏 vivo Xplay热卖中', date: '(06/07)' }
+  ],
+  guide: [ /* 导购 */
+    { title: '优秀音效漂亮外观 市售音乐手机盘点', date: '(09/13)' },
+    { title: '不要等待耳尖 8款独特音效的音乐手机推荐', date: '(09/06)' },
+    { title: '最低只要799 9款高性能音乐手机推荐', date: '(07/22)' },
+    { title: '长假主导高考后时代 奖励孩子的智能手机全攻略', date: '(06/13)' },
+    { title: '降价不限时 端午后值得关注降价四核机推荐', date: '(06/13)' },
+    { title: '高考之后尽情狂欢！学生超强手机推荐', date: '(06/13)' },
+    { title: '上半年看这里 最热门1080P四核旗舰手机', date: '(06/13)' },
+    { title: '最厚不过7.99毫米 热门超薄智能机大搜罗', date: '(06/08)' }
+  ],
+  news: [ /* 新品 */
+    { title: '无限接近vivo！vivo Xplay3S现场体验', date: '(12/19)' },
+    { title: '入门音乐机 诺基亚Lumia 525现身工信部', date: '(11/05)' },
+    { title: '传诺基亚下月将推首款WP音乐手机Glee', date: '(08/29)' },
+    { title: '软硬兼施 vivo Xplay3S真机图讲解', date: '(08/23)' },
+    { title: '没有中国 谷歌All Access音乐服务登陆欧洲', date: '(08/09)' },
+    { title: 'Hi-Fi音质 vivo X3创音质系统', date: '(08/08)' },
+    { title: 'Hi-Fi不够vivo又玩音乐圈 X3音乐处理方案曝光', date: '(08/06)' },
+    { title: '小伙伴们都惊呆了 薄至6mm以下vivo X3终露面', date: '(07/31)' }
+  ],
+  review: [ /* 评测 */
+    { title: '音乐历久弥新 TD版魅族MX3评测', date: '(12/19)' },
+    { title: '极致影音完美音质 步步高vivo Xplay移动版图赏', date: '(07/24)' },
+    { title: '都是大屏不同三星 S4/Mege静态评测', date: '(06/20)' },
+    { title: '超四核双模智能机 HTC Desire 608t评测', date: '(06/20)' },
+    { title: '完美融合魅族MX2 Flyme 2.2.5体验', date: '(06/18)' },
+    { title: '1080P屏Hi-Fi旗舰 vivo Xplay娱乐体验', date: '(06/13)' },
+    { title: '5.7英寸高清巨屏 酷9070+XO影音体验全', date: '(06/06)' },
+    { title: '悬浮窗口播放 vivo Xplay视频功能评测', date: '(06/06)' }
+  ]
+};
+
+/* 栏目顺序与中文名 */
+var LJR_tabOrder = ['market', 'guide', 'news', 'review'];
+var LJR_tabNames = { market: '行情', guide: '导购', news: '新品', review: '评测' };
+
+/* 当前选中栏目 */
+var LJR_currentTab = 'market';
+
+/* 切换栏目：渲染导航高亮 + 列表内容 */
+function LJR_switchTab(LJR_tabName) {
+  /* 更新当前选中 */
+  LJR_currentTab = LJR_tabName;
+
+  /* 重新渲染导航高亮 */
+  var LJR_navBar = document.getElementById('LJR_navBar');
+  LJR_navBar.innerHTML = '';
+  LJR_tabOrder.forEach(function (LJR_key) {
+    var LJR_btn = document.createElement('button');
+    LJR_btn.type = 'button';
+    LJR_btn.className = 'LJR_navItem' + (LJR_key === LJR_currentTab ? ' LJR_navItemActive' : '');
+    LJR_btn.textContent = LJR_tabNames[LJR_key];
+    /* 用 data 属性记录所属栏目，点击切换 */
+    LJR_btn.setAttribute('data-LJR-tab', LJR_key);
+    LJR_btn.addEventListener('click', function () {
+      LJR_switchTab(LJR_btn.getAttribute('data-LJR-tab'));
+    });
+    LJR_navBar.appendChild(LJR_btn);
+  });
+
+  /* 渲染当前栏目文章列表 */
+  var LJR_listBox = document.getElementById('LJR_listBox');
+  LJR_listBox.innerHTML = '';
+  LJR_articles[LJR_currentTab].forEach(function (LJR_article) {
+    var LJR_li = document.createElement('li');
+    LJR_li.className = 'LJR_item';
+
+    var LJR_a = document.createElement('a');
+    LJR_a.className = 'LJR_itemTitle';
+    LJR_a.href = 'javascript:void(0)';
+    LJR_a.textContent = LJR_article.title;
+
+    var LJR_span = document.createElement('span');
+    LJR_span.className = 'LJR_itemDate';
+    LJR_span.textContent = LJR_article.date;
+
+    LJR_li.appendChild(LJR_a);
+    LJR_li.appendChild(LJR_span);
+    LJR_listBox.appendChild(LJR_li);
+  });
+}
+
+/* 页面加载后默认显示“行情”栏目 */
+LJR_switchTab(LJR_currentTab);
+</script>
 </body>
 </html>

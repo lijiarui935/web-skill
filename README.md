@@ -1,8 +1,8 @@
-# web-skill
+# 音乐手机资讯站
 
-自定义 Skill · GitHub 上传与 Pages 发布 · 课堂作业
+高级网页设计 · 课堂作业（一比一还原）
 
-- `index.html`：个人主页落地页（经 GitHub Pages 在线发布）
-- `skills/xiaohongshu-note-writer/`：自定义 Skill（含 SKILL.md 定义与示例）
+- `index.html`：音乐手机资讯站（含 行情 / 导购 / 新品 / 评测 四个栏目，可切换）
+- 编码规则：所有 CSS 类名、ID、JS 变量均以 `LJR_` 开头（LJR = 李嘉蕊姓名首字母），注释含作者姓名「李嘉蕊」
 
-在线访问：https://li-jiaru-i.github.io/web-skill/
+在线访问：https://lijiarui935.github.io/web-skill/
