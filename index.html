@@ -7,65 +7,71 @@
 <style>
 /* ============ 李嘉蕊 音乐手机资讯站 样式 ============ */
 /* 说明：所有 class / id 均以 LJR_ 开头（LJR = 李嘉蕊姓名首字母） */
+/* 一比一还原原站：顶部标题+栏目标签一行，选中标签蓝色高亮，文章=蓝点+蓝标题+灰日期 */
 
-/* 页面整体 */
+/* 页面整体：白色背景 */
 body {
   margin: 0;
   padding: 0;
-  background: #f0f0f0;          /* 浅灰背景，贴近原站 */
+  background: #fff;
   font-family: "Microsoft YaHei", Arial, sans-serif;
   color: #333;
 }
 
 .LJR_wrap {
-  max-width: 760px;
+  max-width: 820px;
   margin: 0 auto;
   background: #fff;
   min-height: 100vh;
 }
 
-/* 顶部站点栏 */
+/* 顶部条：左侧站点名 + 右侧栏目标签（同一行，无红色） */
 .LJR_header {
-  background: #e02d2d;          /* 红色站点栏，模拟原站风格 */
-  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px 10px;
+  border-bottom: 1px solid #e5e5e5;
 }
+/* 站点名“音乐手机”：大号深色文字 */
 .LJR_siteName {
-  color: #fff;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
+  color: #333;
   letter-spacing: 2px;
 }
 
-/* 栏目导航 */
+/* 栏目标签：圆角胶囊，未选中灰色、选中蓝色 */
 .LJR_nav {
   display: flex;
-  border-bottom: 2px solid #e02d2d;
-  background: #fff;
+  gap: 10px;
 }
 .LJR_navItem {
-  padding: 12px 22px;
-  font-size: 16px;
+  padding: 7px 20px;
+  font-size: 15px;
   color: #333;
   cursor: pointer;
   user-select: none;
   border: none;
-  background: transparent;
+  border-radius: 4px;
+  background: #e8e8e8;        /* 未选中：灰色底 */
+  transition: background 0.2s, color 0.2s;
 }
 .LJR_navItem:hover {
-  color: #e02d2d;
+  background: #d9d9d9;
 }
 .LJR_navItemActive {
-  color: #e02d2d;
+  background: #0073c4;        /* 选中：蓝色高亮 */
+  color: #fff;
   font-weight: bold;
-  border-bottom: 3px solid #e02d2d;
 }
 
 /* 内容区 */
 .LJR_content {
-  padding: 8px 20px 40px;
+  padding: 6px 20px 40px;
 }
 
-/* 资讯列表 */
+/* 资讯列表：每行 = 蓝色圆点 + 蓝色标题 + 灰色日期 */
 .LJR_list {
   list-style: none;
   margin: 0;
@@ -75,53 +81,52 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 12px 2px;
-  border-bottom: 1px dashed #e0e0e0;
+  padding: 13px 2px;
+  border-bottom: 1px dashed #e5e5e5;
+}
+.LJR_itemLeft {
+  display: flex;
+  align-items: center;
+}
+.LJR_bullet {
+  width: 8px;
+  height: 8px;
+  margin-right: 12px;
+  border-radius: 2px;
+  background: #0073c4;        /* 蓝色圆点/方块 */
+  flex-shrink: 0;
 }
 .LJR_itemTitle {
-  color: #0040ff;               /* 蓝色标题，贴近原站 */
+  color: #0073c4;             /* 蓝色标题 */
   font-size: 15px;
   text-decoration: none;
   cursor: pointer;
 }
 .LJR_itemTitle:hover {
   text-decoration: underline;
-  color: #e02d2d;
 }
 .LJR_itemDate {
-  color: #999;                  /* 灰色日期 */
+  color: #999;                /* 灰色日期 */
   font-size: 13px;
   white-space: nowrap;
-}
-
-/* 页脚 */
-.LJR_footer {
-  text-align: center;
-  color: #aaa;
-  font-size: 12px;
-  padding: 20px;
-  border-top: 1px solid #eee;
+  margin-left: 12px;
 }
 </style>
 </head>
 <body>
 <div class="LJR_wrap">
-  <!-- 顶部站点名 -->
+  <!-- 顶部：站点名 + 栏目标签 -->
   <div class="LJR_header">
     <div class="LJR_siteName">音乐手机</div>
+    <nav class="LJR_nav" id="LJR_navBar">
+      <!-- 标签项由 JS 渲染 -->
+    </nav>
   </div>
 
-  <!-- 栏目导航：行情 / 导购 / 新品 / 评测 -->
-  <nav class="LJR_nav" id="LJR_navBar">
-    <!-- 导航项由 JS 根据 LJR_tabNames 渲染 -->
-  </nav>
-
-  <!-- 资讯内容 -->
+  <!-- 资讯列表 -->
   <main class="LJR_content">
     <ul class="LJR_list" id="LJR_listBox"></ul>
   </main>
-
-  <div class="LJR_footer">李嘉蕊 · 高级网页设计课堂作业</div>
 </div>
 
 <script>
@@ -142,13 +147,13 @@ var LJR_articles = {
   ],
   guide: [ /* 导购 */
     { title: '优秀音效漂亮外观 市售音乐手机盘点', date: '(09/13)' },
-    { title: '不要等待耳尖 8款独特音效的音乐手机推荐', date: '(09/06)' },
+    { title: '不要虐待耳朵 8款独特音效的音乐手机推荐', date: '(09/06)' },
     { title: '最低只要799 9款高性能音乐手机推荐', date: '(07/22)' },
-    { title: '长假主导高考后时代 奖励孩子的智能手机全攻略', date: '(06/13)' },
-    { title: '降价不限时 端午后值得关注降价四核机推荐', date: '(06/13)' },
+    { title: '长假主导高考时代 奖励孩子的智能手机全攻略', date: '(06/13)' },
+    { title: '降价不限时 端午年后值得关注降价四核机推荐', date: '(06/13)' },
     { title: '高考之后尽情狂欢！学生超强手机推荐', date: '(06/13)' },
     { title: '上半年看这里 最热门1080P四核旗舰手机', date: '(06/13)' },
-    { title: '最厚不过7.99毫米 热门超薄智能机大搜罗', date: '(06/08)' }
+    { title: '最厚不过7.99毫米 热门超薄强机大搜罗', date: '(06/08)' }
   ],
   news: [ /* 新品 */
     { title: '无限接近vivo！vivo Xplay3S现场体验', date: '(12/19)' },
@@ -163,11 +168,11 @@ var LJR_articles = {
   review: [ /* 评测 */
     { title: '音乐历久弥新 TD版魅族MX3评测', date: '(12/19)' },
     { title: '极致影音完美音质 步步高vivo Xplay移动版图赏', date: '(07/24)' },
-    { title: '都是大屏不同三星 S4/Mege静态评测', date: '(06/20)' },
-    { title: '超四核双模智能机 HTC Desire 608t评测', date: '(06/20)' },
-    { title: '完美融合魅族MX2 Flyme 2.2.5体验', date: '(06/18)' },
+    { title: '都是大屏不同三星 S4/Mega静态评测', date: '(06/20)' },
+    { title: '超四核双卡智能机 HTC Desire 608t评测', date: '(06/20)' },
+    { title: '完美融合情怀 魅族MX2 Flyme 2.2.5体验', date: '(06/18)' },
     { title: '1080P屏Hi-Fi旗舰 vivo Xplay娱乐体验', date: '(06/13)' },
-    { title: '5.7英寸高清巨屏 酷9070+XO影音体验全', date: '(06/06)' },
+    { title: '5.7英寸高清巨屏 酷派9070+XO影音体验', date: '(06/06)' },
     { title: '悬浮窗口播放 vivo Xplay视频功能评测', date: '(06/06)' }
   ]
 };
@@ -179,12 +184,12 @@ var LJR_tabNames = { market: '行情', guide: '导购', news: '新品', review: 
 /* 当前选中栏目 */
 var LJR_currentTab = 'market';
 
-/* 切换栏目：渲染导航高亮 + 列表内容 */
+/* 切换栏目：渲染标签高亮 + 列表内容 */
 function LJR_switchTab(LJR_tabName) {
   /* 更新当前选中 */
   LJR_currentTab = LJR_tabName;
 
-  /* 重新渲染导航高亮 */
+  /* 渲染顶部标签：未选中灰色、选中蓝色 */
   var LJR_navBar = document.getElementById('LJR_navBar');
   LJR_navBar.innerHTML = '';
   LJR_tabOrder.forEach(function (LJR_key) {
@@ -192,7 +197,6 @@ function LJR_switchTab(LJR_tabName) {
     LJR_btn.type = 'button';
     LJR_btn.className = 'LJR_navItem' + (LJR_key === LJR_currentTab ? ' LJR_navItemActive' : '');
     LJR_btn.textContent = LJR_tabNames[LJR_key];
-    /* 用 data 属性记录所属栏目，点击切换 */
     LJR_btn.setAttribute('data-LJR-tab', LJR_key);
     LJR_btn.addEventListener('click', function () {
       LJR_switchTab(LJR_btn.getAttribute('data-LJR-tab'));
@@ -207,16 +211,27 @@ function LJR_switchTab(LJR_tabName) {
     var LJR_li = document.createElement('li');
     LJR_li.className = 'LJR_item';
 
+    /* 左侧：蓝色圆点 + 蓝色标题 */
+    var LJR_left = document.createElement('div');
+    LJR_left.className = 'LJR_itemLeft';
+
+    var LJR_bullet = document.createElement('span');
+    LJR_bullet.className = 'LJR_bullet';
+
     var LJR_a = document.createElement('a');
     LJR_a.className = 'LJR_itemTitle';
     LJR_a.href = 'javascript:void(0)';
     LJR_a.textContent = LJR_article.title;
 
+    LJR_left.appendChild(LJR_bullet);
+    LJR_left.appendChild(LJR_a);
+
+    /* 右侧：灰色日期 */
     var LJR_span = document.createElement('span');
     LJR_span.className = 'LJR_itemDate';
     LJR_span.textContent = LJR_article.date;
 
-    LJR_li.appendChild(LJR_a);
+    LJR_li.appendChild(LJR_left);
     LJR_li.appendChild(LJR_span);
     LJR_listBox.appendChild(LJR_li);
   });
