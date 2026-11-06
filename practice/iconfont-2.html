@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Study · Lucide</title>
+
+    <style>
+        :root {
+            --wy-ink: #0f0e0c;
+            --wy-paper: #f4ede1;
+            --wy-paper-2: #e9dfcd;
+            --wy-gold: #c9a55a;
+            --wy-gold-2: #e5c98a;
+            --wy-ember: #d66a3b;
+            --wy-line: rgba(15, 14, 12, .14);
+            --wy-muted: #8a8070;
+            --wy-shadow: 0 30px 60px rgba(15, 14, 12, .18);
+            --wy-serif: "Cormorant Garamond", Georgia, "Noto Serif SC", "Times New Roman", serif;
+            --wy-sans: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--wy-sans);
+            color: var(--wy-ink);
+            background: var(--wy-paper);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(1200px 600px at 120% -10%, rgba(214, 106, 59, .16), transparent 60%),
+                radial-gradient(800px 500px at -20% 110%, rgba(201, 165, 90, .14), transparent 60%);
+        }
+
+        /* ========== 顶栏 ========== */
+        .wy_topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--wy-line);
+        }
+
+        .wy_mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+        }
+
+        .wy_mark i {
+            font-family: var(--wy-serif);
+            font-size: 18px;
+            font-style: italic;
+            color: var(--wy-ember);
+        }
+
+        .wy_nav {
+            display: flex;
+            gap: 28px;
+            font-size: 13px;
+            letter-spacing: .08em;
+        }
+
+        .wy_nav a {
+            color: var(--wy-ink);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .wy_nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 0;
+            background: var(--wy-ember);
+            transition: width .28s ease;
+        }
+
+        .wy_nav a:hover::after { width: 100%; }
+
+        /* ========== Hero ========== */
+        .wy_hero {
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 90px 0 70px;
+            display: grid;
+            grid-template-columns: 1.4fr .8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .wy_eyebrow {
+            font-size: 12px;
+            letter-spacing: .32em;
+            text-transform: uppercase;
+            color: var(--wy-gold);
+            margin-bottom: 18px;
+        }
+
+        .wy_hero h1 {
+            font-family: var(--wy-serif);
+            font-weight: 400;
+            font-size: clamp(52px, 8vw, 96px);
+            line-height: .98;
+            letter-spacing: -.01em;
+        }
+
+        .wy_hero h1 em {
+            font-style: italic;
+            color: var(--wy-ember);
+        }
+
+        .wy_hero-copy {
+            margin-top: 22px;
+            max-width: 460px;
+            color: var(--wy-muted);
+            font-size: 15px;
+        }
+
+        .wy_hero-side {
+            position: relative;
+            aspect-ratio: 1;
+            background: var(--wy-ink);
+            overflow: hidden;
+        }
+
+        .wy_hero-side::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(45deg, rgba(201, 165, 90, .06) 0 2px, transparent 2px 18px);
+        }
+
+        .wy_hero-icons {
+            position: absolute;
+            inset: 0;
+            padding: 36px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .wy_hero-icons div {
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(201, 165, 90, .3);
+            transition: background .3s, transform .3s, border-color .3s;
+        }
+
+        .wy_hero-icons div:hover {
+            background: var(--wy-gold);
+            border-color: var(--wy-gold);
+            transform: scale(1.06);
+        }
+
+        .wy_hero-icons img {
+            width: 38%;
+            height: auto;
+            filter: brightness(0) invert(1);
+            transition: filter .3s;
+        }
+
+        .wy_hero-icons div:hover img { filter: none; }
+
+        .wy_hero-corner {
+            position: absolute;
+            font-family: var(--wy-serif);
+            font-style: italic;
+            color: var(--wy-gold);
+            font-size: 14px;
+            letter-spacing: .2em;
+        }
+
+        .wy_hero-corner.tl { top: 14px; left: 18px; }
+        .wy_hero-corner.br { bottom: 14px; right: 18px; }
+
+        /* ========== Section ========== */
+        .wy_section {
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 70px 0;
+        }
+
+        .wy_section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 36px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--wy-line);
+        }
+
+        .wy_section-head h2 {
+            font-family: var(--wy-serif);
+            font-weight: 400;
+            font-size: clamp(28px, 3.6vw, 40px);
+        }
+
+        .wy_section-head h2 small {
+            display: block;
+            font-family: var(--wy-sans);
+            font-size: 11px;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: var(--wy-muted);
+            margin-top: 6px;
+        }
+
+        .wy_section-tag {
+            font-size: 12px;
+            letter-spacing: .18em;
+            color: var(--wy-ember);
+            text-transform: uppercase;
+        }
+
+        /* ========== 图标网格 ========== */
+        .wy_icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1px;
+            background: var(--wy-line);
+            border: 1px solid var(--wy-line);
+        }
+
+        .wy_icon-cell {
+            background: var(--wy-paper);
+            padding: 28px 12px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: background .25s, color .25s, transform .25s, box-shadow .25s;
+            position: relative;
+        }
+
+        .wy_icon-cell:hover {
+            background: var(--wy-ink);
+            color: var(--wy-paper);
+            box-shadow: inset 0 0 0 1px var(--wy-gold);
+        }
+
+        .wy_icon-cell:hover img { transform: translateY(-4px) scale(1.15); filter: brightness(0) invert(1); }
+
+        .wy_icon-cell img {
+            width: 36px;
+            height: 36px;
+            transition: transform .28s cubic-bezier(.2, .8, .2, 1), filter .28s;
+            display: block;
+        }
+
+        .wy_icon-cell span {
+            font-size: 11px;
+            letter-spacing: .04em;
+            text-align: center;
+            line-height: 1.3;
+            color: inherit;
+            opacity: .85;
+            word-break: break-word;
+        }
+
+        /* ========== 展示大卡片 ========== */
+        .wy_feature {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .wy_feature-card {
+            padding: 32px;
+            background: var(--wy-paper-2);
+            border: 1px solid var(--wy-line);
+            position: relative;
+        }
+
+        .wy_feature-card h3 {
+            font-family: var(--wy-serif);
+            font-weight: 400;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .wy_feature-card p {
+            font-size: 13px;
+            color: var(--wy-muted);
+            margin-bottom: 22px;
+        }
+
+        .wy_feature-row {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .wy_feature-row img {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* ========== 搜索框 ========== */
+        .wy_search-wrap {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .wy_search-wrap input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 1px solid var(--wy-line);
+            background: transparent;
+            font-family: var(--wy-serif);
+            font-size: 18px;
+            color: var(--wy-ink);
+            outline: none;
+            transition: border-color .25s;
+        }
+
+        .wy_search-wrap input::placeholder { color: var(--wy-muted); font-family: var(--wy-sans); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+        .wy_search-wrap input:focus { border-color: var(--wy-gold); }
+
+        .wy_search-btn {
+            padding: 14px 24px;
+            background: var(--wy-ink);
+            color: var(--wy-paper);
+            font-size: 12px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: background .25s;
+        }
+        .wy_search-btn:hover { background: var(--wy-gold); }
+
+        /* ========== Stats ========== */
+        .wy_stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--wy-line);
+            border: 1px solid var(--wy-line);
+            margin-top: 70px;
+        }
+
+        .wy_stat {
+            background: var(--wy-paper);
+            padding: 42px 32px;
+        }
+
+        .wy_stat-num {
+            font-family: var(--wy-serif);
+            font-size: clamp(44px, 6vw, 72px);
+            line-height: 1;
+        }
+
+        .wy_stat-num sup {
+            font-size: .36em;
+            vertical-align: super;
+            color: var(--wy-ember);
+            margin-left: 4px;
+        }
+
+        .wy_stat-label {
+            margin-top: 14px;
+            font-size: 12px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--wy-muted);
+        }
+
+        .wy_stat-desc {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--wy-ink);
+            opacity: .7;
+        }
+
+        /* ========== Footer ========== */
+        .wy_footer {
+            width: min(1200px, calc(100% - 48px));
+            margin: 80px auto 50px;
+            padding-top: 28px;
+            border-top: 1px solid var(--wy-line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            font-size: 12px;
+            color: var(--wy-muted);
+        }
+
+        .wy_footer a {
+            color: var(--wy-ink);
+            text-decoration: none;
+            border-bottom: 1px solid var(--wy-ember);
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 760px) {
+            .wy_hero { grid-template-columns: 1fr; padding-top: 60px; }
+            .wy_hero-side { max-width: 400px; }
+            .wy_stats { grid-template-columns: 1fr; }
+            .wy_feature { grid-template-columns: 1fr; }
+            .wy_topbar { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .wy_footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wy_page" id="wy_root">
+
+        <header class="wy_topbar">
+            <div class="wy_mark">
+                <i>L</i>
+                <span>Icon Study · Chapter 02</span>
+            </div>
+            <nav class="wy_nav">
+                <a href="../index.html">← 返回目录</a>
+                <a href="iconfont-1.html">Font Awesome 章节 →</a>
+            </nav>
+        </header>
+
+        <!-- Hero -->
+        <section class="wy_hero">
+            <div class="wy_hero-text">
+                <p class="wy_eyebrow">A SERIES ON ICONOGRAPHY</p>
+                <h1>Lucide<em> SVG</em><br/>矢量图标研究</h1>
+                <p class="wy_hero-copy">
+                    轻量、一致的开源图标集，以纯 SVG 方式嵌入网页——
+                    不依赖字体文件，零网络阻塞，可任意着色与缩放。
+                </p>
+            </div>
+            <div class="wy_hero-side">
+                <span class="wy_hero-corner tl">Lucide · v1.61</span>
+                <span class="wy_hero-corner br">SVG · 24×24</span>
+                <div class="wy_hero-icons" id="wy_heroIcons">
+                    <!-- JS 填充 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Cards -->
+        <section class="wy_section">
+            <div class="wy_feature">
+                <div class="wy_feature-card">
+                    <h3>Line · 线描</h3>
+                    <p>以 2px 线宽绘制，端点圆角，视觉干净，适合现代 UI。</p>
+                    <div class="wy_feature-row" id="wy_featureLine"></div>
+                </div>
+                <div class="wy_feature-card">
+                    <h3>Local · 本地</h3>
+                    <p>所有 SVG 下载到 <code>cdn/lucide/icons/</code>，不依赖外部 CDN。</p>
+                    <div class="wy_feature-row" id="wy_featureLocal"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search -->
+        <section class="wy_section" id="wy_gallery">
+            <div class="wy_section-head">
+                <div>
+                    <h2>Gallery<small>Icons · 图标集</small></h2>
+                </div>
+                <span class="wy_section-tag">Chapter 02 · A</span>
+            </div>
+
+            <div class="wy_search-wrap">
+                <input id="wy_searchInput" type="text" placeholder="Search icon name..." autocomplete="off">
+                <button class="wy_search-btn" id="wy_searchBtn">过滤</button>
+            </div>
+
+            <div class="wy_icon-grid" id="wy_iconGrid"></div>
+        </section>
+
+        <!-- Stats -->
+        <section class="wy_section">
+            <div class="wy_stats">
+                <div class="wy_stat">
+                    <div class="wy_stat-num">2170</div>
+                    <div class="wy_stat-label">Local SVGs</div>
+                    <div class="wy_stat-desc">全部下载到本项目 cdn 目录</div>
+                </div>
+                <div class="wy_stat">
+                    <div class="wy_stat-num">ISC</div>
+                    <div class="wy_stat-label">License</div>
+                    <div class="wy_stat-desc">开源可自由使用</div>
+                </div>
+                <div class="wy_stat">
+                    <div class="wy_stat-num">inline</div>
+                    <div class="wy_stat-label">Embedding</div>
+                    <div class="wy_stat-desc">img / svg / sprite 三种方式</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="wy_footer">
+            <span>李嘉蕊 · 高级网页设计 · Icon Study</span>
+            <span><a href="../index.html">← 课堂目录</a> · Lucide v1.61.0 · 本地 CDN</span>
+        </footer>
+    </main>
+
+    <script>
+        // ===== 图标清单（选择有代表性的常用图标） =====
+        const wy_iconList = [
+            ["home", "home"], ["heart", "heart"], ["star", "star"],
+            ["bookmark", "bookmark"], ["book-open", "book open"],
+            ["pen", "pen"], ["paintbrush", "brush"], ["palette", "palette"],
+            ["camera", "camera"], ["video", "video"], ["image", "image"],
+            ["music", "music"], ["headphones", "headphones"], ["mic", "mic"],
+            ["mail", "mail"], ["phone", "phone"], ["map-pin", "location"],
+            ["globe", "globe"], ["clock", "clock"], ["calendar", "calendar"],
+            ["cloud", "cloud"], ["sun", "sun"], ["moon", "moon"],
+            ["sparkles", "sparkles"], ["zap", "bolt"],
+            ["leaf", "leaf"], ["flame", "flame"], ["droplet", "droplet"],
+            ["coffee", "coffee"], ["utensils", "utensils"],
+            ["user", "user"], ["users", "users"], ["briefcase", "work"],
+            ["shopping-cart", "cart"], ["credit-card", "card"], ["gift", "gift"],
+            ["settings", "settings"], ["sliders", "sliders"], ["wrench", "wrench"],
+            ["code", "code"], ["terminal", "terminal"], ["database", "database"],
+            ["lock", "lock"], ["key", "key"], ["shield", "shield"],
+            ["play", "play"], ["pause", "pause"], ["fast-forward", "forward"],
+            ["thumbs-up", "like"], ["thumbs-down", "dislike"],
+            ["bell", "bell"], ["flag", "flag"], ["rss", "rss"],
+            ["file", "file"], ["folder", "folder"], ["copy", "copy"],
+            ["save", "save"], ["trash-2", "trash"], ["edit", "edit"],
+            ["eye", "eye"], ["eye-off", "hidden"], ["search", "search"],
+            ["menu", "menu"], ["x", "close"], ["check", "check"],
+            ["plus", "plus"], ["minus", "minus"], ["maximize-2", "expand"],
+            ["minimize-2", "shrink"], ["arrow-right", "arrow"],
+            ["download", "download"], ["upload", "upload"], ["refresh-cw", "refresh"],
+            ["filter", "filter"], ["grid-3x3", "grid"], ["list", "list"],
+            ["layers", "layers"], ["box", "box"], ["archive", "archive"],
+            ["package", "package"], ["truck", "truck"], ["tag", "tag"],
+            ["percent", "percent"], ["dollar-sign", "dollar"],
+            ["pie-chart", "chart"], ["bar-chart-3", "bars"],
+            ["target", "target"], ["award", "award"], ["trophy", "trophy"],
+            ["crown", "crown"], ["gem", "gem"], ["feather", "feather"],
+            ["umbrella", "umbrella"], ["anchor", "anchor"], ["navigation", "nav"],
+            ["wind", "wind"], ["cloud-sun", "cloud sun"], ["cloud-rain", "rain"],
+            ["battery-full", "battery"], ["wifi", "wifi"], ["bluetooth", "bt"],
+            ["tv", "tv"], ["monitor", "monitor"], ["smartphone", "phone"],
+            ["tablet", "tablet"], ["laptop", "laptop"], ["printer", "printer"],
+            ["mouse", "mouse"], ["keyboard", "keyboard"], ["speaker", "speaker"],
+            ["scissors", "scissors"], ["type", "type"], ["bold", "bold"],
+            ["italic", "italic"], ["underline", "underline"], ["link", "link"],
+            ["unlink", "unlink"], ["align-left", "left"], ["align-center", "center"],
+            ["align-right", "right"], ["align-justify", "justify"],
+            ["indent", "indent"], ["outdent", "outdent"], ["list-ordered", "ol"],
+            ["list-checks", "todos"], ["quote", "quote"], ["heading", "heading"],
+            ["columns", "columns"], ["table", "table"], ["layout", "layout"],
+        ];
+
+        const wy_base = "cdn/lucide/icons/";
+
+        // ===== Hero 随机 9 个 =====
+        (function wy_buildHero() {
+            const wy_heroIcons = document.getElementById("wy_heroIcons");
+            const wy_sample = [...wy_iconList].sort(() => Math.random() - .5).slice(0, 9);
+            wy_sample.forEach(([name]) => {
+                const wy_div = document.createElement("div");
+                const wy_img = document.createElement("img");
+                wy_img.src = wy_base + name + ".svg";
+                wy_img.alt = name;
+                wy_img.loading = "lazy";
+                wy_div.appendChild(wy_img);
+                wy_heroIcons.appendChild(wy_div);
+            });
+        })();
+
+        // ===== Feature Row =====
+        function wy_fillRow(wy_id, wy_names) {
+            const wy_row = document.getElementById(wy_id);
+            wy_names.forEach(([n, l]) => {
+                const wy_img = document.createElement("img");
+                wy_img.src = wy_base + n + ".svg";
+                wy_img.alt = l;
+                wy_img.title = l;
+                wy_row.appendChild(wy_img);
+            });
+        }
+        wy_fillRow("wy_featureLine", [
+            ["star", ""], ["heart", ""], ["home", ""], ["camera", ""],
+            ["music", ""], ["mail", ""], ["settings", ""], ["zap", ""],
+        ]);
+        wy_fillRow("wy_featureLocal", [
+            ["database", ""], ["download", ""], ["archive", ""], ["file", ""],
+            ["folder", ""], ["package", ""], ["shield", ""], ["lock", ""],
+        ]);
+
+        // ===== 网格渲染 + 搜索过滤 =====
+        const wy_grid = document.getElementById("wy_iconGrid");
+
+        function wy_renderGrid(wy_list) {
+            wy_grid.innerHTML = "";
+            wy_list.forEach(([name, label]) => {
+                const wy_cell = document.createElement("div");
+                wy_cell.className = "wy_icon-cell";
+                const wy_img = document.createElement("img");
+                wy_img.src = wy_base + name + ".svg";
+                wy_img.alt = name;
+                wy_img.loading = "lazy";
+                const wy_span = document.createElement("span");
+                wy_span.textContent = label;
+                wy_cell.appendChild(wy_img);
+                wy_cell.appendChild(wy_span);
+                wy_grid.appendChild(wy_cell);
+            });
+        }
+
+        wy_renderGrid(wy_iconList);
+
+        const wy_searchInput = document.getElementById("wy_searchInput");
+        const wy_doSearch = () => {
+            const wy_q = wy_searchInput.value.trim().toLowerCase();
+            if (!wy_q) { wy_renderGrid(wy_iconList); return; }
+            const wy_filtered = wy_iconList.filter(([n, l]) =>
+                n.toLowerCase().includes(wy_q) || l.toLowerCase().includes(wy_q)
+            );
+            wy_renderGrid(wy_filtered);
+        };
+        wy_searchInput.addEventListener("input", wy_doSearch);
+        document.getElementById("wy_searchBtn").addEventListener("click", wy_doSearch);
+        wy_searchInput.addEventListener("keydown", (wy_e) => {
+            if (wy_e.key === "Enter") wy_doSearch();
+        });
+    </script>
+</body>
+
+</html>

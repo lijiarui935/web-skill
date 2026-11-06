@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Study · Font Awesome</title>
+
+    <!-- 本地 Font Awesome 6 字体图标 -->
+    <link rel="stylesheet" href="cdn/fontawesome/css/all.min.css">
+
+    <style>
+        :root {
+            --wy-ink: #0f0e0c;
+            --wy-paper: #f4ede1;
+            --wy-paper-2: #e9dfcd;
+            --wy-gold: #c9a55a;
+            --wy-gold-2: #e5c98a;
+            --wy-ember: #d66a3b;
+            --wy-line: rgba(15, 14, 12, .14);
+            --wy-muted: #8a8070;
+            --wy-shadow: 0 30px 60px rgba(15, 14, 12, .18);
+            --wy-serif: "Cormorant Garamond", Georgia, "Noto Serif SC", "Times New Roman", serif;
+            --wy-sans: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--wy-sans);
+            color: var(--wy-ink);
+            background: var(--wy-paper);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(1200px 600px at 80% -10%, rgba(201, 165, 90, .18), transparent 60%),
+                radial-gradient(800px 500px at -10% 90%, rgba(214, 106, 59, .10), transparent 60%);
+        }
+
+        /* ========== 顶栏 ========== */
+        .wy_topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--wy-line);
+        }
+
+        .wy_mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+        }
+
+        .wy_mark i {
+            font-family: var(--wy-serif);
+            font-size: 18px;
+            font-style: italic;
+            color: var(--wy-gold);
+        }
+
+        .wy_nav {
+            display: flex;
+            gap: 28px;
+            font-size: 13px;
+            letter-spacing: .08em;
+        }
+
+        .wy_nav a {
+            color: var(--wy-ink);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .wy_nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 0;
+            background: var(--wy-gold);
+            transition: width .28s ease;
+        }
+
+        .wy_nav a:hover::after { width: 100%; }
+
+        /* ========== Hero ========== */
+        .wy_hero {
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 90px 0 70px;
+            display: grid;
+            grid-template-columns: 1.4fr .8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .wy_eyebrow {
+            font-size: 12px;
+            letter-spacing: .32em;
+            text-transform: uppercase;
+            color: var(--wy-ember);
+            margin-bottom: 18px;
+        }
+
+        .wy_hero h1 {
+            font-family: var(--wy-serif);
+            font-weight: 400;
+            font-size: clamp(52px, 8vw, 96px);
+            line-height: .98;
+            letter-spacing: -.01em;
+        }
+
+        .wy_hero h1 em {
+            font-style: italic;
+            color: var(--wy-gold);
+        }
+
+        .wy_hero-copy {
+            margin-top: 22px;
+            max-width: 460px;
+            color: var(--wy-muted);
+            font-size: 15px;
+        }
+
+        .wy_hero-side {
+            position: relative;
+            aspect-ratio: 1;
+            border: 1px solid var(--wy-line);
+            background: var(--wy-paper-2);
+            overflow: hidden;
+        }
+
+        .wy_hero-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+        }
+
+        .wy_hero-grid > div {
+            border: 1px solid rgba(15, 14, 12, .08);
+            display: grid;
+            place-items: center;
+        }
+
+        .wy_hero-grid i {
+            font-size: clamp(18px, 2.2vw, 28px);
+            color: var(--wy-ink);
+            opacity: .6;
+            transition: opacity .3s, transform .3s, color .3s;
+        }
+
+        .wy_hero-grid > div:hover i {
+            opacity: 1;
+            color: var(--wy-gold);
+            transform: scale(1.2);
+        }
+
+        .wy_hero-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            aspect-ratio: 1;
+            transform: translate(-50%, -50%);
+            border: 1px dashed rgba(201, 165, 90, .5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* ========== Section ========== */
+        .wy_section {
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 70px 0;
+        }
+
+        .wy_section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 36px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--wy-line);
+        }
+
+        .wy_section-head h2 {
+            font-family: var(--wy-serif);
+            font-weight: 400;
+            font-size: clamp(28px, 3.6vw, 40px);
+        }
+
+        .wy_section-head h2 small {
+            display: block;
+            font-family: var(--wy-sans);
+            font-size: 11px;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: var(--wy-muted);
+            margin-top: 6px;
+        }
+
+        .wy_section-tag {
+            font-size: 12px;
+            letter-spacing: .18em;
+            color: var(--wy-gold);
+            text-transform: uppercase;
+        }
+
+        /* ========== 图标网格 ========== */
+        .wy_icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1px;
+            background: var(--wy-line);
+            border: 1px solid var(--wy-line);
+        }
+
+        .wy_icon-cell {
+            background: var(--wy-paper);
+            padding: 28px 12px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: background .25s, color .25s, transform .25s;
+            position: relative;
+        }
+
+        .wy_icon-cell:hover {
+            background: var(--wy-ink);
+            color: var(--wy-paper);
+        }
+
+        .wy_icon-cell:hover i { transform: translateY(-4px) scale(1.12); }
+
+        .wy_icon-cell i {
+            font-size: 34px;
+            transition: transform .28s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .wy_icon-cell span {
+            font-size: 11px;
+            letter-spacing: .04em;
+            text-align: center;
+            line-height: 1.3;
+            color: inherit;
+            opacity: .85;
+        }
+
+        /* ========== Stats ========== */
+        .wy_stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--wy-line);
+            border: 1px solid var(--wy-line);
+            margin-top: 70px;
+        }
+
+        .wy_stat {
+            background: var(--wy-paper);
+            padding: 42px 32px;
+            position: relative;
+        }
+
+        .wy_stat-num {
+            font-family: var(--wy-serif);
+            font-size: clamp(44px, 6vw, 72px);
+            line-height: 1;
+            color: var(--wy-ink);
+        }
+
+        .wy_stat-num sup {
+            font-size: .36em;
+            vertical-align: super;
+            color: var(--wy-gold);
+            margin-left: 4px;
+        }
+
+        .wy_stat-label {
+            margin-top: 14px;
+            font-size: 12px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--wy-muted);
+        }
+
+        .wy_stat-desc {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--wy-ink);
+            opacity: .7;
+        }
+
+        /* ========== Footer ========== */
+        .wy_footer {
+            width: min(1200px, calc(100% - 48px));
+            margin: 80px auto 50px;
+            padding-top: 28px;
+            border-top: 1px solid var(--wy-line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            font-size: 12px;
+            color: var(--wy-muted);
+        }
+
+        .wy_footer a {
+            color: var(--wy-ink);
+            text-decoration: none;
+            border-bottom: 1px solid var(--wy-gold);
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 760px) {
+            .wy_hero { grid-template-columns: 1fr; padding-top: 60px; }
+            .wy_hero-side { max-width: 400px; }
+            .wy_stats { grid-template-columns: 1fr; }
+            .wy_topbar { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .wy_footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wy_page" id="wy_root">
+
+        <header class="wy_topbar">
+            <div class="wy_mark">
+                <i>F</i>
+                <span>Icon Study · Chapter 01</span>
+            </div>
+            <nav class="wy_nav">
+                <a href="../index.html">← 返回目录</a>
+                <a href="iconfont-2.html">Lucide 章节 →</a>
+            </nav>
+        </header>
+
+        <!-- Hero -->
+        <section class="wy_hero">
+            <div class="wy_hero-text">
+                <p class="wy_eyebrow">A SERIES ON ICONOGRAPHY</p>
+                <h1>Font <em>Awesome</em><br/>字体图标研究</h1>
+                <p class="wy_hero-copy">
+                    超过 2,000 个图标，通过 @font-face 以字体方式渲染。
+                    一次引入，随处可调颜色、尺寸、阴影——这就是字体图标的优雅之处。
+                </p>
+            </div>
+            <div class="wy_hero-side">
+                <div class="wy_hero-orbit"></div>
+                <div class="wy_hero-grid" id="wy_heroGrid">
+                    <!-- JS 填充 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Solid Icons -->
+        <section class="wy_section" id="wy_solid">
+            <div class="wy_section-head">
+                <div>
+                    <h2>Solid<small>fa-solid · 实心线性</small></h2>
+                </div>
+                <span class="wy_section-tag">Chapter 01 · A</span>
+            </div>
+            <div class="wy_icon-grid" id="wy_solidGrid"></div>
+        </section>
+
+        <!-- Regular Icons -->
+        <section class="wy_section" id="wy_regular">
+            <div class="wy_section-head">
+                <div>
+                    <h2>Regular<small>fa-regular · 常规线性</small></h2>
+                </div>
+                <span class="wy_section-tag">Chapter 01 · B</span>
+            </div>
+            <div class="wy_icon-grid" id="wy_regularGrid"></div>
+        </section>
+
+        <!-- Brands -->
+        <section class="wy_section" id="wy_brands">
+            <div class="wy_section-head">
+                <div>
+                    <h2>Brands<small>fa-brands · 品牌集合</small></h2>
+                </div>
+                <span class="wy_section-tag">Chapter 01 · C</span>
+            </div>
+            <div class="wy_icon-grid" id="wy_brandsGrid"></div>
+        </section>
+
+        <!-- Stats -->
+        <section class="wy_section">
+            <div class="wy_stats">
+                <div class="wy_stat">
+                    <div class="wy_stat-num">2000<sup>+</sup></div>
+                    <div class="wy_stat-label">Icons</div>
+                    <div class="wy_stat-desc">覆盖 UI、品牌、实体等多种场景</div>
+                </div>
+                <div class="wy_stat">
+                    <div class="wy_stat-num">3</div>
+                    <div class="wy_stat-label">Families</div>
+                    <div class="wy_stat-desc">Solid / Regular / Brands</div>
+                </div>
+                <div class="wy_stat">
+                    <div class="wy_stat-num">@font-face</div>
+                    <div class="wy_stat-label">Technique</div>
+                    <div class="wy_stat-desc">CSS 字体渲染，矢量可无损缩放</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="wy_footer">
+            <span>李嘉蕊 · 高级网页设计 · Icon Study</span>
+            <span><a href="../index.html">← 课堂目录</a> · Font Awesome 6.5.2 · 本地 CDN</span>
+        </footer>
+    </main>
+
+    <script>
+        // ===== 图标清单 =====
+        const wy_solidIcons = [
+            ["fa-house", "home"], ["fa-heart", "heart"], ["fa-star", "star"],
+            ["fa-bookmark", "bookmark"], ["fa-book-open", "book open"],
+            ["fa-pen", "pen"], ["fa-paintbrush", "brush"], ["fa-palette", "palette"],
+            ["fa-camera", "camera"], ["fa-video", "video"], ["fa-image", "image"],
+            ["fa-music", "music"], ["fa-headphones", "headphones"], ["fa-microphone", "mic"],
+            ["fa-envelope", "mail"], ["fa-phone", "phone"], ["fa-location-dot", "location"],
+            ["fa-globe", "globe"], ["fa-clock", "clock"], ["fa-calendar", "calendar"],
+            ["fa-cloud", "cloud"], ["fa-sun", "sun"], ["fa-moon", "moon"],
+            ["fa-wand-magic-sparkles", "magic"], ["fa-bolt", "bolt"],
+            ["fa-leaf", "leaf"], ["fa-fire", "fire"], ["fa-droplet", "droplet"],
+            ["fa-mug-hot", "coffee"], ["fa-utensils", "food"],
+            ["fa-user", "user"], ["fa-users", "users"], ["fa-briefcase", "work"],
+            ["fa-cart-shopping", "cart"], ["fa-credit-card", "card"], ["fa-gift", "gift"],
+            ["fa-gear", "settings"], ["fa-sliders", "sliders"], ["fa-wrench", "wrench"],
+            ["fa-code", "code"], ["fa-terminal", "terminal"], ["fa-database", "database"],
+            ["fa-lock", "lock"], ["fa-key", "key"], ["fa-shield-halved", "shield"],
+            ["fa-play", "play"], ["fa-pause", "pause"], ["fa-forward", "forward"],
+        ];
+
+        const wy_regularIcons = [
+            ["fa-heart", "heart"], ["fa-star", "star"], ["fa-bookmark", "bookmark"],
+            ["fa-circle", "circle"], ["fa-square", "square"], ["fa-check", "check"],
+            ["fa-envelope", "mail"], ["fa-comment", "comment"], ["fa-comments", "chat"],
+            ["fa-file", "file"], ["fa-folder", "folder"], ["fa-copy", "copy"],
+            ["fa-save", "save"], ["fa-trash-can", "trash"], ["fa-pen-to-square", "edit"],
+            ["fa-eye", "eye"], ["fa-eye-slash", "hidden"], ["fa-clock", "clock"],
+            ["fa-calendar", "calendar"], ["fa-calendar-days", "days"],
+            ["fa-bell", "bell"], ["fa-flag", "flag"], ["fa-bookmark", "tag"],
+            ["fa-address-card", "card"], ["fa-id-card", "id"], ["fa-building", "building"],
+            ["fa-newspaper", "news"], ["fa-image", "image"], ["fa-lightbulb", "idea"],
+            ["fa-gem", "gem"], ["fa-snowflake", "snow"], ["fa-sun", "sun"],
+        ];
+
+        const wy_brandsIcons = [
+            ["fa-brands fa-github", "GitHub"], ["fa-brands fa-twitter", "X"],
+            ["fa-brands fa-instagram", "Instagram"], ["fa-brands fa-facebook", "Facebook"],
+            ["fa-brands fa-linkedin", "LinkedIn"], ["fa-brands fa-youtube", "YouTube"],
+            ["fa-brands fa-dribbble", "Dribbble"], ["fa-brands fa-behance", "Behance"],
+            ["fa-brands fa-pinterest", "Pinterest"], ["fa-brands fa-reddit", "Reddit"],
+            ["fa-brands fa-tiktok", "TikTok"], ["fa-brands fa-weixin", "WeChat"],
+            ["fa-brands fa-weibo", "Weibo"], ["fa-brands fa-bilibili", "Bilibili"],
+            ["fa-brands fa-npm", "npm"], ["fa-brands fa-react", "React"],
+            ["fa-brands fa-vuejs", "Vue"], ["fa-brands fa-angular", "Angular"],
+            ["fa-brands fa-node-js", "Node.js"], ["fa-brands fa-python", "Python"],
+            ["fa-brands fa-js", "JS"], ["fa-brands fa-html5", "HTML5"],
+            ["fa-brands fa-css3-alt", "CSS3"], ["fa-brands fa-sass", "Sass"],
+            ["fa-brands fa-figma", "Figma"], ["fa-brands fa-sketch", "Sketch"],
+            ["fa-brands fa-adobe", "Adobe"], ["fa-brands fa-apple", "Apple"],
+            ["fa-brands fa-windows", "Windows"], ["fa-brands fa-linux", "Linux"],
+            ["fa-brands fa-chrome", "Chrome"], ["fa-brands fa-firefox", "Firefox"],
+        ];
+
+        // Hero 网格（随机填充实心图标）
+        (function wy_buildHero() {
+            const wy_heroGrid = document.getElementById("wy_heroGrid");
+            const wy_sample = wy_solidIcons.sort(() => Math.random() - .5).slice(0, 16);
+            wy_sample.forEach(([cls]) => {
+                const wy_div = document.createElement("div");
+                const wy_i = document.createElement("i");
+                wy_i.className = "fa-solid " + cls;
+                wy_div.appendChild(wy_i);
+                wy_heroGrid.appendChild(wy_div);
+            });
+        })();
+
+        // 通用渲染
+        function wy_renderGrid(wy_containerId, wy_list, wy_prefix) {
+            const wy_container = document.getElementById(wy_containerId);
+            wy_list.forEach(([cls, label]) => {
+                const wy_cell = document.createElement("div");
+                wy_cell.className = "wy_icon-cell";
+                const wy_i = document.createElement("i");
+                wy_i.className = (wy_prefix ? wy_prefix + " " : "") + cls;
+                const wy_span = document.createElement("span");
+                wy_span.textContent = label;
+                wy_cell.appendChild(wy_i);
+                wy_cell.appendChild(wy_span);
+                wy_container.appendChild(wy_cell);
+            });
+        }
+
+        wy_renderGrid("wy_solidGrid", wy_solidIcons, "fa-solid");
+        wy_renderGrid("wy_regularGrid", wy_regularIcons, "fa-regular");
+        wy_renderGrid("wy_brandsGrid", wy_brandsIcons, "");
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bottom Nav · Lucide SVG 图标</title>
+
+    <style>
+        :root {
+            --wy-bg:        #f2f3f5;
+            --wy-card:      #ffffff;
+            --wy-ink:       #1a1a1f;
+            --wy-muted:     #8a8a92;
+            --wy-line:      #ececef;
+            --wy-primary:   #3370ff;
+            --wy-primary-soft: #e8f0ff;
+            --wy-badge:     #ff3b30;
+            --wy-dot:       #ff3b30;
+            --wy-safe-bot:  env(safe-area-inset-bottom, 0px);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+            background: #d7d8dc;
+            color: var(--wy-ink);
+        }
+
+        /* ========== 桌面预览：手机外壳 ========== */
+        @media (min-width: 480px) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 40px 20px;
+                min-height: 100vh;
+            }
+            .wy_phone {
+                width: 375px;
+                height: 760px;
+                border-radius: 44px;
+                background: #000;
+                padding: 10px;
+                box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+                position: relative;
+            }
+            .wy_screen {
+                height: 100%;
+                border-radius: 36px;
+                overflow: hidden;
+                position: relative;
+            }
+            .wy_phone::before {
+                content: "";
+                position: absolute;
+                top: 18px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 120px;
+                height: 28px;
+                background: #000;
+                border-radius: 20px;
+                z-index: 10;
+            }
+        }
+
+        @media (max-width: 479px) {
+            .wy_phone { width: 100%; height: 100vh; }
+            .wy_screen { height: 100%; }
+        }
+
+        .wy_screen {
+            background: var(--wy-bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== 状态栏 ========== */
+        .wy_statusbar {
+            flex-shrink: 0;
+            height: 44px;
+            padding: 0 24px 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--wy-card);
+        }
+        .wy_statusbar .wy_time { font-variant-numeric: tabular-nums; }
+        .wy_statusbar .wy_indicators {
+            display: flex; gap: 5px; align-items: center;
+            font-size: 12px; font-weight: 500;
+        }
+
+        /* ========== 导航标题栏 ========== */
+        .wy_navbar {
+            flex-shrink: 0;
+            height: 48px;
+            padding: 0 16px;
+            background: var(--wy-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--wy-line);
+            font-size: 17px;
+            font-weight: 600;
+            position: relative;
+        }
+        .wy_navbar .wy_back {
+            position: absolute;
+            left: 16px;
+            font-size: 20px;
+            color: var(--wy-ink);
+            text-decoration: none;
+        }
+
+        /* ========== 主内容区 ========== */
+        .wy_content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 16px 100px;
+        }
+
+        .wy_banner {
+            height: 140px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3370ff 0%, #6aa0ff 100%);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(51, 112, 255, .3);
+        }
+        .wy_banner h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .wy_banner p { font-size: 13px; opacity: .85; }
+
+        .wy_section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--wy-ink);
+            margin: 8px 4px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wy_section-title .wy_more {
+            font-size: 12px;
+            color: var(--wy-muted);
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        .wy_grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .wy_grid-item {
+            background: var(--wy-card);
+            border-radius: 14px;
+            padding: 16px;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+        }
+        .wy_grid-item .wy_ico {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: var(--wy-primary-soft);
+            color: var(--wy-primary);
+            display: grid; place-items: center;
+        }
+        .wy_grid-item .wy_ico img { width: 20px; height: 20px; }
+        .wy_grid-item h4 { font-size: 14px; font-weight: 600; }
+        .wy_grid-item p { font-size: 11px; color: var(--wy-muted); margin-top: 2px; }
+
+        .wy_list-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--wy-card);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        .wy_list-item .wy_avatar {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcc80, #ff9966);
+            display: grid; place-items: center;
+            flex-shrink: 0;
+        }
+        .wy_list-item .wy_avatar img { width: 22px; height: 22px; filter: brightness(0) invert(1); }
+        .wy_list-item .wy_text { flex: 1; }
+        .wy_list-item .wy_text h5 { font-size: 14px; font-weight: 600; }
+        .wy_list-item .wy_text p { font-size: 12px; color: var(--wy-muted); margin-top: 2px; }
+        .wy_list-item .wy_time { font-size: 11px; color: var(--wy-muted); }
+
+        /* ========== 底部导航栏 ========== */
+        .wy_tabbar {
+            flex-shrink: 0;
+            position: fixed;
+            left: 0; right: 0; bottom: 0;
+            z-index: 100;
+            background: var(--wy-card);
+            border-top: 1px solid var(--wy-line);
+            padding-bottom: var(--wy-safe-bot);
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, .05);
+        }
+
+        @media (min-width: 480px) {
+            .wy_tabbar {
+                left: 10px; right: 10px; bottom: 10px;
+                border-radius: 0 0 36px 36px;
+                border-top: none;
+            }
+        }
+
+        .wy_tabbar-inner {
+            display: flex;
+            width: 100%;
+            height: 56px;
+        }
+
+        .wy_tab {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            color: var(--wy-muted);
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: .02em;
+            cursor: pointer;
+            transition: color .2s ease, transform .2s ease;
+            position: relative;
+            -webkit-appearance: none;
+            border: none;
+            background: transparent;
+        }
+
+        .wy_tab img.wy_tab-icon {
+            width: 24px;
+            height: 24px;
+            transition: transform .2s ease, filter .2s ease;
+            /* Lucide SVG 默认黑色 → 用 CSS filter 染色 */
+            filter: brightness(0) saturate(100%) invert(52%) sepia(7%) saturate(14%) hue-rotate(29deg) brightness(93%) contrast(87%);
+        }
+
+        .wy_tab:hover { transform: translateY(-2px); }
+
+        .wy_tab.wy_active { color: var(--wy-primary); }
+        .wy_tab.wy_active img.wy_tab-icon {
+            transform: scale(1.1);
+            /* 染色成蓝色 */
+            filter: brightness(0) saturate(100%) invert(51%) sepia(93%) saturate(937%) hue-rotate(218deg) brightness(100%) contrast(99%);
+        }
+
+        /* ========== 徽章 ========== */
+        .wy_badge {
+            position: absolute;
+            top: 4px;
+            right: 50%;
+            transform: translateX(14px);
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9px;
+            background: var(--wy-badge);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 18px;
+            text-align: center;
+            box-shadow: 0 0 0 2px var(--wy-card);
+            white-space: nowrap;
+        }
+        .wy_badge.is-dot {
+            min-width: 8px;
+            width: 8px;
+            height: 8px;
+            padding: 0;
+            border-radius: 50%;
+            top: 6px;
+            transform: translateX(14px);
+            box-shadow: 0 0 0 2px var(--wy-card);
+        }
+
+        @media (min-width: 480px) {
+            .wy_phone .wy_tabbar {
+                position: absolute;
+                left: 10px; right: 10px; bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wy_phone">
+        <div class="wy_screen">
+
+            <!-- 状态栏 -->
+            <div class="wy_statusbar">
+                <span class="wy_time" id="wy_time">9:41</span>
+                <div class="wy_indicators">
+                    <span>●●●●</span>
+                    <span>100%</span>
+                </div>
+            </div>
+
+            <!-- 导航标题栏 -->
+            <div class="wy_navbar">
+                <a class="wy_back" href="../index.html" title="返回目录">‹</a>
+                <span>发现</span>
+            </div>
+
+            <!-- 主内容区 -->
+            <main class="wy_content">
+                <div class="wy_banner">
+                    <h2>Hi，欢迎回来</h2>
+                    <p>今天也要保持好心情 ✨</p>
+                </div>
+
+                <div class="wy_section-title">
+                    <span>常用功能</span>
+                    <a class="wy_more" href="#">查看全部 ›</a>
+                </div>
+                <div class="wy_grid">
+                    <div class="wy_grid-item"><div class="wy_ico"><img src="cdn/lucide/icons/home.svg" alt=""></div><div><h4>首页</h4><p>我的主页</p></div></div>
+                    <div class="wy_grid-item"><div class="wy_ico"><img src="cdn/lucide/icons/sparkles.svg" alt=""></div><div><h4>发现</h4><p>新鲜事</p></div></div>
+                    <div class="wy_grid-item"><div class="wy_ico"><img src="cdn/lucide/icons/users.svg" alt=""></div><div><h4>朋友</h4><p>99+ 待处理</p></div></div>
+                    <div class="wy_grid-item"><div class="wy_ico"><img src="cdn/lucide/icons/bell.svg" alt=""></div><div><h4>消息</h4><p>有未读</p></div></div>
+                </div>
+
+                <div class="wy_section-title" style="margin-top: 24px;">
+                    <span>最新消息</span>
+                    <a class="wy_more" href="#">全部标为已读</a>
+                </div>
+                <div class="wy_list-item">
+                    <div class="wy_avatar" style="background: linear-gradient(135deg,#ffcc80,#ff9966);"><img src="cdn/lucide/icons/user-plus.svg" alt=""></div>
+                    <div class="wy_text"><h5>新朋友请求</h5><p>小明 想添加你为好友</p></div>
+                    <span class="wy_time">刚刚</span>
+                </div>
+                <div class="wy_list-item">
+                    <div class="wy_avatar" style="background: linear-gradient(135deg,#a78bfa,#7c3aed);"><img src="cdn/lucide/icons/thumbs-up.svg" alt=""></div>
+                    <div class="wy_text"><h5>收到 99+ 个赞</h5><p>你的动态被大家喜欢</p></div>
+                    <span class="wy_time">5 分钟前</span>
+                </div>
+                <div class="wy_list-item">
+                    <div class="wy_avatar" style="background: linear-gradient(135deg,#60a5fa,#2563eb);"><img src="cdn/lucide/icons/bell.svg" alt=""></div>
+                    <div class="wy_text"><h5>系统通知</h5><p>您的账户已通过安全验证</p></div>
+                    <span class="wy_time">1 小时前</span>
+                </div>
+                <div class="wy_list-item">
+                    <div class="wy_avatar" style="background: linear-gradient(135deg,#34d399,#059669);"><img src="cdn/lucide/icons/shield-check.svg" alt=""></div>
+                    <div class="wy_text"><h5>安全守护</h5><p>今日未发现异常登录</p></div>
+                    <span class="wy_time">昨天</span>
+                </div>
+            </main>
+
+            <!-- ====== 底部固定导航栏（4 项 · SVG 图标 · 徽章/红点） ====== -->
+            <nav class="wy_tabbar" role="navigation" aria-label="底部导航">
+                <div class="wy_tabbar-inner">
+                    <!-- 1. 首页 -->
+                    <button class="wy_tab wy_active" data-index="0" aria-label="首页">
+                        <img class="wy_tab-icon" src="cdn/lucide/icons/home.svg" alt="">
+                        <span>首页</span>
+                    </button>
+
+                    <!-- 2. 发现 -->
+                    <button class="wy_tab" data-index="1" aria-label="发现">
+                        <img class="wy_tab-icon" src="cdn/lucide/icons/sparkles.svg" alt="">
+                        <span>发现</span>
+                    </button>
+
+                    <!-- 3. 朋友 · 数字徽章 99+ -->
+                    <button class="wy_tab" data-index="2" aria-label="朋友">
+                        <img class="wy_tab-icon" src="cdn/lucide/icons/users.svg" alt="">
+                        <span>朋友</span>
+                        <span class="wy_badge" aria-label="99 条待处理">99+</span>
+                    </button>
+
+                    <!-- 4. 消息 · 红点 -->
+                    <button class="wy_tab" data-index="3" aria-label="消息">
+                        <img class="wy_tab-icon" src="cdn/lucide/icons/bell.svg" alt="">
+                        <span>消息</span>
+                        <span class="wy_badge is-dot" aria-label="1 条未读"></span>
+                    </button>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+    <script>
+        // 时间显示
+        (function wy_updateTime() {
+            const wy_el = document.getElementById("wy_time");
+            function wy_tick() {
+                const d = new Date();
+                const h = d.getHours().toString().padStart(2, "0");
+                const m = d.getMinutes().toString().padStart(2, "0");
+                if (wy_el) wy_el.textContent = h + ":" + m;
+            }
+            wy_tick();
+            setInterval(wy_tick, 30000);
+        })();
+
+        // tab 切换
+        (function wy_bindTabs() {
+            const wy_tabs = document.querySelectorAll(".wy_tab");
+            const wy_banners = [
+                { t: "Hi，欢迎回来", s: "今天也要保持好心情 ✨" },
+                { t: "发现新内容", s: "为你推荐精选动态" },
+                { t: "新朋友在等你", s: "99+ 条好友请求" },
+                { t: "消息中心", s: "红点表示有新消息" },
+            ];
+            const wy_bannerEl = document.querySelector(".wy_banner h2");
+            const wy_bannerSub = document.querySelector(".wy_banner p");
+
+            wy_tabs.forEach(function (wy_tab) {
+                wy_tab.addEventListener("click", function () {
+                    wy_tabs.forEach(function (t) { t.classList.remove("wy_active"); });
+                    wy_tab.classList.add("wy_active");
+
+                    const wy_idx = parseInt(wy_tab.dataset.index, 10);
+                    const wy_d = wy_banners[wy_idx];
+                    if (wy_bannerEl && wy_d) {
+                        wy_bannerEl.textContent = wy_d.t;
+                        wy_bannerSub.textContent = wy_d.s;
+                    }
+
+                    if (wy_idx === 3) {
+                        const wy_dot = wy_tab.querySelector(".wy_badge.is-dot");
+                        if (wy_dot) wy_dot.remove();
+                    }
+                    if (wy_idx === 2) {
+                        const wy_badge = wy_tab.querySelector(".wy_badge");
+                        if (wy_badge) wy_badge.remove();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>
