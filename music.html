@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音乐手机 - 李嘉蕊</title>
+<style>
+/* ============ 李嘉蕊 音乐手机资讯站 样式 ============ */
+/* 说明：所有 class / id 均以 LJR_ 开头（LJR = 李嘉蕊姓名首字母） */
+/* 一比一还原原站：顶部标题+栏目标签一行，选中标签蓝色高亮，文章=蓝点+蓝标题+灰日期 */
+
+/* 页面整体：白色背景 */
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  color: #333;
+}
+
+.LJR_wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* 顶部条：左侧站点名 + 右侧栏目标签（同一行，无红色） */
+.LJR_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+/* 站点名“音乐手机”：大号深色文字 */
+.LJR_siteName {
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+/* 栏目标签：圆角胶囊，未选中灰色、选中蓝色 */
+.LJR_nav {
+  display: flex;
+  gap: 10px;
+}
+.LJR_navItem {
+  padding: 7px 20px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  border-radius: 4px;
+  background: #e8e8e8;        /* 未选中：灰色底 */
+  transition: background 0.2s, color 0.2s;
+}
+.LJR_navItem:hover {
+  background: #d9d9d9;
+}
+.LJR_navItemActive {
+  background: #0073c4;        /* 选中：蓝色高亮 */
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 内容区 */
+.LJR_content {
+  padding: 6px 20px 40px;
+}
+
+/* 资讯列表：每行 = 蓝色圆点 + 蓝色标题 + 灰色日期 */
+.LJR_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.LJR_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 13px 2px;
+  border-bottom: 1px dashed #e5e5e5;
+}
+.LJR_itemLeft {
+  display: flex;
+  align-items: center;
+}
+.LJR_bullet {
+  width: 8px;
+  height: 8px;
+  margin-right: 12px;
+  border-radius: 2px;
+  background: #0073c4;        /* 蓝色圆点/方块 */
+  flex-shrink: 0;
+}
+.LJR_itemTitle {
+  color: #0073c4;             /* 蓝色标题 */
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.LJR_itemTitle:hover {
+  text-decoration: underline;
+}
+.LJR_itemDate {
+  color: #999;                /* 灰色日期 */
+  font-size: 13px;
+  white-space: nowrap;
+  margin-left: 12px;
+}
+</style>
+</head>
+<body>
+<div class="LJR_wrap">
+  <!-- 顶部：站点名 + 栏目标签 -->
+  <div class="LJR_header">
+    <div class="LJR_siteName">音乐手机</div>
+    <nav class="LJR_nav" id="LJR_navBar">
+      <!-- 标签项由 JS 渲染 -->
+    </nav>
+  </div>
+
+  <!-- 资讯列表 -->
+  <main class="LJR_content">
+    <ul class="LJR_list" id="LJR_listBox"></ul>
+  </main>
+</div>
+
+<script>
+/* ============ 李嘉蕊 音乐手机资讯站 脚本 ============ */
+/* 说明：所有 JS 变量均以 LJR_ 开头（LJR = 李嘉蕊姓名首字母） */
+
+/* 四个栏目的文章数据（取自课堂素材，一比一还原） */
+var LJR_articles = {
+  market: [ /* 行情 */
+    { title: '音乐强机苹果iPhone 5s价格稳定', date: '(12/19)' },
+    { title: '高性能四核音乐机 魅族MX3低价热卖', date: '(12/19)' },
+    { title: '音乐品质最出色 vivo X3促销2199', date: '(12/12)' },
+    { title: '时尚音乐手机 vivo Xplay济南2798元', date: '(11/27)' },
+    { title: '好音乐好拍照 OPPO Find5今报价2580元', date: '(08/27)' },
+    { title: '1.5GHz四核1080p OPPO Find5降价热卖', date: '(07/30)' },
+    { title: '彩色呼吸带双核机 索尼M35h促销2299', date: '(06/08)' },
+    { title: '1.7GHz四核1080p屏 vivo Xplay热卖中', date: '(06/07)' }
+  ],
+  guide: [ /* 导购 */
+    { title: '优秀音效漂亮外观 市售音乐手机盘点', date: '(09/13)' },
+    { title: '不要虐待耳朵 8款独特音效的音乐手机推荐', date: '(09/06)' },
+    { title: '最低只要799 9款高性能音乐手机推荐', date: '(07/22)' },
+    { title: '长假主导高考时代 奖励孩子的智能手机全攻略', date: '(06/13)' },
+    { title: '降价不限时 端午年后值得关注降价四核机推荐', date: '(06/13)' },
+    { title: '高考之后尽情狂欢！学生超强手机推荐', date: '(06/13)' },
+    { title: '上半年看这里 最热门1080P四核旗舰手机', date: '(06/13)' },
+    { title: '最厚不过7.99毫米 热门超薄强机大搜罗', date: '(06/08)' }
+  ],
+  news: [ /* 新品 */
+    { title: '无限接近vivo！vivo Xplay3S现场体验', date: '(12/19)' },
+    { title: '入门音乐机 诺基亚Lumia 525现身工信部', date: '(11/05)' },
+    { title: '传诺基亚下月将推首款WP音乐手机Glee', date: '(08/29)' },
+    { title: '软硬兼施 vivo Xplay3S真机图讲解', date: '(08/23)' },
+    { title: '没有中国 谷歌All Access音乐服务登陆欧洲', date: '(08/09)' },
+    { title: 'Hi-Fi音质 vivo X3创音质系统', date: '(08/08)' },
+    { title: 'Hi-Fi不够vivo又玩音乐圈 X3音乐处理方案曝光', date: '(08/06)' },
+    { title: '小伙伴们都惊呆了 薄至6mm以下vivo X3终露面', date: '(07/31)' }
+  ],
+  review: [ /* 评测 */
+    { title: '音乐历久弥新 TD版魅族MX3评测', date: '(12/19)' },
+    { title: '极致影音完美音质 步步高vivo Xplay移动版图赏', date: '(07/24)' },
+    { title: '都是大屏不同三星 S4/Mega静态评测', date: '(06/20)' },
+    { title: '超四核双卡智能机 HTC Desire 608t评测', date: '(06/20)' },
+    { title: '完美融合情怀 魅族MX2 Flyme 2.2.5体验', date: '(06/18)' },
+    { title: '1080P屏Hi-Fi旗舰 vivo Xplay娱乐体验', date: '(06/13)' },
+    { title: '5.7英寸高清巨屏 酷派9070+XO影音体验', date: '(06/06)' },
+    { title: '悬浮窗口播放 vivo Xplay视频功能评测', date: '(06/06)' }
+  ]
+};
+
+/* 栏目顺序与中文名 */
+var LJR_tabOrder = ['market', 'guide', 'news', 'review'];
+var LJR_tabNames = { market: '行情', guide: '导购', news: '新品', review: '评测' };
+
+/* 当前选中栏目 */
+var LJR_currentTab = 'market';
+
+/* 切换栏目：渲染标签高亮 + 列表内容 */
+function LJR_switchTab(LJR_tabName) {
+  /* 更新当前选中 */
+  LJR_currentTab = LJR_tabName;
+
+  /* 渲染顶部标签：未选中灰色、选中蓝色 */
+  var LJR_navBar = document.getElementById('LJR_navBar');
+  LJR_navBar.innerHTML = '';
+  LJR_tabOrder.forEach(function (LJR_key) {
+    var LJR_btn = document.createElement('button');
+    LJR_btn.type = 'button';
+    LJR_btn.className = 'LJR_navItem' + (LJR_key === LJR_currentTab ? ' LJR_navItemActive' : '');
+    LJR_btn.textContent = LJR_tabNames[LJR_key];
+    LJR_btn.setAttribute('data-LJR-tab', LJR_key);
+    LJR_btn.addEventListener('click', function () {
+      LJR_switchTab(LJR_btn.getAttribute('data-LJR-tab'));
+    });
+    LJR_navBar.appendChild(LJR_btn);
+  });
+
+  /* 渲染当前栏目文章列表 */
+  var LJR_listBox = document.getElementById('LJR_listBox');
+  LJR_listBox.innerHTML = '';
+  LJR_articles[LJR_currentTab].forEach(function (LJR_article) {
+    var LJR_li = document.createElement('li');
+    LJR_li.className = 'LJR_item';
+
+    /* 左侧：蓝色圆点 + 蓝色标题 */
+    var LJR_left = document.createElement('div');
+    LJR_left.className = 'LJR_itemLeft';
+
+    var LJR_bullet = document.createElement('span');
+    LJR_bullet.className = 'LJR_bullet';
+
+    var LJR_a = document.createElement('a');
+    LJR_a.className = 'LJR_itemTitle';
+    LJR_a.href = 'javascript:void(0)';
+    LJR_a.textContent = LJR_article.title;
+
+    LJR_left.appendChild(LJR_bullet);
+    LJR_left.appendChild(LJR_a);
+
+    /* 右侧：灰色日期 */
+    var LJR_span = document.createElement('span');
+    LJR_span.className = 'LJR_itemDate';
+    LJR_span.textContent = LJR_article.date;
+
+    LJR_li.appendChild(LJR_left);
+    LJR_li.appendChild(LJR_span);
+    LJR_listBox.appendChild(LJR_li);
+  });
+}
+
+/* 页面加载后默认显示“行情”栏目 */
+LJR_switchTab(LJR_currentTab);
+</script>
+</body>
+</html>
