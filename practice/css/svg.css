@@ -1,0 +1,100 @@
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,body{
+  overscroll-behavior: none;
+}
+.tab-nav{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* iphone底部安全区 */
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  z-index:99;
+}
+.tab-item{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+   position: relative;
+  padding:6px 0;
+}
+.tab-item svg{
+  /* 修复：font-size对svg无效，改用宽高 */
+  width:24px;
+  height:24px;
+  margin-bottom:4px;
+}
+.tab-item.active{
+  color: #ff6347;
+}
+.budge-dot{
+    position: absolute;
+    top: 4px;
+    right: 24px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: red;
+}
+.budge-dot{
+  position: absolute;
+  top: 3px;
+  right: 20px;
+  width: 8px;
+  background-color: red;
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+.budge-num{
+    position: absolute;
+    top: 1px;
+    right: 20px;
+    background-color: red;
+    color: #fff;
+    padding: 2px 4px;
+    min-width: 10px;
+    height: 20px;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 20px;
+}
+.budge-border{
+    position: absolute;
+    top: 2px;
+    right: 18px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: red;
+}
+/*交集选择器*/
+.budge-num.max{ 
+        font-size: 10px;
+
+}
+
+/* 给body底部留出空间，防止页面内容被tab遮挡 */
+body{
+  padding-bottom: calc(50px + env(safe-area-inset-bottom));
+}

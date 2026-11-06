@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+  作者：李嘉蕊
+  建立时间：2026-09-09
+  使用大模型：DeepSeek-V4.1-Flash
+  功能名称：SVG图标底部tab
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 移动端核心配置，适配iPhone安全区 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SVG图标底部tab</title>
+    <script src="./font/iconfont.js"></script>
+    <!-- 引入外部css -->
+    <link rel="stylesheet" href="./css/svg.css">
+</head>
+<body>
+    <h3>SVG图标</h3>
+    <div class="tab-nav">
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-maichepin"></use>
+            </svg>
+            <span>购买</span>
+            <!-- 数字红点 -->
+               <div class="budge-num" id="budge-plan">4</div>
+            <class="tab-"></class> <!-- div.budge-dot回车 -->
+        </div>
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-aichegujiabeifen5"></use>
+            </svg>
+            <span>首页</span>
+            <div class="budge-dot max"></div>
+            <!-- div.budge-dot回车 -->
+               <!-- 红点 -->
+
+        </div>
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-mendian"></use>
+            </svg>
+            <span>门店</span>
+            <div class="budge-border"></div> <!-- div.budge-dot回车 -->
+        </div>
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-aichegujiabeifen6"></use>
+            </svg>
+            <span>我的</span>
+            <div class="budge-dot max"></div>
+        </div>
+    </div>
+    <script>
+        // 主要功能：把点击的 tab 设为选中态，并取消其余 tab 的 active 类
+        function changeTab(current) {
+            let tabs = document.querySelectorAll('.tab-item');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            current.classList.add('active');
+        }
+        // 默认选中首页
+        document.querySelectorAll('.tab-item')[1].classList.add('active')
+    </script>
+</body>
+</html>

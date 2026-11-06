@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  作者：李嘉蕊
+  建立时间：2026-10-10
+  使用大模型：DeepSeek-V4.1-Flash
+  功能名称：JS函数
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +17,7 @@
      <button onclick="gessNum()">猜猜我是几？</button>
      <script>
         // 匿名函数
+        // 主要功能：生成 1~25 的随机数，让玩家在 5 次机会内按大小提示猜中
         var gessNum = function () { 
             // Math.floor是取整，Math.random()是[0,1)的随机数
              let num = getRandomNum(1, 25);
@@ -37,6 +44,7 @@
          }
 // 获取从min到max的随机数
 // 箭头函数
+// 主要功能：返回 min 到 max 之间（含两端）的随机整数
          var getRandomNum = (min, max) => {
             return Math.floor(Math.random() * (max - min + 1)) + min;
          }

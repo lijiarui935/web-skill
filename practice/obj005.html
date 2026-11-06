@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  作者：李嘉蕊
+  建立时间：2026-09-30
+  使用大模型：DeepSeek-V4.1-Flash
+  功能名称：JS对象
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS对象</title>
+    <!-- 类 实例就是对象，两个要素 属性和方法
+    学生的属性：学号、姓名、性别、年龄、班级
+    方法：学习、睡觉、吃饭 -->
+</head>
+<body>
+    <script>
+        student = {  
+        name: '张三',  
+        age: 18,  
+        sex: '男',  
+        class: '1班',  
+        study: function () {  
+            console.log('正在学习');  
+        },  
+        sleep: function () {  
+            console.log('正在睡觉');  
+        },  
+        eat: function () {  
+            console.log('正在吃东西');  
+        }
+    }
+    console.log(student.name);
+    </script>
+</body>
+</html>
