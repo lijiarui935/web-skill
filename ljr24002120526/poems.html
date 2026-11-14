@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诗词欣赏 · 上图下文</title>
+    <style>
+        /* 王垚《高级网页设计》课堂实践 —— 上图下文诗词页（JSON → 服务器 → fetch → 渲染） */
+        :root {
+            --wy_ink: #18242d;
+            --wy_muted: #65727b;
+            --wy_paper: #f7f5ef;
+            --wy_cream: #fffdf8;
+            --wy_coral: #e87961;
+            --wy_line: rgba(24, 36, 45, .13);
+            --wy_shadow: 0 14px 34px rgba(49, 52, 43, .12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            color: var(--wy_ink);
+            background: var(--wy_paper);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.6;
+        }
+
+        .wy_header {
+            padding: 42px 20px 26px;
+            text-align: center;
+            border-bottom: 1px solid var(--wy_line);
+        }
+
+        .wy_header .wy_eyebrow {
+            margin: 0 0 10px;
+            color: var(--wy_coral);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .18em;
+        }
+
+        .wy_header h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(30px, 5vw, 44px);
+            font-weight: 400;
+            letter-spacing: .04em;
+        }
+
+        .wy_header .wy_sub {
+            margin: 12px 0 0;
+            color: var(--wy_muted);
+            font-size: 13.5px;
+        }
+
+        /* 工具条：搜索 + 排序 */
+        .wy_toolbar {
+            width: min(1080px, calc(100% - 40px));
+            margin: 26px auto 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .wy_search {
+            flex: 1 1 260px;
+            min-width: 0;
+            padding: 11px 16px;
+            border: 1px solid var(--wy_line);
+            border-radius: 999px;
+            background: var(--wy_cream);
+            color: var(--wy_ink);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .wy_search:focus {
+            border-color: var(--wy_coral);
+        }
+
+        .wy_sort {
+            padding: 11px 20px;
+            border: 1px solid var(--wy_line);
+            border-radius: 999px;
+            background: var(--wy_ink);
+            color: var(--wy_cream);
+            font-size: 13.5px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity .2s ease;
+        }
+
+        .wy_sort:hover {
+            opacity: .86;
+        }
+
+        .wy_sort.wy_active {
+            background: var(--wy_coral);
+            border-color: var(--wy_coral);
+        }
+
+        /* 诗人列表（来自 /api/authors） */
+        .wy_authors {
+            width: min(1080px, calc(100% - 40px));
+            margin: 14px auto 0;
+            color: var(--wy_muted);
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .wy_authors b {
+            color: var(--wy_ink);
+            font-weight: 600;
+        }
+
+        .wy_authors .wy_author_chip {
+            display: inline-block;
+            margin: 0 10px 6px 0;
+            padding: 2px 12px;
+            border: 1px solid var(--wy_line);
+            border-radius: 999px;
+            background: var(--wy_cream);
+            font-size: 12.5px;
+        }
+
+        .wy_gallery {
+            width: min(1080px, calc(100% - 40px));
+            margin: 22px auto 70px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 22px;
+        }
+
+        .wy_card {
+            margin: 0;
+            background: var(--wy_cream);
+            border: 1px solid var(--wy_line);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--wy_shadow);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .wy_card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 44px rgba(49, 52, 43, .18);
+        }
+
+        .wy_card .wy_pic {
+            display: block;
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            background: #ece9e1;
+        }
+
+        .wy_card .wy_body {
+            padding: 16px 18px 20px;
+        }
+
+        .wy_card .wy_title {
+            margin: 0 0 4px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 19px;
+            font-weight: 400;
+        }
+
+        .wy_card .wy_author {
+            margin: 0 0 8px;
+            color: var(--wy_coral);
+            font-size: 12.5px;
+            letter-spacing: .06em;
+        }
+
+        .wy_card .wy_content {
+            margin: 0;
+            color: var(--wy_muted);
+            font-size: 13.5px;
+            line-height: 1.9;
+        }
+
+        .wy_state {
+            grid-column: 1 / -1;
+            padding: 46px 20px;
+            text-align: center;
+            color: var(--wy_muted);
+            font-size: 14px;
+            line-height: 2;
+            border: 1.5px dashed var(--wy_line);
+            border-radius: 14px;
+        }
+
+        .wy_state.wy_error {
+            color: #c0392b;
+        }
+
+        .wy_state code {
+            padding: 2px 8px;
+            background: #ece9e1;
+            border-radius: 4px;
+            font-family: ui-monospace, Menlo, Consolas, monospace;
+            font-size: 12.5px;
+        }
+
+        .wy_footer {
+            padding: 0 20px 46px;
+            text-align: center;
+        }
+
+        .wy_footer a {
+            display: inline-block;
+            padding: 9px 22px;
+            border: 1px solid var(--wy_line);
+            border-radius: 999px;
+            background: var(--wy_cream);
+            color: var(--wy_ink);
+            font-size: 13.5px;
+            text-decoration: none;
+        }
+
+        .wy_footer a:hover {
+            background: #f1ede3;
+        }
+
+        @media (max-width: 520px) {
+            .wy_gallery {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .wy_card .wy_pic {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="wy_header">
+        <p class="wy_eyebrow">POEMS · LOCAL API 3004</p>
+        <h1>诗词欣赏</h1>
+        <p class="wy_sub">上图下文结构 · fetch 读取 db/db.json 中的 poems 与 authors</p>
+    </header>
+
+    <div class="wy_toolbar">
+        <input id="wy_search" class="wy_search" type="search" placeholder="输入关键字，按标题或内容筛选…">
+        <button id="wy_sortBtn" class="wy_sort" type="button">按标题长度排序</button>
+    </div>
+
+    <div id="wy_authors" class="wy_authors">诗人信息加载中…</div>
+
+    <main id="wy_gallery" class="wy_gallery">
+        <div class="wy_state">正在从服务器加载诗词数据…</div>
+    </main>
+
+    <footer class="wy_footer">
+        <a href="../index.html">返回课堂目录</a>
+    </footer>
+
+    <script>
+        // 王垚：两个接口用 Promise.all 并发取回，再统一渲染
+        var wy_apiPoems = 'http://localhost:3004/api/poems';
+        var wy_apiAuthors = 'http://localhost:3004/api/authors';
+
+        var wy_gallery = document.getElementById('wy_gallery');
+        var wy_authorsBox = document.getElementById('wy_authors');
+        var wy_searchInput = document.getElementById('wy_search');
+        var wy_sortBtn = document.getElementById('wy_sortBtn');
+
+        var wy_allPoems = [];   // 原始数据，筛选和排序都基于它
+        var wy_sortByLen = false;
+
+        // 王垚：防止数据里的特殊字符破坏 HTML 结构
+        function wy_escape(wy_str) {
+            return String(wy_str == null ? '' : wy_str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // 渲染卡片：一条数据 = 一张上图下文卡片
+        function wy_renderPoems(wy_poems) {
+            if (!wy_poems.length) {
+                wy_gallery.innerHTML = '<div class="wy_state">没有匹配的诗词，换个关键字试试。</div>';
+                return;
+            }
+
+            wy_gallery.innerHTML = wy_poems.map(function (wy_item) {
+                return '<figure class="wy_card">' +
+                    '<img class="wy_pic" src="' + wy_escape(wy_item.pic) + '" alt="' + wy_escape(wy_item.title) + '" loading="lazy">' +
+                    '<figcaption class="wy_body">' +
+                    '<h2 class="wy_title">' + wy_escape(wy_item.title) + '</h2>' +
+                    '<p class="wy_author">' + wy_escape(wy_item.author || '佚名') + '</p>' +
+                    '<p class="wy_content">' + wy_escape(wy_item.content) + '</p>' +
+                    '</figcaption>' +
+                    '</figure>';
+            }).join('');
+        }
+
+        // 搜索 + 排序：只加工内存里的数据，不重新请求接口
+        function wy_apply() {
+            var wy_key = wy_searchInput.value.trim();
+
+            var wy_list = wy_allPoems.filter(function (wy_item) {
+                if (!wy_key) {
+                    return true;
+                }
+                return wy_item.title.indexOf(wy_key) > -1 || wy_item.content.indexOf(wy_key) > -1;
+            });
+
+            if (wy_sortByLen) {
+                wy_list = wy_list.slice().sort(function (wy_a, wy_b) {
+                    return wy_a.title.length - wy_b.title.length;
+                });
+            }
+
+            wy_renderPoems(wy_list);
+        }
+
+        // 渲染诗人列表
+        function wy_renderAuthors(wy_authors) {
+            if (!wy_authors.length) {
+                wy_authorsBox.textContent = '';
+                return;
+            }
+            wy_authorsBox.innerHTML = '<b>诗人</b> ' + wy_authors.map(function (wy_a) {
+                return '<span class="wy_author_chip">' + wy_escape(wy_a.name) +
+                    (wy_a.dynasty ? ' · ' + wy_escape(wy_a.dynasty) : '') + '</span>';
+            }).join('');
+        }
+
+        // 主流程：Promise.all 同时请求两个接口
+        function wy_init() {
+            Promise.all([
+                fetch(wy_apiPoems).then(function (wy_res) {
+                    if (!wy_res.ok) {
+                        throw new Error('诗词接口返回状态 ' + wy_res.status);
+                    }
+                    return wy_res.json();
+                }),
+                fetch(wy_apiAuthors).then(function (wy_res) {
+                    if (!wy_res.ok) {
+                        throw new Error('诗人接口返回状态 ' + wy_res.status);
+                    }
+                    return wy_res.json();
+                })
+            ]).then(function (wy_result) {
+                wy_allPoems = wy_result[0] || [];
+                wy_renderAuthors(wy_result[1] || []);
+                wy_apply();
+            }).catch(function (wy_err) {
+                wy_authorsBox.textContent = '';
+                wy_gallery.innerHTML = '<div class="wy_state wy_error">' +
+                    '数据获取失败：' + wy_escape(wy_err.message) + '<br>' +
+                    '请先在 db 文件夹执行 <code>node server.js</code>，再刷新本页。' +
+                    '</div>';
+            });
+        }
+
+        wy_searchInput.addEventListener('input', wy_apply);
+
+        wy_sortBtn.addEventListener('click', function () {
+            wy_sortByLen = !wy_sortByLen;
+            wy_sortBtn.classList.toggle('wy_active', wy_sortByLen);
+            wy_sortBtn.textContent = wy_sortByLen ? '恢复默认顺序' : '按标题长度排序';
+            wy_apply();
+        });
+
+        wy_init();
+    </script>
+</body>
+
+</html>

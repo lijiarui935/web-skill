@@ -1,0 +1,48 @@
+{
+  "poems": [
+    {
+      "title": "短歌行",
+      "author": "曹操",
+      "content": "你看是不是变了！",
+      "pic": "img/1.jpg"
+    },
+    {
+      "title": "雨晴",
+      "author": "王驾",
+      "content": "雨前初见花间蕊，雨后全无叶底花。",
+      "pic": "img/2.jpg"
+    },
+    {
+      "title": "脊楼",
+      "author": "杜甫",
+      "content": "花近高楼伤客心，万方多难此登临。",
+      "pic": "img/3.jpg"
+    },
+    {
+      "title": "鹊桥仙·纤云弄巧",
+      "author": "秦观",
+      "content": "纤云弄巧，飞星传恨，银汉迢迢暗度。",
+      "pic": "img/4.jpg"
+    },
+    {
+      "title": "静夜思",
+      "author": "李白",
+      "content": "床前明月光，疑是地上霜。举头望明月，低头思故乡。",
+      "pic": "img/5.jpg"
+    },
+    {
+      "title": "登鹳雀楼",
+      "author": "王之涣",
+      "content": "白日依山尽，黄河入海流。欲穷千里目，更上一层楼。",
+      "pic": "img/6.jpg"
+    }
+  ],
+  "authors": [
+    { "name": "曹操", "dynasty": "东汉" },
+    { "name": "王驾", "dynasty": "唐" },
+    { "name": "杜甫", "dynasty": "唐" },
+    { "name": "秦观", "dynasty": "北宋" },
+    { "name": "李白", "dynasty": "唐" },
+    { "name": "王之涣", "dynasty": "唐" }
+  ]
+}
