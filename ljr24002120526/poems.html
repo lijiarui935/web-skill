@@ -129,6 +129,19 @@
             font-size: 12.5px;
         }
 
+        .wy_tip {
+            display: none;
+            width: min(1080px, calc(100% - 40px));
+            margin: 12px auto 0;
+            padding: 9px 16px;
+            border-left: 3px solid var(--wy_coral);
+            border-radius: 0 8px 8px 0;
+            background: #fbf3ef;
+            color: #8a4b3c;
+            font-size: 12.5px;
+            line-height: 1.8;
+        }
+
         .wy_gallery {
             width: min(1080px, calc(100% - 40px));
             margin: 22px auto 70px;
@@ -255,12 +268,14 @@
 
     <div id="wy_authors" class="wy_authors">诗人信息加载中…</div>
 
+    <div id="wy_tip" class="wy_tip"></div>
+
     <main id="wy_gallery" class="wy_gallery">
         <div class="wy_state">正在从服务器加载诗词数据…</div>
     </main>
 
     <footer class="wy_footer">
-        <a href="../index.html">返回课堂目录</a>
+        <a href="index.html">返回课堂目录</a>
     </footer>
 
     <script>
@@ -272,6 +287,7 @@
         var wy_authorsBox = document.getElementById('wy_authors');
         var wy_searchInput = document.getElementById('wy_search');
         var wy_sortBtn = document.getElementById('wy_sortBtn');
+        var wy_tip = document.getElementById('wy_tip');
 
         var wy_allPoems = [];   // 原始数据，筛选和排序都基于它
         var wy_sortByLen = false;
@@ -356,10 +372,38 @@
                 wy_renderAuthors(wy_result[1] || []);
                 wy_apply();
             }).catch(function (wy_err) {
+                // 王垚：本地端口没起服务时必须给出提示（课堂任务一验收点）
+                var wy_local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
+                if (!wy_local) {
+                    wy_loadStatic();
+                    return;
+                }
+
                 wy_authorsBox.textContent = '';
                 wy_gallery.innerHTML = '<div class="wy_state wy_error">' +
                     '数据获取失败：' + wy_escape(wy_err.message) + '<br>' +
                     '请先在 db 文件夹执行 <code>node server.js</code>，再刷新本页。' +
+                    '</div>';
+            });
+        }
+
+        // 王垚：线上预览（GitHub Pages 没有 3004 接口）时，直接读同目录的 db.json
+        function wy_loadStatic() {
+            fetch('db/db.json').then(function (wy_res) {
+                if (!wy_res.ok) {
+                    throw new Error('静态数据返回状态 ' + wy_res.status);
+                }
+                return wy_res.json();
+            }).then(function (wy_data) {
+                wy_allPoems = wy_data.poems || [];
+                wy_renderAuthors(wy_data.authors || []);
+                wy_apply();
+                wy_tip.textContent = '当前为线上静态预览：数据读自 db/db.json，本地运行 node server.js 可体验真实接口。';
+                wy_tip.style.display = 'block';
+            }).catch(function (wy_err) {
+                wy_gallery.innerHTML = '<div class="wy_state wy_error">' +
+                    '静态数据也没读到：' + wy_escape(wy_err.message) +
                     '</div>';
             });
         }
