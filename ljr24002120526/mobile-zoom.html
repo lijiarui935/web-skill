@@ -191,6 +191,9 @@
     var LJR_dragTy = 0;
 
     var LJR_lastTap = 0;
+    var LJR_touchMode = false;  // 本次会话是否用过触摸（用于屏蔽移动端重复触发的 dblclick）
+    var LJR_pinch = false;      // 本轮手势是否为双指，双指结束后不算双击
+    var LJR_tapMoved = false;   // 单指移动超过阈值后，这次抬手不算点击
 
     // 图片自然宽高需要等加载完成
     function LJR_size() {
@@ -248,6 +251,8 @@
     LJR_viewer.addEventListener('touchstart', function (LJR_e) {
         var LJR_box = LJR_viewer.getBoundingClientRect();
 
+        LJR_touchMode = true;   // 一旦用过触摸，就不再响应浏览器合成的 dblclick
+
         // 每轮手势开始都要清空上一轮距离，否则第一帧会突跳
         LJR_lastDist = 0;
         LJR_startScale = LJR_scale;
@@ -256,6 +261,7 @@
         LJR_startRot = LJR_rot;
 
         if (LJR_e.touches.length >= 2) {
+            LJR_pinch = true;
             LJR_startDist = LJR_dist(LJR_e.touches[0], LJR_e.touches[1]);
             LJR_startAngle = LJR_angle(LJR_e.touches[0], LJR_e.touches[1]);
 
@@ -268,6 +274,7 @@
             LJR_img.style.transition = 'none';
         } else {
             // 单指拖动起点
+            LJR_tapMoved = false;
             LJR_dragX = LJR_e.touches[0].clientX;
             LJR_dragY = LJR_e.touches[0].clientY;
             LJR_dragTx = LJR_tx;
@@ -310,7 +317,13 @@
             return;
         }
 
-        // 单指：只有放大状态才拖动
+        // 单指：先记录是否发生过明显位移（位移了就不算点击）
+        if (Math.abs(LJR_e.touches[0].clientX - LJR_dragX) > 8 ||
+            Math.abs(LJR_e.touches[0].clientY - LJR_dragY) > 8) {
+            LJR_tapMoved = true;
+        }
+
+        // 只有放大状态才拖动
         if (LJR_scale <= 1) {
             return;
         }
@@ -325,8 +338,25 @@
         LJR_clamp();
         LJR_paint(true);
 
-        // 双击判定：两次抬手间隔小于 300ms
-        if (LJR_e.touches.length === 0 && LJR_e.changedTouches.length === 1) {
+        // 双指手势结束后重置计时，否则「捏合完再点一下」会被误判为双击
+        if (LJR_pinch || LJR_e.touches.length > 0) {
+            if (LJR_e.touches.length === 0) {
+                LJR_pinch = false;
+            }
+            LJR_lastTap = 0;
+            return;
+        }
+
+        if (LJR_e.changedTouches.length === 1) {
+            // 手指移动过就当作拖动，不参与双击判定
+            if (LJR_tapMoved) {
+                LJR_lastTap = 0;
+                return;
+            }
+
+            // 拦掉浏览器随后合成的 click / dblclick，避免双击被处理两次
+            LJR_e.preventDefault();
+
             var LJR_now = Date.now();
             if (LJR_now - LJR_lastTap < 300) {
                 LJR_lastTap = 0;
@@ -335,7 +365,7 @@
                 LJR_lastTap = LJR_now;
             }
         }
-    });
+    }, { passive: false });
 
     LJR_viewer.addEventListener('touchcancel', function () {
         LJR_lastDist = 0;
@@ -366,8 +396,11 @@
         LJR_paint(false);
     });
 
-    // 电脑上双击也能用
+    // 电脑上双击也能用；移动端已由 touchend 处理，这里屏蔽浏览器合成的 dblclick
     LJR_viewer.addEventListener('dblclick', function () {
+        if (LJR_touchMode) {
+            return;
+        }
         LJR_toggleZoom();
     });
 </script>
