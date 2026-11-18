@@ -9,38 +9,38 @@
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 
     :root {
-        --wy_ink: #1b2430;
-        --wy_muted: #6b7684;
-        --wy_paper: #f7f5ef;
-        --wy_line: rgba(27, 36, 48, .12);
+        --LJR_ink: #1b2430;
+        --LJR_muted: #6b7684;
+        --LJR_paper: #f7f5ef;
+        --LJR_line: rgba(27, 36, 48, .12);
     }
 
     body {
         margin: 0;
         padding: 26px 16px 48px;
-        background: var(--wy_paper);
-        color: var(--wy_ink);
+        background: var(--LJR_paper);
+        color: var(--LJR_ink);
         font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
         line-height: 1.7;
     }
 
-    .wy_wrap { max-width: 520px; margin: 0 auto; }
+    .LJR_wrap { max-width: 520px; margin: 0 auto; }
 
-    .wy_title {
+    .LJR_title {
         margin: 0 0 4px;
         font-family: Georgia, serif;
         font-size: 24px;
         font-weight: 400;
     }
 
-    .wy_sub {
+    .LJR_sub {
         margin: 0 0 18px;
-        color: var(--wy_muted);
+        color: var(--LJR_muted);
         font-size: 12.5px;
     }
 
     /* 关键：只接管横向，纵向仍交给浏览器滚动 */
-    .wy_stage {
+    .LJR_stage {
         position: relative;
         height: 380px;
         touch-action: pan-y;
@@ -48,7 +48,7 @@
         -webkit-touch-callout: none;
     }
 
-    .wy_card {
+    .LJR_card {
         position: absolute;
         inset: 0;
         border-radius: 20px;
@@ -64,16 +64,16 @@
         pointer-events: none;
     }
 
-    .wy_card.wy_active {
+    .LJR_card.LJR_active {
         opacity: 1;
         transform: translateX(0) scale(1);
         pointer-events: auto;
     }
 
-    .wy_card.wy_left  { transform: translateX(-24px) scale(.96); }
-    .wy_card.wy_right { transform: translateX(24px) scale(.96); }
+    .LJR_card.LJR_left  { transform: translateX(-24px) scale(.96); }
+    .LJR_card.LJR_right { transform: translateX(24px) scale(.96); }
 
-    .wy_card h2 {
+    .LJR_card h2 {
         margin: 0 0 8px;
         font-family: Georgia, serif;
         font-size: 30px;
@@ -81,14 +81,14 @@
         letter-spacing: .04em;
     }
 
-    .wy_card p {
+    .LJR_card p {
         margin: 0;
         font-size: 13.5px;
         line-height: 1.9;
         color: rgba(255, 255, 255, .9);
     }
 
-    .wy_card .wy_no {
+    .LJR_card .LJR_no {
         position: absolute;
         top: 22px;
         right: 24px;
@@ -98,23 +98,23 @@
         line-height: 1;
     }
 
-    .wy_1 { background: linear-gradient(145deg, #d2694b, #8c3226); }
-    .wy_2 { background: linear-gradient(145deg, #5b8c6e, #2f5741); }
-    .wy_3 { background: linear-gradient(145deg, #c99a3f, #8a5f14); }
-    .wy_4 { background: linear-gradient(145deg, #6a6fa8, #343a6e); }
+    .LJR_1 { background: linear-gradient(145deg, #d2694b, #8c3226); }
+    .LJR_2 { background: linear-gradient(145deg, #5b8c6e, #2f5741); }
+    .LJR_3 { background: linear-gradient(145deg, #c99a3f, #8a5f14); }
+    .LJR_4 { background: linear-gradient(145deg, #6a6fa8, #343a6e); }
 
-    .wy_bar {
+    .LJR_bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-top: 16px;
         font-size: 13px;
-        color: var(--wy_muted);
+        color: var(--LJR_muted);
     }
 
-    .wy_dots { display: flex; gap: 7px; }
+    .LJR_dots { display: flex; gap: 7px; }
 
-    .wy_dot {
+    .LJR_dot {
         width: 7px;
         height: 7px;
         border-radius: 50%;
@@ -122,9 +122,9 @@
         transition: background .25s ease, transform .25s ease;
     }
 
-    .wy_dot.wy_on { background: #b4553f; transform: scale(1.35); }
+    .LJR_dot.LJR_on { background: #b4553f; transform: scale(1.35); }
 
-    .wy_tip {
+    .LJR_tip {
         margin-top: 14px;
         padding: 9px 14px;
         border-radius: 10px;
@@ -136,64 +136,64 @@
         text-align: center;
     }
 
-    .wy_tip.wy_show { opacity: 1; }
+    .LJR_tip.LJR_show { opacity: 1; }
 
-    .wy_help {
+    .LJR_help {
         margin-top: 22px;
         padding: 14px 16px;
-        border: 1px solid var(--wy_line);
+        border: 1px solid var(--LJR_line);
         border-radius: 12px;
         background: #fffdf8;
         font-size: 12.5px;
-        color: var(--wy_muted);
+        color: var(--LJR_muted);
     }
 
-    .wy_help b { color: var(--wy_ink); }
+    .LJR_help b { color: var(--LJR_ink); }
 
-    .wy_help a { color: #b4553f; text-decoration: none; }
+    .LJR_help a { color: #b4553f; text-decoration: none; }
 </style>
 </head>
 <body>
-<div class="wy_wrap">
-    <h1 class="wy_title">中华美食 · 手势卡片</h1>
-    <p class="wy_sub">王垚 · 24002120526 · 左右滑动切换，阈值 40px，冷却 300ms</p>
+<div class="LJR_wrap">
+    <h1 class="LJR_title">中华美食 · 手势卡片</h1>
+    <p class="LJR_sub">王垚 · 24002120526 · 左右滑动切换，阈值 40px，冷却 300ms</p>
 
-    <div class="wy_stage" id="wy_stage">
-        <article class="wy_card wy_1 wy_active">
-            <span class="wy_no">01</span>
+    <div class="LJR_stage" id="LJR_stage">
+        <article class="LJR_card LJR_1 LJR_active">
+            <span class="LJR_no">01</span>
             <h2>麻婆豆腐</h2>
             <p>花椒的麻与豆瓣的辣在热油里撞个满怀，豆腐要嫩，勾芡要薄，起锅前撒一把青蒜——川菜里最会下饭的一道。</p>
         </article>
-        <article class="wy_card wy_2">
-            <span class="wy_no">02</span>
+        <article class="LJR_card LJR_2">
+            <span class="LJR_no">02</span>
             <h2>龙井虾仁</h2>
             <p>明前龙井先泡开，虾仁上浆滑油，茶汤入锅一拌即起。清鲜里带一点豆香，是杭帮菜的分寸感。</p>
         </article>
-        <article class="wy_card wy_3">
-            <span class="wy_no">03</span>
+        <article class="LJR_card LJR_3">
+            <span class="LJR_no">03</span>
             <h2>肉夹馍</h2>
             <p>腊汁肉在砂锅里炖足六小时，白吉馍现烤到边沿起脆。刀一划、肉一塞，酥脆与油润同时到口。</p>
         </article>
-        <article class="wy_card wy_4">
-            <span class="wy_no">04</span>
+        <article class="LJR_card LJR_4">
+            <span class="LJR_no">04</span>
             <h2>佛跳墙</h2>
             <p>鲍鱼、海参、花胶、蹄筋层层码入坛中，高汤封口，文火煨上一夜。开坛那一刻，香气先于人出门。</p>
         </article>
     </div>
 
-    <div class="wy_bar">
-        <span>第 <b id="wy_index">1</b> / 4 张</span>
-        <div class="wy_dots" id="wy_dots">
-            <span class="wy_dot wy_on"></span>
-            <span class="wy_dot"></span>
-            <span class="wy_dot"></span>
-            <span class="wy_dot"></span>
+    <div class="LJR_bar">
+        <span>第 <b id="LJR_index">1</b> / 4 张</span>
+        <div class="LJR_dots" id="LJR_dots">
+            <span class="LJR_dot LJR_on"></span>
+            <span class="LJR_dot"></span>
+            <span class="LJR_dot"></span>
+            <span class="LJR_dot"></span>
         </div>
     </div>
 
-    <div class="wy_tip" id="wy_tip">已经是第一张</div>
+    <div class="LJR_tip" id="LJR_tip">已经是第一张</div>
 
-    <div class="wy_help">
+    <div class="LJR_help">
         <p style="margin:0 0 6px"><b>验收自测：</b>① 轻轻划一小段（&lt;40px）不会切换；② 连续快速滑动只走一张；③ 上下拖动时页面照常滚动，不误切。</p>
         <p style="margin:0"><a href="mobile-zoom.html">任务三 · 图片查看器 →</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
     </div>
@@ -201,88 +201,88 @@
 
 <script>
     // 王垚：左右滑动切换美食卡片
-    var wy_stage = document.getElementById('wy_stage');
-    var wy_cards = document.querySelectorAll('.wy_card');
-    var wy_dots = document.querySelectorAll('.wy_dot');
-    var wy_indexBox = document.getElementById('wy_index');
-    var wy_tip = document.getElementById('wy_tip');
+    var LJR_stage = document.getElementById('LJR_stage');
+    var LJR_cards = document.querySelectorAll('.LJR_card');
+    var LJR_dots = document.querySelectorAll('.LJR_dot');
+    var LJR_indexBox = document.getElementById('LJR_index');
+    var LJR_tip = document.getElementById('LJR_tip');
 
-    var wy_current = 0;
-    var wy_startX = 0;
-    var wy_startY = 0;
-    var wy_locked = false;      // 冷却锁，防止快速连滑跳两张
-    var wy_tipTimer = null;
-    var wy_threshold = 40;      // 阈值：小于它算误触
-    var wy_cooldown = 300;      // 冷却时间
+    var LJR_current = 0;
+    var LJR_startX = 0;
+    var LJR_startY = 0;
+    var LJR_locked = false;      // 冷却锁，防止快速连滑跳两张
+    var LJR_tipTimer = null;
+    var LJR_threshold = 40;      // 阈值：小于它算误触
+    var LJR_cooldown = 300;      // 冷却时间
 
-    function wy_show(wy_msg) {
-        wy_tip.textContent = wy_msg;
-        wy_tip.classList.add('wy_show');
-        clearTimeout(wy_tipTimer);
-        wy_tipTimer = setTimeout(function () {
-            wy_tip.classList.remove('wy_show');
+    function LJR_show(LJR_msg) {
+        LJR_tip.textContent = LJR_msg;
+        LJR_tip.classList.add('LJR_show');
+        clearTimeout(LJR_tipTimer);
+        LJR_tipTimer = setTimeout(function () {
+            LJR_tip.classList.remove('LJR_show');
         }, 1200);
     }
 
-    function wy_go(wy_target) {
-        if (wy_target < 0) {
-            wy_show('已经是第一张了');
+    function LJR_go(LJR_target) {
+        if (LJR_target < 0) {
+            LJR_show('已经是第一张了');
             return;
         }
-        if (wy_target > wy_cards.length - 1) {
-            wy_show('已经是最后一张了');
+        if (LJR_target > LJR_cards.length - 1) {
+            LJR_show('已经是最后一张了');
             return;
         }
 
-        wy_cards[wy_current].classList.remove('wy_active');
-        wy_cards[wy_target].classList.add('wy_active');
-        wy_dots[wy_current].classList.remove('wy_on');
-        wy_dots[wy_target].classList.add('wy_on');
+        LJR_cards[LJR_current].classList.remove('LJR_active');
+        LJR_cards[LJR_target].classList.add('LJR_active');
+        LJR_dots[LJR_current].classList.remove('LJR_on');
+        LJR_dots[LJR_target].classList.add('LJR_on');
 
-        wy_current = wy_target;
-        wy_indexBox.textContent = wy_current + 1;
+        LJR_current = LJR_target;
+        LJR_indexBox.textContent = LJR_current + 1;
     }
 
-    wy_stage.addEventListener('touchstart', function (wy_e) {
-        var wy_t = wy_e.touches[0];
-        wy_startX = wy_t.clientX;
-        wy_startY = wy_t.clientY;
+    LJR_stage.addEventListener('touchstart', function (LJR_e) {
+        var LJR_t = LJR_e.touches[0];
+        LJR_startX = LJR_t.clientX;
+        LJR_startY = LJR_t.clientY;
     }, { passive: true });
 
-    wy_stage.addEventListener('touchend', function (wy_e) {
-        if (wy_locked) {
+    LJR_stage.addEventListener('touchend', function (LJR_e) {
+        if (LJR_locked) {
             return;
         }
 
         // 抬手时手指已不在 touches 里，必须用 changedTouches
-        var wy_t = wy_e.changedTouches[0];
-        var wy_dx = wy_t.clientX - wy_startX;
-        var wy_dy = wy_t.clientY - wy_startY;
+        var LJR_t = LJR_e.changedTouches[0];
+        var LJR_dx = LJR_t.clientX - LJR_startX;
+        var LJR_dy = LJR_t.clientY - LJR_startY;
 
         // 纵向位移更大，说明用户在滚动页面，不抢手势
-        if (Math.abs(wy_dy) > Math.abs(wy_dx)) {
+        if (Math.abs(LJR_dy) > Math.abs(LJR_dx)) {
             return;
         }
-        if (Math.abs(wy_dx) < wy_threshold) {
+        if (Math.abs(LJR_dx) < LJR_threshold) {
             return;     // 短距离误触
         }
 
-        wy_locked = true;
+        LJR_locked = true;
         setTimeout(function () {
-            wy_locked = false;
-        }, wy_cooldown);
+            LJR_locked = false;
+        }, LJR_cooldown);
 
-        if (wy_dx < 0) {
-            wy_go(wy_current + 1);   // 左滑 → 下一张
+        if (LJR_dx < 0) {
+            LJR_go(LJR_current + 1);   // 左滑 → 下一张
         } else {
-            wy_go(wy_current - 1);   // 右滑 → 上一张
+            LJR_go(LJR_current - 1);   // 右滑 → 上一张
         }
     });
 
-    wy_stage.addEventListener('touchcancel', function () {
-        wy_startX = 0;
-        wy_startY = 0;
-        wy_locked = false;
+    LJR_stage.addEventListener('touchcancel', function () {
+        LJR_startX = 0;
+        LJR_startY = 0;
+        LJR_locked = false;
     });
 </script>
 </body>
