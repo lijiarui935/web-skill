@@ -75,12 +75,27 @@
     .LJR_result {
         margin-top: 26px;
         min-height: 104px;
-        padding: 20px 18px;
+        padding: 0;
         border: 1px solid var(--LJR_line);
         border-radius: 16px;
         background: #fffdf8;
         box-shadow: 0 8px 20px rgba(27, 36, 48, .06);
+        overflow: hidden;
+        text-align: left;
     }
+
+    /* 王垚：每道菜对应的成品照片，固定 4:3 裁切，避免不同图片高度不一 */
+    .LJR_pic {
+        display: block;
+        width: 100%;
+        height: 186px;
+        object-fit: cover;
+        background: #efece4;
+    }
+
+    .LJR_pic.LJR_hide { display: none; }
+
+    .LJR_info { padding: 16px 18px 18px; }
 
     .LJR_result .LJR_name {
         font-family: Georgia, serif;
@@ -154,8 +169,11 @@
     <div class="LJR_phone" id="LJR_phone"><span>摇一摇手机</span></div>
 
     <div class="LJR_result" id="LJR_result">
-        <span class="LJR_name">今日吃什么？</span>
-        <p class="LJR_desc">拿起手机摇一摇，让今天的胃替你做决定。</p>
+        <img class="LJR_pic LJR_hide" id="LJR_pic" src="" alt="">
+        <div class="LJR_info" id="LJR_info">
+            <span class="LJR_name">今日吃什么？</span>
+            <p class="LJR_desc">拿起手机摇一摇，让今天的胃替你做决定。</p>
+        </div>
     </div>
 
     <button class="LJR_btn LJR_ghost" type="button" id="LJR_perm" style="display:none">允许使用动作传感器</button>
@@ -172,18 +190,20 @@
 </div>
 
 <script>
-    // 王垚：摇一摇抽今日菜谱，含权限申请与降级
+    // 王垚：摇一摇抽今日菜谱，含权限申请与降级；每道菜配一张本地成品图
     var LJR_dishes = [
-        { name: '麻婆豆腐', desc: '麻辣鲜香，最会下饭的一道川菜。' },
-        { name: '龙井虾仁', desc: '茶香清鲜，杭帮菜的分寸感。' },
-        { name: '肉夹馍', desc: '腊汁肉配白吉馍，酥脆与油润同行。' },
-        { name: '佛跳墙', desc: '一坛慢煨，开盖香气先出门。' },
-        { name: '西湖醋鱼', desc: '酸甜带姜末，鱼肉要嫩得能抖。' },
-        { name: '小笼包', desc: '皮薄汁多，先开窗后喝汤。' }
+        { name: '麻婆豆腐', desc: '麻辣鲜香，最会下饭的一道川菜。', img: 'img/dish-1.jpg' },
+        { name: '龙井虾仁', desc: '茶香清鲜，杭帮菜的分寸感。', img: 'img/dish-2.jpg' },
+        { name: '肉夹馍', desc: '腊汁肉配白吉馍，酥脆与油润同行。', img: 'img/dish-3.jpg' },
+        { name: '佛跳墙', desc: '一坛慢煨，开盖香气先出门。', img: 'img/dish-4.jpg' },
+        { name: '西湖醋鱼', desc: '酸甜带姜末，鱼肉要嫩得能抖。', img: 'img/dish-5.jpg' },
+        { name: '小笼包', desc: '皮薄汁多，先开窗后喝汤。', img: 'img/dish-6.jpg' }
     ];
 
     var LJR_phone = document.getElementById('LJR_phone');
     var LJR_result = document.getElementById('LJR_result');
+    var LJR_pic = document.getElementById('LJR_pic');
+    var LJR_info = document.getElementById('LJR_info');
     var LJR_status = document.getElementById('LJR_status');
     var LJR_perm = document.getElementById('LJR_perm');
     var LJR_draw = document.getElementById('LJR_draw');
@@ -202,7 +222,13 @@
         LJR_lastTime = LJR_now;
 
         var LJR_item = LJR_dishes[Math.floor(Math.random() * LJR_dishes.length)];
-        LJR_result.innerHTML = '<span class="LJR_name">' + LJR_item.name + '</span>' +
+
+        // 王垚：图片与文字分开更新，避免整块重建时图片闪一下
+        LJR_pic.src = LJR_item.img;
+        LJR_pic.alt = LJR_item.name;
+        LJR_pic.classList.remove('LJR_hide');
+
+        LJR_info.innerHTML = '<span class="LJR_name">' + LJR_item.name + '</span>' +
             '<p class="LJR_desc">' + LJR_item.desc + '</p>';
 
         // 重新触发动画
