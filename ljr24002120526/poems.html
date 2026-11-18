@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>诗词欣赏 · 上图下文</title>
     <style>
-        /* 王垚《高级网页设计》课堂实践 —— 上图下文诗词页（JSON → 服务器 → fetch → 渲染） */
+        /* 李嘉蕊《高级网页设计》课堂实践 —— 上图下文诗词页（JSON → 服务器 → fetch → 渲染） */
         :root {
             --wy_ink: #18242d;
             --wy_muted: #65727b;
@@ -279,7 +279,7 @@
     </footer>
 
     <script>
-        // 王垚：两个接口用 Promise.all 并发取回，再统一渲染
+        // 李嘉蕊：两个接口用 Promise.all 并发取回，再统一渲染
         var wy_apiPoems = 'http://localhost:3004/api/poems';
         var wy_apiAuthors = 'http://localhost:3004/api/authors';
 
@@ -292,7 +292,7 @@
         var wy_allPoems = [];   // 原始数据，筛选和排序都基于它
         var wy_sortByLen = false;
 
-        // 王垚：防止数据里的特殊字符破坏 HTML 结构
+        // 李嘉蕊：防止数据里的特殊字符破坏 HTML 结构
         function wy_escape(wy_str) {
             return String(wy_str == null ? '' : wy_str)
                 .replace(/&/g, '&amp;')
@@ -372,7 +372,7 @@
                 wy_renderAuthors(wy_result[1] || []);
                 wy_apply();
             }).catch(function (wy_err) {
-                // 王垚：本地端口没起服务时必须给出提示（课堂任务一验收点）
+                // 李嘉蕊：本地端口没起服务时必须给出提示（课堂任务一验收点）
                 var wy_local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
                 if (!wy_local) {
@@ -388,7 +388,7 @@
             });
         }
 
-        // 王垚：线上预览（GitHub Pages 没有 3004 接口）时，直接读同目录的 db.json
+        // 李嘉蕊：线上预览（GitHub Pages 没有 3004 接口）时，直接读同目录的 db.json
         function wy_loadStatic() {
             fetch('db/db.json').then(function (wy_res) {
                 if (!wy_res.ok) {

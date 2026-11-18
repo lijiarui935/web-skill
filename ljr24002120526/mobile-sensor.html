@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>任务四 · 摇一摇 · 今日菜谱</title>
-<!-- 王垚 24002120526 · 高级网页设计 · 移动端事件作业 -->
+<!-- 李嘉蕊 24002120526 · 高级网页设计 · 移动端事件作业 -->
 <style>
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 
@@ -84,7 +84,7 @@
         text-align: left;
     }
 
-    /* 王垚：每道菜对应的成品照片，固定 4:3 裁切，避免不同图片高度不一 */
+    /* 李嘉蕊：每道菜对应的成品照片，固定 4:3 裁切，避免不同图片高度不一 */
     .LJR_pic {
         display: block;
         width: 100%;
@@ -164,7 +164,7 @@
 <body>
 <div class="LJR_wrap">
     <h1 class="LJR_title">摇一摇 · 今日菜谱</h1>
-    <p class="LJR_sub">王垚 · 24002120526 · 阈值 18 · 冷却 1.5s</p>
+    <p class="LJR_sub">李嘉蕊 · 24002120526 · 阈值 18 · 冷却 1.5s</p>
 
     <div class="LJR_phone" id="LJR_phone"><span>摇一摇手机</span></div>
 
@@ -190,7 +190,7 @@
 </div>
 
 <script>
-    // 王垚：摇一摇抽今日菜谱，含权限申请与降级；每道菜配一张本地成品图
+    // 李嘉蕊：摇一摇抽今日菜谱，含权限申请与降级；每道菜配一张本地成品图
     var LJR_dishes = [
         { name: '麻婆豆腐', desc: '麻辣鲜香，最会下饭的一道川菜。', img: 'img/dish-1.jpg' },
         { name: '龙井虾仁', desc: '茶香清鲜，杭帮菜的分寸感。', img: 'img/dish-2.jpg' },
@@ -223,7 +223,7 @@
 
         var LJR_item = LJR_dishes[Math.floor(Math.random() * LJR_dishes.length)];
 
-        // 王垚：图片与文字分开更新，避免整块重建时图片闪一下
+        // 李嘉蕊：图片与文字分开更新，避免整块重建时图片闪一下
         LJR_pic.src = LJR_item.img;
         LJR_pic.alt = LJR_item.name;
         LJR_pic.classList.remove('LJR_hide');

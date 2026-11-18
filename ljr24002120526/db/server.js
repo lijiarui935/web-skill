@@ -1,4 +1,4 @@
-// server.js —— 王垚《高级网页设计》课堂案例：从 JSON 到 fetch 数据服务器
+// server.js —— 李嘉蕊《高级网页设计》课堂案例：从 JSON 到 fetch 数据服务器
 // 两个接口：GET /api/poems（诗词数组）、GET /api/authors（诗人列表）
 const express = require('express');
 const fs = require('fs');
@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 const wy_port = 3004;
 
-// 王垚：每次请求都重新读一次，改完 db.json 刷新页面即可生效
+// 李嘉蕊：每次请求都重新读一次，改完 db.json 刷新页面即可生效
 function wy_readData() {
     const wy_txt = fs.readFileSync(path.join(__dirname, 'db.json'), 'utf-8');
     return JSON.parse(wy_txt);

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>任务三 · 图片查看器 · 双指缩放 / 双击 / 拖动</title>
-<!-- 王垚 24002120526 · 高级网页设计 · 移动端事件作业 -->
+<!-- 李嘉蕊 24002120526 · 高级网页设计 · 移动端事件作业 -->
 <style>
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 
@@ -126,8 +126,8 @@
 <body>
 <div class="LJR_wrap">
     <h1 class="LJR_title">图片查看器</h1>
-    <p class="LJR_sub">王垚 · 24002120526 · 双指缩放 1x～4x · 双击 1x/2x · 放大后单指拖动</p>
-    <p class="LJR_hint" id="LJR_hint">双指缩放请用手机打开；电脑可在 DevTools 设备模式下用触控模拟。</p>
+    <p class="LJR_sub">李嘉蕊 · 24002120526 · 双指缩放 1x～4x · 双指旋转 · 双击 1x/2x · 放大后单指拖动</p>
+    <p class="LJR_hint" id="LJR_hint">双指缩放、双指旋转请用手机打开；电脑可在 DevTools 设备模式下用触控模拟。</p>
 
     <div class="LJR_viewer" id="LJR_viewer">
         <img class="LJR_img" id="LJR_img" src="img/1.jpg" alt="水墨山水">
@@ -136,7 +136,7 @@
     </div>
 
     <div class="LJR_ops">
-        <button type="button" id="LJR_reset">回到 1x</button>
+        <button type="button" id="LJR_reset">复位（1x / 0°）</button>
         <button type="button" id="LJR_double">双击放大（1x/2x）</button>
     </div>
 
@@ -148,12 +148,19 @@
             <li>两指距离的「上一帧」在 <code>touchstart</code> 归零，避免拿上一轮残留距离比较导致第一帧突跳。</li>
             <li>缩放、拖动过程中关掉 transition，松手时才加回，否则动画会和手指打架。</li>
         </ol>
+        <p style="margin:10px 0 0"><b>双指旋转（加分项）：</b></p>
+        <ol>
+            <li>用 <code>Math.atan2(dy, dx)</code> 求两指连线的夹角，得到当前角度。</li>
+            <li>旋转角 = 本轮起始角 + 归一后的夹角差；差值归一到 ±180°，跨过 180° 时不会突然转一大圈。</li>
+            <li>不逐帧累加角度（会累积误差），每帧都用「起始角 + 总差值」重算，松手再开始新一轮。</li>
+            <li>旋转与缩放共用同一轮手势：<code>transform: translate() scale() rotate()</code> 顺序固定，互不干扰。</li>
+        </ol>
         <p style="margin:8px 0 0"><a href="mobile-sensor.html">任务四 · 摇一摇 →</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
     </div>
 </div>
 
 <script>
-    // 王垚：移动端图片查看器（双指缩放 + 双击 + 拖动）
+    // 李嘉蕊：移动端图片查看器（双指缩放 + 双指旋转 + 双击 + 拖动）
     var LJR_viewer = document.getElementById('LJR_viewer');
     var LJR_img = document.getElementById('LJR_img');
     var LJR_badge = document.getElementById('LJR_badge');
@@ -162,6 +169,7 @@
     var LJR_scale = 1;
     var LJR_tx = 0;
     var LJR_ty = 0;
+    var LJR_rot = 0;            // 当前旋转角度（度）
 
     var LJR_MIN = 1;
     var LJR_MAX = 4;
@@ -173,6 +181,9 @@
     var LJR_startTy = 0;
     var LJR_anchorX = 0;        // 缩放基准点（相对容器中心）
     var LJR_anchorY = 0;
+
+    var LJR_startAngle = 0;     // 本轮两指初始夹角
+    var LJR_startRot = 0;       // 本轮开始时的旋转角
 
     var LJR_dragX = 0;          // 单指拖动起点
     var LJR_dragY = 0;
@@ -205,20 +216,33 @@
         } else {
             LJR_img.style.transition = 'none';
         }
-        LJR_img.style.transform = 'translate(-50%, -50%) translate(' + LJR_tx + 'px,' + LJR_ty + 'px) scale(' + LJR_scale + ')';
-        LJR_badge.textContent = LJR_scale.toFixed(1) + 'x';
-        LJR_tag.textContent = 'scale ' + LJR_scale.toFixed(2) + ' · tx ' + Math.round(LJR_tx) + ' · ty ' + Math.round(LJR_ty);
+        LJR_img.style.transform = 'translate(-50%, -50%) translate(' + LJR_tx + 'px,' + LJR_ty + 'px) scale(' + LJR_scale + ') rotate(' + LJR_rot.toFixed(1) + 'deg)';
+        LJR_badge.textContent = LJR_scale.toFixed(1) + 'x · ' + Math.round(LJR_rot) + '°';
+        LJR_tag.textContent = 'scale ' + LJR_scale.toFixed(2) + ' · rot ' + LJR_rot.toFixed(0) + '° · tx ' + Math.round(LJR_tx) + ' · ty ' + Math.round(LJR_ty);
     }
 
     function LJR_reset() {
         LJR_scale = 1;
         LJR_tx = 0;
         LJR_ty = 0;
+        LJR_rot = 0;
         LJR_paint(true);
     }
 
     function LJR_dist(LJR_a, LJR_b) {
         return Math.hypot(LJR_b.clientX - LJR_a.clientX, LJR_b.clientY - LJR_a.clientY);
+    }
+
+    // 李嘉蕊：两指连线的夹角（度），用于双指旋转
+    function LJR_angle(LJR_a, LJR_b) {
+        return Math.atan2(LJR_b.clientY - LJR_a.clientY, LJR_b.clientX - LJR_a.clientX) * 180 / Math.PI;
+    }
+
+    // 角度差归一到 -180～180，避免跨过 ±180 度时突然转一大圈
+    function LJR_shortest(LJR_delta) {
+        while (LJR_delta > 180) { LJR_delta -= 360; }
+        while (LJR_delta < -180) { LJR_delta += 360; }
+        return LJR_delta;
     }
 
     LJR_viewer.addEventListener('touchstart', function (LJR_e) {
@@ -229,9 +253,11 @@
         LJR_startScale = LJR_scale;
         LJR_startTx = LJR_tx;
         LJR_startTy = LJR_ty;
+        LJR_startRot = LJR_rot;
 
         if (LJR_e.touches.length >= 2) {
             LJR_startDist = LJR_dist(LJR_e.touches[0], LJR_e.touches[1]);
+            LJR_startAngle = LJR_angle(LJR_e.touches[0], LJR_e.touches[1]);
 
             // 两指中点作为缩放基准
             var LJR_cx = (LJR_e.touches[0].clientX + LJR_e.touches[1].clientX) / 2;
@@ -273,6 +299,11 @@
             LJR_scale = LJR_target;
             LJR_tx = LJR_anchorX - (LJR_anchorX - LJR_startTx) * LJR_k;
             LJR_ty = LJR_anchorY - (LJR_anchorY - LJR_startTy) * LJR_k;
+
+            // 李嘉蕊：双指旋转——用两指夹角差作为旋转角增量
+            // 用「起始角 + 归一的差值」，而不是每帧累加，避免误差与跳变
+            var LJR_nowAngle = LJR_angle(LJR_e.touches[0], LJR_e.touches[1]);
+            LJR_rot = LJR_startRot + LJR_shortest(LJR_nowAngle - LJR_startAngle);
 
             LJR_clamp();
             LJR_paint(false);
