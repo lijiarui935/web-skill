@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务四 · 倾斜视差 · 整页随手机倾斜移动</title>
+<!-- 李嘉蕊 24002120526 · 高级网页设计 · 移动端事件作业 -->
+<style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+    :root {
+        --LJR_ink: #1b2430;
+        --LJR_line: rgba(27, 36, 48, .12);
+    }
+
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;                 /* 视差页固定一屏，不滚动 */
+        font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        color: var(--LJR_ink);
+        background: #f4efe4;
+    }
+
+    /* 李嘉蕊：舞台铺满整屏，所有图层绝对定位后按深度做位移 */
+    .LJR_stage {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        perspective: 900px;
+    }
+
+    .LJR_layer {
+        position: absolute;
+        inset: -8%;                       /* 外扩 8%，位移后不露白边 */
+        will-change: transform;
+        transition: transform .12s linear; /* 轻微平滑，避免抖动 */
+    }
+
+    /* 第一层：天空渐变 */
+    .LJR_sky {
+        background: linear-gradient(180deg, #f7e9cf 0%, #f3d9b0 45%, #e8c79a 100%);
+    }
+
+    /* 第二层：太阳 */
+    .LJR_sun {
+        background: radial-gradient(circle at 68% 28%, #ffd27a 0 9%, rgba(255, 210, 122, .45) 10% 15%, rgba(255, 210, 122, 0) 16%);
+    }
+
+    /* 第三层：云 */
+    .LJR_clouds {
+        background:
+            radial-gradient(ellipse 22% 9% at 18% 26%, rgba(255, 255, 255, .85), transparent 70%),
+            radial-gradient(ellipse 16% 7% at 34% 20%, rgba(255, 255, 255, .7), transparent 70%),
+            radial-gradient(ellipse 26% 10% at 78% 36%, rgba(255, 255, 255, .6), transparent 70%);
+    }
+
+    /* 第四层：远山 */
+    .LJR_far {
+        background: linear-gradient(180deg, transparent 46%, #c8b393 46.5%, #b9a281 100%);
+        clip-path: polygon(0 62%, 12% 48%, 24% 58%, 38% 40%, 52% 56%, 66% 44%, 80% 58%, 92% 46%, 100% 56%, 100% 100%, 0 100%);
+        opacity: .85;
+    }
+
+    /* 第五层：近山 */
+    .LJR_near {
+        background: linear-gradient(180deg, transparent 58%, #8d9a86 58.5%, #6f7f6c 100%);
+        clip-path: polygon(0 78%, 10% 66%, 22% 74%, 36% 60%, 50% 72%, 64% 62%, 78% 74%, 90% 64%, 100% 72%, 100% 100%, 0 100%);
+    }
+
+    /* 第六层：颗粒（呼吸感光点） */
+    .LJR_dots {
+        background-image:
+            radial-gradient(circle, rgba(255, 255, 255, .85) 1.5px, transparent 2px),
+            radial-gradient(circle, rgba(255, 255, 255, .55) 1px, transparent 1.6px);
+        background-size: 180px 180px, 120px 120px;
+        background-position: 0 0, 60px 80px;
+        opacity: .55;
+    }
+
+    /* 内容卡片：浅层视差 + 玻璃质感 */
+    .LJR_content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(88%, 380px);
+        padding: 26px 24px 24px;
+        border-radius: 20px;
+        background: rgba(255, 253, 248, .78);
+        border: 1px solid rgba(255, 255, 255, .8);
+        box-shadow: 0 22px 44px rgba(60, 53, 40, .22);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transform: translate(-50%, -50%);
+        will-change: transform;
+        transition: transform .12s linear;
+        text-align: center;
+    }
+
+    .LJR_badge {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 3px 12px;
+        border-radius: 999px;
+        background: #f3ded1;
+        color: #a04a35;
+        font-size: 11.5px;
+        letter-spacing: .08em;
+    }
+
+    .LJR_content h1 {
+        margin: 0 0 6px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 26px;
+        font-weight: 400;
+    }
+
+    .LJR_content p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.85;
+        color: #5b6473;
+    }
+
+    .LJR_data {
+        margin-top: 14px;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 12px;
+        color: #7a8494;
+    }
+
+    .LJR_perm {
+        display: none;
+        margin-top: 14px;
+        padding: 9px 22px;
+        border: none;
+        border-radius: 999px;
+        background: #b4553f;
+        color: #fff;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .LJR_perm:active { background: #983f2c; }
+
+    .LJR_tip {
+        position: absolute;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%);
+        padding: 7px 16px;
+        border-radius: 999px;
+        background: rgba(27, 36, 48, .55);
+        color: #fff;
+        font-size: 12px;
+        white-space: nowrap;
+        backdrop-filter: blur(6px);
+    }
+
+    .LJR_back {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(255, 253, 248, .8);
+        border: 1px solid rgba(255, 255, 255, .8);
+        color: #5b6473;
+        font-size: 12px;
+        text-decoration: none;
+        backdrop-filter: blur(6px);
+    }
+</style>
+</head>
+<body>
+<div class="LJR_stage" id="LJR_stage">
+    <div class="LJR_layer LJR_sky"></div>
+    <div class="LJR_layer LJR_sun" data-depth="6"></div>
+    <div class="LJR_layer LJR_clouds" data-depth="10"></div>
+    <div class="LJR_layer LJR_dots" data-depth="16"></div>
+    <div class="LJR_layer LJR_far" data-depth="22"></div>
+    <div class="LJR_layer LJR_near" data-depth="34"></div>
+
+    <a class="LJR_back" href="mobile-sensor.html">← 任务四 A</a>
+
+    <section class="LJR_content" id="LJR_content">
+        <span class="LJR_badge">任务四 · B 倾斜视差</span>
+        <h1>左右倾斜手机</h1>
+        <p>整页六层景物按不同深度反向位移，越近的层动得越多——这就是视差。没有传感器的设备会自动切换成鼠标移动模拟。</p>
+        <p style="margin-top:8px">为什么必须降级：方向传感器并非所有设备都有，iOS 13+ 还需用户手势授权；若只写 deviceorientation，电脑和拒授权用户会看到一页静止画面，所以这里保留鼠标模拟并把当前数据状态显示出来。</p>
+        <div class="LJR_data" id="LJR_data">等待传感器数据…</div>
+        <button class="LJR_perm" type="button" id="LJR_perm">允许使用方向传感器</button>
+    </section>
+
+    <div class="LJR_tip" id="LJR_tip">请用手机打开，左右倾斜查看视差</div>
+</div>
+
+<script>
+    // 李嘉蕊 24002120526：整页倾斜视差（deviceorientation + 鼠标降级）
+    var LJR_stage = document.getElementById('LJR_stage');
+    var LJR_content = document.getElementById('LJR_content');
+    var LJR_data = document.getElementById('LJR_data');
+    var LJR_tip = document.getElementById('LJR_tip');
+    var LJR_perm = document.getElementById('LJR_perm');
+
+    var LJR_layers = document.querySelectorAll('.LJR_layer');
+    var LJR_hasData = false;        // 是否收到过方向数据
+    var LJR_fallback = false;       // 是否已切到鼠标模拟
+
+    // 当前位移目标值与显示值（显示值做插值，避免突变）
+    var LJR_targetX = 0;
+    var LJR_targetY = 0;
+    var LJR_showX = 0;
+    var LJR_showY = 0;
+
+    // 每层最多移动多少像素：深度值越大，动得越多（近景）
+    function LJR_apply(LJR_x, LJR_y) {
+        for (var LJR_i = 0; LJR_i < LJR_layers.length; LJR_i++) {
+            var LJR_el = LJR_layers[LJR_i];
+            var LJR_depth = parseFloat(LJR_el.getAttribute('data-depth') || '0');
+            if (!LJR_depth) {
+                continue;           // 天空层不动，作为背景底
+            }
+            // 反向位移：手机往右倾，景物往左走，产生"探身看"的错觉
+            var LJR_dx = -LJR_x * LJR_depth;
+            var LJR_dy = -LJR_y * LJR_depth * 0.6;
+            LJR_el.style.transform = 'translate3d(' + LJR_dx.toFixed(1) + 'px,' + LJR_dy.toFixed(1) + 'px,0)';
+        }
+
+        // 内容卡片动得最少，保持可读
+        LJR_content.style.transform = 'translate(-50%, -50%) translate3d(' +
+            (-LJR_x * 4).toFixed(1) + 'px,' + (-LJR_y * 3).toFixed(1) + 'px,0)';
+    }
+
+    // requestAnimationFrame 插值：把目标值缓动到显示值，避免传感器噪声造成抖动
+    function LJR_tick() {
+        LJR_showX += (LJR_targetX - LJR_showX) * 0.12;
+        LJR_showY += (LJR_targetY - LJR_showY) * 0.12;
+        LJR_apply(LJR_showX, LJR_showY);
+        requestAnimationFrame(LJR_tick);
+    }
+
+    // 传感器：gamma 是左右倾斜（-90～90），beta 是前后倾斜（-180～180）
+    function LJR_onOrientation(LJR_e) {
+        if (LJR_e.gamma === null && LJR_e.beta === null) {
+            return;
+        }
+        LJR_hasData = true;
+        LJR_fallback = false;
+
+        var LJR_gamma = LJR_e.gamma || 0;
+        var LJR_beta = LJR_e.beta || 0;
+
+        // 限制幅度，避免极端角度把图层甩飞
+        if (LJR_gamma > 40) { LJR_gamma = 40; }
+        if (LJR_gamma < -40) { LJR_gamma = -40; }
+        if (LJR_beta > 40) { LJR_beta = 40; }
+        if (LJR_beta < -40) { LJR_beta = -40; }
+
+        LJR_targetX = LJR_gamma / 40;       // 归一化到 -1～1
+        LJR_targetY = (LJR_beta - 30) / 40; // 手机通常前倾约 30 度，减去作为零点
+
+        LJR_data.textContent = 'gamma ' + LJR_gamma.toFixed(1) + '° · beta ' + LJR_beta.toFixed(1) + '°';
+        LJR_tip.textContent = '左右倾斜手机，观察远近景物的位移差';
+    }
+
+    // 降级：没有传感器时，用鼠标位置模拟倾斜
+    function LJR_useMouse() {
+        if (LJR_hasData) {
+            return;
+        }
+        LJR_fallback = true;
+        LJR_data.textContent = '当前设备没有方向传感器，已切换为鼠标模拟';
+        LJR_tip.textContent = '移动鼠标，模拟手机左右倾斜';
+
+        document.addEventListener('mousemove', function (LJR_e) {
+            var LJR_cx = window.innerWidth / 2;
+            var LJR_cy = window.innerHeight / 2;
+            LJR_targetX = (LJR_e.clientX - LJR_cx) / LJR_cx;
+            LJR_targetY = (LJR_e.clientY - LJR_cy) / LJR_cy;
+        });
+    }
+
+    function LJR_bind() {
+        window.addEventListener('deviceorientation', LJR_onOrientation);
+
+        // 1.5 秒内没收到数据，按"不支持"处理并降级
+        setTimeout(function () {
+            if (!LJR_hasData) {
+                LJR_useMouse();
+            }
+        }, 1500);
+    }
+
+    // iOS 13+：必须用户手势触发后才能申请方向权限
+    var LJR_needPerm = typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function';
+
+    if (LJR_needPerm) {
+        LJR_perm.style.display = 'inline-block';
+        LJR_data.textContent = 'iOS 需要先授权方向传感器';
+        LJR_perm.addEventListener('click', function () {
+            DeviceOrientationEvent.requestPermission().then(function (LJR_state) {
+                if (LJR_state === 'granted') {
+                    LJR_perm.style.display = 'none';
+                    LJR_bind();
+                } else {
+                    LJR_data.textContent = '未授权，已切换为鼠标模拟';
+                    LJR_useMouse();
+                }
+            }).catch(function () {
+                LJR_data.textContent = '权限申请失败，已切换为鼠标模拟';
+                LJR_useMouse();
+            });
+        });
+    } else if (typeof DeviceOrientationEvent !== 'undefined') {
+        LJR_bind();
+    } else {
+        LJR_useMouse();
+    }
+
+    // 兜底：始终跑插值循环
+    requestAnimationFrame(LJR_tick);
+
+    // 横竖屏切换时重新取一次尺寸，防止裁切错位
+    window.addEventListener('resize', function () {
+        LJR_apply(LJR_showX, LJR_showY);
+    });
+</script>
+</body>
+</html>

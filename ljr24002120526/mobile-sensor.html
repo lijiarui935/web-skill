@@ -185,7 +185,7 @@
         <b>为什么必须做降级：</b>
         <p style="margin:6px 0 0">传感器不是所有设备都有，而且 iOS 13+ 还要求用户手势触发后才给权限。如果只写 devicemotion 不做兜底，在电脑、旧机型或用户拒绝授权时页面就是一片空白，用户连「点一下」的机会都没有。所以这里保留了一个手动抽取按钮，并明确提示当前设备是否支持。</p>
         <p style="margin:10px 0 0"><b>accelerationIncludingGravity 与 acceleration 的区别：</b>前者含重力分量（静止时就有约 9.8 的读数），适合判断「摇」这种整体运动；后者是已扣除重力的纯线性加速度，静止时接近 0，更适合判断「抖动幅度」。本项目用前者，因为摇动时各轴变化更明显。</p>
-        <p style="margin:10px 0 0"><a href="mobile-events.html">← 任务一</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
+        <p style="margin:10px 0 0"><a href="mobile-events.html">← 任务一</a> &nbsp;·&nbsp; <a href="mobile-parallax.html">任务四 B · 倾斜视差 →</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
     </div>
 </div>
 
