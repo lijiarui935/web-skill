@@ -146,6 +146,85 @@
         color: var(--LJR_muted);
     }
 
+    /* 李嘉蕊：倾斜视差区块，同一页面内接在摇一摇下方 */
+    .LJR_px {
+        position: relative;
+        height: 300px;
+        margin: 22px 0 10px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #0e1a26;
+        touch-action: none;           /* 手指拖动模拟倾斜，不要触发页面滚动 */
+        user-select: none;
+    }
+
+    .LJR_px_layer {
+        position: absolute;
+        inset: -14%;                  /* 外扩，位移后不露边 */
+        will-change: transform;
+        transition: transform .1s linear;
+        pointer-events: none;
+    }
+
+    /* 远景：山谷照片，位移最小 */
+    .LJR_px_bg {
+        background: url('img/parallax-scene.jpg') center / cover no-repeat;
+    }
+
+    /* 中景：贴水面的暖雾 */
+    .LJR_px_mist {
+        background: linear-gradient(180deg, rgba(255, 240, 225, 0) 46%, rgba(255, 236, 214, .55) 66%, rgba(255, 232, 208, .8) 100%);
+    }
+
+    /* 中景：漂浮光点 */
+    .LJR_px_dots {
+        background-image:
+            radial-gradient(circle, rgba(255, 236, 196, .95) 1.6px, transparent 2.2px),
+            radial-gradient(circle, rgba(255, 255, 255, .7) 1px, transparent 1.6px);
+        background-size: 150px 150px, 96px 96px;
+        background-position: 0 0, 42px 64px;
+        opacity: .8;
+    }
+
+    /* 近景：松树剪影，位移最大，视差最明显 */
+    .LJR_px_trees {
+        width: 100%;
+        height: 100%;
+    }
+
+    .LJR_px_data {
+        position: absolute;
+        left: 12px;
+        top: 10px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(8, 20, 30, .55);
+        color: #ffe7c4;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 11px;
+        backdrop-filter: blur(4px);
+    }
+
+    .LJR_px_tip {
+        position: absolute;
+        left: 50%;
+        bottom: 12px;
+        transform: translateX(-50%);
+        padding: 5px 14px;
+        border-radius: 999px;
+        background: rgba(8, 20, 30, .55);
+        color: #fff;
+        font-size: 11.5px;
+        white-space: nowrap;
+        backdrop-filter: blur(4px);
+    }
+
+    .LJR_px_h {
+        margin: 26px 0 0;
+        font-size: 16px;
+        color: #1b2430;
+    }
+
     .LJR_note {
         margin-top: 22px;
         padding: 14px 16px;
@@ -181,11 +260,46 @@
 
     <p class="LJR_status" id="LJR_status">正在检测设备传感器…</p>
 
+    <h2 class="LJR_px_h">倾斜视差 · 整页六层景物错动</h2>
+    <p class="LJR_sub" style="margin-bottom:0">李嘉蕊 · 24002120526 · 左右倾斜手机，近景（松树）动得最多，远景（山谷）几乎不动；电脑或未授权时可在画面上拖动手指模拟。</p>
+
+    <!-- 李嘉蕊：视差舞台，data-depth 越大位移越多 -->
+    <div class="LJR_px" id="LJR_px">
+        <div class="LJR_px_layer LJR_px_bg" data-depth="8"></div>
+        <div class="LJR_px_layer LJR_px_mist" data-depth="16"></div>
+        <div class="LJR_px_layer LJR_px_dots" data-depth="24"></div>
+        <svg class="LJR_px_layer LJR_px_trees" data-depth="42" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+            <!-- 左侧近景松树 -->
+            <g fill="#091720">
+                <rect x="60" y="242" width="7" height="70"></rect>
+                <polygon points="63.5,138 28,212 99,212"></polygon>
+                <polygon points="63.5,176 20,250 107,250"></polygon>
+                <polygon points="63.5,214 12,290 115,290"></polygon>
+            </g>
+            <!-- 右侧近景松树（略远，稍小） -->
+            <g fill="#0b1a22" opacity=".96">
+                <rect x="330" y="258" width="6" height="54"></rect>
+                <polygon points="333,182 306,234 360,234"></polygon>
+                <polygon points="333,208 300,262 366,262"></polygon>
+                <polygon points="333,236 294,292 372,292"></polygon>
+            </g>
+            <!-- 低空飞鸟：中景参照物 -->
+            <g stroke="#0b1a22" stroke-width="1.6" fill="none" opacity=".8">
+                <path d="M188 96 q5 -5 10 0 q5 -5 10 0"></path>
+                <path d="M228 116 q4 -4 8 0 q4 -4 8 0"></path>
+                <path d="M258 88 q3 -3 6 0 q3 -3 6 0"></path>
+            </g>
+        </svg>
+        <div class="LJR_px_data" id="LJR_px_data">等待倾斜数据…</div>
+        <div class="LJR_px_tip" id="LJR_px_tip">左右倾斜手机看视差</div>
+    </div>
+
     <div class="LJR_note">
         <b>为什么必须做降级：</b>
         <p style="margin:6px 0 0">传感器不是所有设备都有，而且 iOS 13+ 还要求用户手势触发后才给权限。如果只写 devicemotion 不做兜底，在电脑、旧机型或用户拒绝授权时页面就是一片空白，用户连「点一下」的机会都没有。所以这里保留了一个手动抽取按钮，并明确提示当前设备是否支持。</p>
         <p style="margin:10px 0 0"><b>accelerationIncludingGravity 与 acceleration 的区别：</b>前者含重力分量（静止时就有约 9.8 的读数），适合判断「摇」这种整体运动；后者是已扣除重力的纯线性加速度，静止时接近 0，更适合判断「抖动幅度」。本项目用前者，因为摇动时各轴变化更明显。</p>
-        <p style="margin:10px 0 0"><a href="mobile-events.html">← 任务一</a> &nbsp;·&nbsp; <a href="mobile-parallax.html">任务四 B · 倾斜视差 →</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
+        <p style="margin:10px 0 0"><b>视差也做了降级：</b>倾斜视差用 deviceorientation 的 gamma / beta；收不到数据时（电脑、iOS 未授权、无陀螺仪机型）改为在视差画面上拖动手指模拟，保证任何设备都能看到远近景物的错动。</p>
+        <p style="margin:10px 0 0"><a href="mobile-events.html">← 任务一</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
     </div>
 </div>
 
@@ -297,6 +411,81 @@
     }
 
     LJR_draw.addEventListener('click', LJR_pick);
+
+    /* ================= 李嘉蕊：倾斜视差 ================= */
+    var LJR_px = document.getElementById('LJR_px');
+    var LJR_pxData = document.getElementById('LJR_px_data');
+    var LJR_pxTip = document.getElementById('LJR_px_tip');
+    var LJR_pxLayers = document.querySelectorAll('.LJR_px_layer');
+
+    var LJR_pxHasSensor = false;   // 是否收到过方向数据
+    var LJR_pxTX = 0;              // 目标值（-1～1）
+    var LJR_pxTY = 0;
+    var LJR_pxX = 0;               // 显示值，插值缓动
+    var LJR_pxY = 0;
+
+    // 每层按 depth 放大位移：depth 42 的近景最多约 92px，depth 8 的远景约 18px
+    function LJR_pxApply(LJR_x, LJR_y) {
+        for (var LJR_i = 0; LJR_i < LJR_pxLayers.length; LJR_i++) {
+            var LJR_el = LJR_pxLayers[LJR_i];
+            var LJR_depth = parseFloat(LJR_el.getAttribute('data-depth') || '0');
+            if (!LJR_depth) {
+                continue;
+            }
+            // 反向位移：手机右倾，景物左移，形成"探身看"的错觉
+            var LJR_dx = -LJR_x * LJR_depth * 2.2;
+            var LJR_dy = -LJR_y * LJR_depth * 1.3;
+            LJR_el.style.transform = 'translate3d(' + LJR_dx.toFixed(1) + 'px,' + LJR_dy.toFixed(1) + 'px,0)';
+        }
+    }
+
+    function LJR_pxTick() {
+        LJR_pxX += (LJR_pxTX - LJR_pxX) * 0.12;   // 缓动，压掉传感器噪声
+        LJR_pxY += (LJR_pxTY - LJR_pxY) * 0.12;
+        LJR_pxApply(LJR_pxX, LJR_pxY);
+        requestAnimationFrame(LJR_pxTick);
+    }
+
+    function LJR_pxOrient(LJR_e) {
+        if (LJR_e.gamma === null && LJR_e.beta === null) {
+            return;
+        }
+        LJR_pxHasSensor = true;
+
+        var LJR_gamma = LJR_e.gamma || 0;
+        var LJR_beta = LJR_e.beta || 0;
+        if (LJR_gamma > 40) { LJR_gamma = 40; }
+        if (LJR_gamma < -40) { LJR_gamma = -40; }
+
+        LJR_pxTX = LJR_gamma / 40;
+        LJR_pxTY = ((LJR_beta > 40 ? 40 : (LJR_beta < -40 ? -40 : LJR_beta)) - 30) / 40;
+
+        LJR_pxData.textContent = 'gamma ' + LJR_gamma.toFixed(0) + '° · beta ' + LJR_beta.toFixed(0) + '°';
+        LJR_pxTip.textContent = '左右倾斜手机，看松树与远山的错动';
+    }
+
+    // 无传感器 / 未授权时的降级：在画面上拖动手指（或鼠标）模拟倾斜
+    LJR_px.addEventListener('pointermove', function (LJR_e) {
+        if (LJR_pxHasSensor) {
+            return;
+        }
+        var LJR_box = LJR_px.getBoundingClientRect();
+        LJR_pxTX = Math.max(-1, Math.min(1, (LJR_e.clientX - LJR_box.left) / LJR_box.width * 2 - 1));
+        LJR_pxTY = Math.max(-1, Math.min(1, (LJR_e.clientY - LJR_box.top) / LJR_box.height * 2 - 1));
+        LJR_pxData.textContent = '模拟倾斜 ' + Math.round(LJR_pxTX * 40) + '°';
+        LJR_pxTip.textContent = '当前为手势模拟：在画面上拖动';
+    });
+
+    window.addEventListener('deviceorientation', LJR_pxOrient);
+    requestAnimationFrame(LJR_pxTick);
+
+    // 2 秒内没有方向数据，提示已启用模拟方式
+    setTimeout(function () {
+        if (!LJR_pxHasSensor) {
+            LJR_pxTip.textContent = '在画面上拖动，模拟倾斜视差';
+            LJR_pxData.textContent = '模拟模式';
+        }
+    }, 2000);
 </script>
 </body>
 </html>
