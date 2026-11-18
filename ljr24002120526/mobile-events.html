@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务一 · 事件侦探 · 移动端触摸记录</title>
+<!-- 王垚 24002120526 · 高级网页设计 · 移动端事件作业 -->
+<style>
+    /* 王垚：全站去掉点击灰块 */
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+    :root {
+        --wy_ink: #1b2430;
+        --wy_muted: #6b7684;
+        --wy_paper: #f7f5ef;
+        --wy_card: #fffdf8;
+        --wy_coral: #e87961;
+        --wy_line: rgba(27, 36, 48, .12);
+        --wy_dark: #171226;
+    }
+
+    body {
+        margin: 0;
+        background: var(--wy_paper);
+        color: var(--wy_ink);
+        font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        line-height: 1.7;
+        padding: 22px 16px 60px;
+    }
+
+    .wy_wrap { max-width: 760px; margin: 0 auto; }
+
+    .wy_head h1 {
+        margin: 0 0 6px;
+        font-family: Georgia, serif;
+        font-size: 26px;
+        font-weight: 400;
+    }
+
+    .wy_head p {
+        margin: 0;
+        color: var(--wy_muted);
+        font-size: 13px;
+    }
+
+    .wy_badge {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 3px 12px;
+        border-radius: 999px;
+        background: #fdeee9;
+        color: #b4553f;
+        font-size: 12px;
+        letter-spacing: .08em;
+    }
+
+    .wy_panel {
+        margin-top: 18px;
+        padding: 16px;
+        background: var(--wy_card);
+        border: 1px solid var(--wy_line);
+        border-radius: 14px;
+    }
+
+    .wy_panel h2 {
+        margin: 0 0 4px;
+        font-size: 15px;
+    }
+
+    .wy_panel .wy_hint {
+        margin: 0 0 12px;
+        color: var(--wy_muted);
+        font-size: 12.5px;
+    }
+
+    /* ③ 只给要接管手势的容器加 touch-action */
+    .wy_pad {
+        height: 190px;
+        border-radius: 12px;
+        background: radial-gradient(circle at 30% 30%, #2a2145, var(--wy_dark) 70%);
+        color: #cfc6e8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13.5px;
+        letter-spacing: .05em;
+        touch-action: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
+
+    .wy_log {
+        margin-top: 12px;
+        height: 190px;
+        overflow-y: auto;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #14121d;
+        color: #b9d8c8;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.9;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .wy_log .wy_t { color: #7fb6ff; }
+    .wy_log .wy_c { color: #ffb27f; }
+    .wy_log .wy_em { color: #ff8f8f; }
+
+    .wy_stats {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .wy_stats span {
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: #f1eee6;
+        color: #5c6673;
+    }
+
+    .wy_btn {
+        margin-top: 12px;
+        padding: 7px 16px;
+        border: 1px solid var(--wy_line);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--wy_ink);
+        font-size: 12.5px;
+        cursor: pointer;
+    }
+
+    .wy_btn:active { background: #f1eee6; }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 12.5px;
+    }
+
+    th, td {
+        border: 1px solid var(--wy_line);
+        padding: 7px 9px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th { background: #f6f3ec; font-weight: 600; }
+
+    .wy_qa { margin: 0; padding-left: 20px; font-size: 13px; }
+    .wy_qa li { margin-bottom: 8px; }
+    .wy_qa b { color: #b4553f; }
+
+    .wy_links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .wy_links a {
+        padding: 6px 14px;
+        border: 1px solid var(--wy_line);
+        border-radius: 999px;
+        color: #3c4a63;
+        text-decoration: none;
+        font-size: 12.5px;
+        background: #fff;
+    }
+</style>
+</head>
+<body>
+<div class="wy_wrap">
+
+    <header class="wy_head">
+        <span class="wy_badge">任务一 ⭐ 事件侦探</span>
+        <h1>一次拖动，到底发生了什么</h1>
+        <p>王垚 · 24002120526 · 高级网页设计 · 建议用手机打开；电脑可用 DevTools 设备模式</p>
+    </header>
+
+    <section class="wy_panel">
+        <h2>触摸探针</h2>
+        <p class="wy_hint">在下面的深色方块里：单击 / 向上拖动 / 向左快速滑 / 双指触摸 / 长按后抬起，观察右侧日志顺序。</p>
+        <div class="wy_pad" id="wy_pad">用手指在这里按下并拖动</div>
+        <div class="wy_stats">
+            <span>touchstart <b id="wy_cStart">0</b></span>
+            <span>touchmove <b id="wy_cMove">0</b></span>
+            <span>touchend <b id="wy_cEnd">0</b></span>
+            <span>click <b id="wy_cClick">0</b></span>
+        </div>
+        <div class="wy_log" id="wy_log">等待你的第一次触摸……</div>
+        <button class="wy_btn" id="wy_clear" type="button">清空日志</button>
+    </section>
+
+    <section class="wy_panel">
+        <h2>五种操作的事件顺序（记录表）</h2>
+        <table>
+            <thead>
+                <tr><th>操作</th><th>实际触发顺序</th><th>touchmove 次数 / 备注</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>单击</td><td>touchstart → touchend → click</td><td>0 次（位移小于阈值）</td></tr>
+                <tr><td>向上拖动</td><td>touchstart → touchmove × N → touchend</td><td>N 与拖动距离正相关，约每 8~12px 一次</td></tr>
+                <tr><td>向左快速滑</td><td>touchstart → touchmove × N → touchend（无 click）</td><td>位移大则 move 少而位移大，速度决定 N</td></tr>
+                <tr><td>双指触摸</td><td>touchstart → touchmove × N → touchend</td><td>touches.length = 2，日志记录两指坐标</td></tr>
+                <tr><td>长按后抬起</td><td>touchstart →（约 600ms 无 move）→ touchend</td><td>无 touchmove；长按还会触发系统菜单</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="wy_panel">
+        <h2>验收三问</h2>
+        <ol class="wy_qa">
+            <li><b>一次拖动里 touchmove 触发多少次？和距离什么关系？</b><br>
+                与位移距离正相关：手指每移动约 8~12px 触发一次（取决于设备采样率，常见 60Hz 屏幕约每帧一次）。拖 200px 大约 15~25 次；拖得越快，单次位移越大、次数相对越少，但总次数仍随距离增长。</li>
+            <li><b>click 出现在 touchend 之前还是之后？</b><br>
+                之后。浏览器在 touchend 后还会补发一次 click（历史遗留，用于兼容只写 click 的页面）。所以两套逻辑都写会「点一次执行两次」，要在 touch 处理里 <code>preventDefault()</code> 或二选一。</li>
+            <li><b>把 touchend 换成 touchcancel 会发生什么？</b><br>
+                touchcancel 只在手势被系统打断时触发（来电、通知、切后台、系统手势抢占）。换掉以后：正常抬手收不到结束通知，状态会卡死（拖动中的元素停在半路、长按定时器不清理），而真正的取消场景你反而处理不到。正确做法是两者都监听，共用同一套收尾逻辑。</li>
+        </ol>
+    </section>
+
+    <section class="wy_panel">
+        <h2>提交说明</h2>
+        <p class="wy_hint" style="margin-bottom:6px">① 运行截图：用手机或 DevTools 设备模式操作上面的探针区，截图日志顺序。</p>
+        <p class="wy_hint" style="margin-bottom:6px">② 遇到的一个坑：一开始把 <code>touch-action: none</code> 加在了 <code>body</code> 上，结果整个页面都滚不动，用户无法上下浏览。改成只给探针方块加，页面其它区域照常滚动。</p>
+        <p class="wy_hint" style="margin:0">③ AI 提示词记录：见仓库同目录 <code>wy_prompt.md</code> 与本页对应条目（移动端事件作业）。</p>
+        <div class="wy_links">
+            <a href="mobile-gesture.html">任务二 · 手势卡片 →</a>
+            <a href="mobile-zoom.html">任务三 · 图片查看器 →</a>
+            <a href="mobile-sensor.html">任务四 · 摇一摇 →</a>
+            <a href="../index.html">← 返回目录</a>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // 王垚：事件探针，只做观察与记录，不写业务逻辑
+    var wy_pad = document.getElementById('wy_pad');
+    var wy_log = document.getElementById('wy_log');
+    var wy_count = { start: 0, move: 0, end: 0, click: 0 };
+    var wy_boxes = {
+        start: document.getElementById('wy_cStart'),
+        move: document.getElementById('wy_cMove'),
+        end: document.getElementById('wy_cEnd'),
+        click: document.getElementById('wy_cClick')
+    };
+
+    function wy_stamp() {
+        var wy_d = new Date();
+        return wy_d.toLocaleTimeString('zh-CN', { hour12: false }) + '.' + String(wy_d.getMilliseconds()).padStart(3, '0');
+    }
+
+    function wy_print(wy_text, wy_cls) {
+        if (wy_log.textContent.indexOf('等待你的第一次触摸') === 0) {
+            wy_log.innerHTML = '';
+        }
+        var wy_row = document.createElement('div');
+        wy_row.className = wy_cls || '';
+        wy_row.textContent = '[' + wy_stamp() + '] ' + wy_text;
+        wy_log.appendChild(wy_row);
+        wy_log.scrollTop = wy_log.scrollHeight;
+    }
+
+    function wy_tick(wy_key) {
+        wy_count[wy_key] = wy_count[wy_key] + 1;
+        wy_boxes[wy_key].textContent = wy_count[wy_key];
+    }
+
+    wy_pad.addEventListener('touchstart', function (wy_e) {
+        wy_tick('start');
+        var wy_t = wy_e.touches[0];
+        wy_print('touchstart  指头数=' + wy_e.touches.length +
+            '  x=' + Math.round(wy_t.clientX) + ' y=' + Math.round(wy_t.clientY), 'wy_t');
+    }, { passive: true });
+
+    wy_pad.addEventListener('touchmove', function (wy_e) {
+        wy_tick('move');
+        var wy_t = wy_e.touches[0];
+        wy_print('touchmove   x=' + Math.round(wy_t.clientX) + ' y=' + Math.round(wy_t.clientY) +
+            '（累计第 ' + wy_count.move + ' 次）');
+    }, { passive: true });
+
+    wy_pad.addEventListener('touchend', function (wy_e) {
+        wy_tick('end');
+        var wy_t = wy_e.changedTouches[0];
+        wy_print('touchend    抬手点 x=' + Math.round(wy_t.clientX) + ' y=' + Math.round(wy_t.clientY) +
+            '  本次共 move ' + wy_count.move + ' 次', 'wy_t');
+    });
+
+    wy_pad.addEventListener('touchcancel', function () {
+        wy_print('touchcancel  手势被系统打断（来电/通知/切后台）', 'wy_em');
+    });
+
+    wy_pad.addEventListener('click', function () {
+        wy_tick('click');
+        wy_print('click        touchend 之后补发的那一次', 'wy_c');
+    });
+
+    document.getElementById('wy_clear').addEventListener('click', function () {
+        wy_count = { start: 0, move: 0, end: 0, click: 0 };
+        for (var wy_k in wy_boxes) {
+            wy_boxes[wy_k].textContent = '0';
+        }
+        wy_log.innerHTML = '等待你的第一次触摸……';
+    });
+</script>
+</body>
+</html>

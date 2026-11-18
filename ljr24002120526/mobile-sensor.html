@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务四 · 摇一摇 · 今日菜谱</title>
+<!-- 王垚 24002120526 · 高级网页设计 · 移动端事件作业 -->
+<style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+    :root {
+        --wy_ink: #1b2430;
+        --wy_muted: #6b7684;
+        --wy_paper: #f7f5ef;
+        --wy_line: rgba(27, 36, 48, .12);
+    }
+
+    body {
+        margin: 0;
+        padding: 26px 16px 48px;
+        background: var(--wy_paper);
+        color: var(--wy_ink);
+        font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        line-height: 1.7;
+    }
+
+    .wy_wrap { max-width: 480px; margin: 0 auto; text-align: center; }
+
+    .wy_title { margin: 0 0 4px; font-family: Georgia, serif; font-size: 24px; font-weight: 400; }
+    .wy_sub { margin: 0 0 22px; color: var(--wy_muted); font-size: 12.5px; }
+
+    .wy_phone {
+        margin: 0 auto;
+        width: 168px;
+        height: 268px;
+        border: 2px solid #2b3644;
+        border-radius: 24px;
+        background: linear-gradient(160deg, #232a38, #14121d);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        box-shadow: 0 18px 34px rgba(27, 36, 48, .22);
+    }
+
+    .wy_phone::after {
+        content: "";
+        position: absolute;
+        top: 9px;
+        left: 50%;
+        width: 46px;
+        height: 5px;
+        border-radius: 999px;
+        background: #3c4757;
+        transform: translateX(-50%);
+    }
+
+    .wy_phone.wy_shake {
+        animation: wy_shakeAnim .45s ease;
+    }
+
+    @keyframes wy_shakeAnim {
+        0%, 100% { transform: rotate(0deg) translateX(0); }
+        20% { transform: rotate(-6deg) translateX(-6px); }
+        50% { transform: rotate(6deg) translateX(6px); }
+        80% { transform: rotate(-3deg) translateX(-3px); }
+    }
+
+    .wy_phone span {
+        color: #8e9aad;
+        font-size: 12.5px;
+        letter-spacing: .08em;
+    }
+
+    .wy_result {
+        margin-top: 26px;
+        min-height: 104px;
+        padding: 20px 18px;
+        border: 1px solid var(--wy_line);
+        border-radius: 16px;
+        background: #fffdf8;
+        box-shadow: 0 8px 20px rgba(27, 36, 48, .06);
+    }
+
+    .wy_result .wy_name {
+        font-family: Georgia, serif;
+        font-size: 27px;
+        letter-spacing: .04em;
+        display: block;
+        margin-bottom: 6px;
+        color: #b4553f;
+    }
+
+    .wy_result .wy_desc {
+        margin: 0;
+        font-size: 13px;
+        color: var(--wy_muted);
+    }
+
+    .wy_result.wy_pop {
+        animation: wy_popAnim .4s cubic-bezier(.2, 1.4, .4, 1);
+    }
+
+    @keyframes wy_popAnim {
+        0% { transform: scale(.86); opacity: .3; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .wy_btn {
+        margin-top: 16px;
+        padding: 10px 26px;
+        border: none;
+        border-radius: 999px;
+        background: #b4553f;
+        color: #fff;
+        font-size: 13.5px;
+        cursor: pointer;
+    }
+
+    .wy_btn:active { background: #983f2c; }
+
+    .wy_btn.wy_ghost {
+        background: #fff;
+        color: var(--wy_ink);
+        border: 1px solid var(--wy_line);
+    }
+
+    .wy_status {
+        margin-top: 14px;
+        font-size: 12.5px;
+        color: var(--wy_muted);
+    }
+
+    .wy_note {
+        margin-top: 22px;
+        padding: 14px 16px;
+        border: 1px solid var(--wy_line);
+        border-radius: 12px;
+        background: #fffdf8;
+        text-align: left;
+        font-size: 12.5px;
+        color: var(--wy_muted);
+    }
+
+    .wy_note b { color: var(--wy_ink); }
+    .wy_note a { color: #b4553f; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wy_wrap">
+    <h1 class="wy_title">摇一摇 · 今日菜谱</h1>
+    <p class="wy_sub">王垚 · 24002120526 · 阈值 18 · 冷却 1.5s</p>
+
+    <div class="wy_phone" id="wy_phone"><span>摇一摇手机</span></div>
+
+    <div class="wy_result" id="wy_result">
+        <span class="wy_name">今日吃什么？</span>
+        <p class="wy_desc">拿起手机摇一摇，让今天的胃替你做决定。</p>
+    </div>
+
+    <button class="wy_btn wy_ghost" type="button" id="wy_perm" style="display:none">允许使用动作传感器</button>
+    <button class="wy_btn" type="button" id="wy_draw">点我抽一次（降级方案）</button>
+
+    <p class="wy_status" id="wy_status">正在检测设备传感器…</p>
+
+    <div class="wy_note">
+        <b>为什么必须做降级：</b>
+        <p style="margin:6px 0 0">传感器不是所有设备都有，而且 iOS 13+ 还要求用户手势触发后才给权限。如果只写 devicemotion 不做兜底，在电脑、旧机型或用户拒绝授权时页面就是一片空白，用户连「点一下」的机会都没有。所以这里保留了一个手动抽取按钮，并明确提示当前设备是否支持。</p>
+        <p style="margin:10px 0 0"><b>accelerationIncludingGravity 与 acceleration 的区别：</b>前者含重力分量（静止时就有约 9.8 的读数），适合判断「摇」这种整体运动；后者是已扣除重力的纯线性加速度，静止时接近 0，更适合判断「抖动幅度」。本项目用前者，因为摇动时各轴变化更明显。</p>
+        <p style="margin:10px 0 0"><a href="mobile-events.html">← 任务一</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
+    </div>
+</div>
+
+<script>
+    // 王垚：摇一摇抽今日菜谱，含权限申请与降级
+    var wy_dishes = [
+        { name: '麻婆豆腐', desc: '麻辣鲜香，最会下饭的一道川菜。' },
+        { name: '龙井虾仁', desc: '茶香清鲜，杭帮菜的分寸感。' },
+        { name: '肉夹馍', desc: '腊汁肉配白吉馍，酥脆与油润同行。' },
+        { name: '佛跳墙', desc: '一坛慢煨，开盖香气先出门。' },
+        { name: '西湖醋鱼', desc: '酸甜带姜末，鱼肉要嫩得能抖。' },
+        { name: '小笼包', desc: '皮薄汁多，先开窗后喝汤。' }
+    ];
+
+    var wy_phone = document.getElementById('wy_phone');
+    var wy_result = document.getElementById('wy_result');
+    var wy_status = document.getElementById('wy_status');
+    var wy_perm = document.getElementById('wy_perm');
+    var wy_draw = document.getElementById('wy_draw');
+
+    var wy_lastTime = 0;        // 冷却计时
+    var wy_COOLDOWN = 1500;
+    var wy_THRESHOLD = 18;      // 合成加速度阈值
+    var wy_hasData = false;
+    var wy_hasShaken = false;
+
+    function wy_pick() {
+        var wy_now = Date.now();
+        if (wy_now - wy_lastTime < wy_COOLDOWN) {
+            return;     // 冷却中，防止一次摇动触发多次
+        }
+        wy_lastTime = wy_now;
+
+        var wy_item = wy_dishes[Math.floor(Math.random() * wy_dishes.length)];
+        wy_result.innerHTML = '<span class="wy_name">' + wy_item.name + '</span>' +
+            '<p class="wy_desc">' + wy_item.desc + '</p>';
+
+        // 重新触发动画
+        wy_result.classList.remove('wy_pop');
+        void wy_result.offsetWidth;
+        wy_result.classList.add('wy_pop');
+
+        wy_phone.classList.remove('wy_shake');
+        void wy_phone.offsetWidth;
+        wy_phone.classList.add('wy_shake');
+
+        wy_status.textContent = '已为你抽出：' + wy_item.name;
+    }
+
+    function wy_onMotion(wy_e) {
+        var wy_acc = wy_e.accelerationIncludingGravity;
+        if (!wy_acc) {
+            return;
+        }
+        wy_hasData = true;
+
+        // 合成加速度：三个轴平方和开根
+        var wy_g = Math.hypot(wy_acc.x || 0, wy_acc.y || 0, wy_acc.z || 0);
+
+        if (wy_g > wy_THRESHOLD) {
+            wy_hasShaken = true;
+            wy_pick();
+        }
+    }
+
+    function wy_bind() {
+        window.addEventListener('devicemotion', wy_onMotion);
+        wy_status.textContent = '已开启摇一摇：摇动手机即可抽取';
+
+        // 2 秒内收不到数据，判定为不支持
+        setTimeout(function () {
+            if (!wy_hasData) {
+                wy_status.textContent = '当前设备不支持动作传感器，请用手机打开，或用下方按钮抽取';
+            }
+        }, 2000);
+    }
+
+    // iOS 13+ 需要用户手势触发后申请权限
+    var wy_needPerm = typeof DeviceMotionEvent !== 'undefined' &&
+        typeof DeviceMotionEvent.requestPermission === 'function';
+
+    if (wy_needPerm) {
+        wy_perm.style.display = 'inline-block';
+        wy_status.textContent = 'iOS 设备需要先点上面的按钮授权';
+        wy_perm.addEventListener('click', function () {
+            DeviceMotionEvent.requestPermission().then(function (wy_state) {
+                if (wy_state === 'granted') {
+                    wy_perm.style.display = 'none';
+                    wy_bind();
+                } else {
+                    wy_status.textContent = '未授权，已切换到手动抽取模式';
+                }
+            }).catch(function () {
+                wy_status.textContent = '权限申请失败，请使用下方按钮抽取';
+            });
+        });
+    } else if (typeof DeviceMotionEvent !== 'undefined') {
+        wy_bind();
+    } else {
+        wy_status.textContent = '当前设备不支持动作传感器，请用手机打开，或用下方按钮抽取';
+    }
+
+    wy_draw.addEventListener('click', wy_pick);
+</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务二 · 手势卡片 · 左右滑动切换</title>
+<!-- 王垚 24002120526 · 高级网页设计 · 移动端事件作业 -->
+<style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+    :root {
+        --wy_ink: #1b2430;
+        --wy_muted: #6b7684;
+        --wy_paper: #f7f5ef;
+        --wy_line: rgba(27, 36, 48, .12);
+    }
+
+    body {
+        margin: 0;
+        padding: 26px 16px 48px;
+        background: var(--wy_paper);
+        color: var(--wy_ink);
+        font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        line-height: 1.7;
+    }
+
+    .wy_wrap { max-width: 520px; margin: 0 auto; }
+
+    .wy_title {
+        margin: 0 0 4px;
+        font-family: Georgia, serif;
+        font-size: 24px;
+        font-weight: 400;
+    }
+
+    .wy_sub {
+        margin: 0 0 18px;
+        color: var(--wy_muted);
+        font-size: 12.5px;
+    }
+
+    /* 关键：只接管横向，纵向仍交给浏览器滚动 */
+    .wy_stage {
+        position: relative;
+        height: 380px;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
+
+    .wy_card {
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        padding: 26px 24px;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        box-shadow: 0 16px 32px rgba(27, 36, 48, .18);
+        opacity: 0;
+        transform: translateX(0) scale(.96);
+        transition: opacity .3s ease, transform .3s ease;
+        pointer-events: none;
+    }
+
+    .wy_card.wy_active {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        pointer-events: auto;
+    }
+
+    .wy_card.wy_left  { transform: translateX(-24px) scale(.96); }
+    .wy_card.wy_right { transform: translateX(24px) scale(.96); }
+
+    .wy_card h2 {
+        margin: 0 0 8px;
+        font-family: Georgia, serif;
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: .04em;
+    }
+
+    .wy_card p {
+        margin: 0;
+        font-size: 13.5px;
+        line-height: 1.9;
+        color: rgba(255, 255, 255, .9);
+    }
+
+    .wy_card .wy_no {
+        position: absolute;
+        top: 22px;
+        right: 24px;
+        font-family: Georgia, serif;
+        font-size: 46px;
+        color: rgba(255, 255, 255, .22);
+        line-height: 1;
+    }
+
+    .wy_1 { background: linear-gradient(145deg, #d2694b, #8c3226); }
+    .wy_2 { background: linear-gradient(145deg, #5b8c6e, #2f5741); }
+    .wy_3 { background: linear-gradient(145deg, #c99a3f, #8a5f14); }
+    .wy_4 { background: linear-gradient(145deg, #6a6fa8, #343a6e); }
+
+    .wy_bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        font-size: 13px;
+        color: var(--wy_muted);
+    }
+
+    .wy_dots { display: flex; gap: 7px; }
+
+    .wy_dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d5d0c5;
+        transition: background .25s ease, transform .25s ease;
+    }
+
+    .wy_dot.wy_on { background: #b4553f; transform: scale(1.35); }
+
+    .wy_tip {
+        margin-top: 14px;
+        padding: 9px 14px;
+        border-radius: 10px;
+        background: #fdf2ee;
+        color: #a04a35;
+        font-size: 12.5px;
+        opacity: 0;
+        transition: opacity .25s ease;
+        text-align: center;
+    }
+
+    .wy_tip.wy_show { opacity: 1; }
+
+    .wy_help {
+        margin-top: 22px;
+        padding: 14px 16px;
+        border: 1px solid var(--wy_line);
+        border-radius: 12px;
+        background: #fffdf8;
+        font-size: 12.5px;
+        color: var(--wy_muted);
+    }
+
+    .wy_help b { color: var(--wy_ink); }
+
+    .wy_help a { color: #b4553f; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wy_wrap">
+    <h1 class="wy_title">中华美食 · 手势卡片</h1>
+    <p class="wy_sub">王垚 · 24002120526 · 左右滑动切换，阈值 40px，冷却 300ms</p>
+
+    <div class="wy_stage" id="wy_stage">
+        <article class="wy_card wy_1 wy_active">
+            <span class="wy_no">01</span>
+            <h2>麻婆豆腐</h2>
+            <p>花椒的麻与豆瓣的辣在热油里撞个满怀，豆腐要嫩，勾芡要薄，起锅前撒一把青蒜——川菜里最会下饭的一道。</p>
+        </article>
+        <article class="wy_card wy_2">
+            <span class="wy_no">02</span>
+            <h2>龙井虾仁</h2>
+            <p>明前龙井先泡开，虾仁上浆滑油，茶汤入锅一拌即起。清鲜里带一点豆香，是杭帮菜的分寸感。</p>
+        </article>
+        <article class="wy_card wy_3">
+            <span class="wy_no">03</span>
+            <h2>肉夹馍</h2>
+            <p>腊汁肉在砂锅里炖足六小时，白吉馍现烤到边沿起脆。刀一划、肉一塞，酥脆与油润同时到口。</p>
+        </article>
+        <article class="wy_card wy_4">
+            <span class="wy_no">04</span>
+            <h2>佛跳墙</h2>
+            <p>鲍鱼、海参、花胶、蹄筋层层码入坛中，高汤封口，文火煨上一夜。开坛那一刻，香气先于人出门。</p>
+        </article>
+    </div>
+
+    <div class="wy_bar">
+        <span>第 <b id="wy_index">1</b> / 4 张</span>
+        <div class="wy_dots" id="wy_dots">
+            <span class="wy_dot wy_on"></span>
+            <span class="wy_dot"></span>
+            <span class="wy_dot"></span>
+            <span class="wy_dot"></span>
+        </div>
+    </div>
+
+    <div class="wy_tip" id="wy_tip">已经是第一张</div>
+
+    <div class="wy_help">
+        <p style="margin:0 0 6px"><b>验收自测：</b>① 轻轻划一小段（&lt;40px）不会切换；② 连续快速滑动只走一张；③ 上下拖动时页面照常滚动，不误切。</p>
+        <p style="margin:0"><a href="mobile-zoom.html">任务三 · 图片查看器 →</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
+    </div>
+</div>
+
+<script>
+    // 王垚：左右滑动切换美食卡片
+    var wy_stage = document.getElementById('wy_stage');
+    var wy_cards = document.querySelectorAll('.wy_card');
+    var wy_dots = document.querySelectorAll('.wy_dot');
+    var wy_indexBox = document.getElementById('wy_index');
+    var wy_tip = document.getElementById('wy_tip');
+
+    var wy_current = 0;
+    var wy_startX = 0;
+    var wy_startY = 0;
+    var wy_locked = false;      // 冷却锁，防止快速连滑跳两张
+    var wy_tipTimer = null;
+    var wy_threshold = 40;      // 阈值：小于它算误触
+    var wy_cooldown = 300;      // 冷却时间
+
+    function wy_show(wy_msg) {
+        wy_tip.textContent = wy_msg;
+        wy_tip.classList.add('wy_show');
+        clearTimeout(wy_tipTimer);
+        wy_tipTimer = setTimeout(function () {
+            wy_tip.classList.remove('wy_show');
+        }, 1200);
+    }
+
+    function wy_go(wy_target) {
+        if (wy_target < 0) {
+            wy_show('已经是第一张了');
+            return;
+        }
+        if (wy_target > wy_cards.length - 1) {
+            wy_show('已经是最后一张了');
+            return;
+        }
+
+        wy_cards[wy_current].classList.remove('wy_active');
+        wy_cards[wy_target].classList.add('wy_active');
+        wy_dots[wy_current].classList.remove('wy_on');
+        wy_dots[wy_target].classList.add('wy_on');
+
+        wy_current = wy_target;
+        wy_indexBox.textContent = wy_current + 1;
+    }
+
+    wy_stage.addEventListener('touchstart', function (wy_e) {
+        var wy_t = wy_e.touches[0];
+        wy_startX = wy_t.clientX;
+        wy_startY = wy_t.clientY;
+    }, { passive: true });
+
+    wy_stage.addEventListener('touchend', function (wy_e) {
+        if (wy_locked) {
+            return;
+        }
+
+        // 抬手时手指已不在 touches 里，必须用 changedTouches
+        var wy_t = wy_e.changedTouches[0];
+        var wy_dx = wy_t.clientX - wy_startX;
+        var wy_dy = wy_t.clientY - wy_startY;
+
+        // 纵向位移更大，说明用户在滚动页面，不抢手势
+        if (Math.abs(wy_dy) > Math.abs(wy_dx)) {
+            return;
+        }
+        if (Math.abs(wy_dx) < wy_threshold) {
+            return;     // 短距离误触
+        }
+
+        wy_locked = true;
+        setTimeout(function () {
+            wy_locked = false;
+        }, wy_cooldown);
+
+        if (wy_dx < 0) {
+            wy_go(wy_current + 1);   // 左滑 → 下一张
+        } else {
+            wy_go(wy_current - 1);   // 右滑 → 上一张
+        }
+    });
+
+    wy_stage.addEventListener('touchcancel', function () {
+        wy_startX = 0;
+        wy_startY = 0;
+        wy_locked = false;
+    });
+</script>
+</body>
+</html>
