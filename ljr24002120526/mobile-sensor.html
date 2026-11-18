@@ -219,6 +219,16 @@
         backdrop-filter: blur(4px);
     }
 
+    /* 李嘉蕊：真机演示视频 */
+    .LJR_video {
+        display: block;
+        width: 100%;
+        max-height: 480px;
+        margin-top: 16px;
+        border-radius: 12px;
+        background: #14121d;
+    }
+
     .LJR_px_h {
         margin: 26px 0 0;
         font-size: 16px;
@@ -301,6 +311,11 @@
         <p style="margin:10px 0 0"><b>视差也做了降级：</b>倾斜视差用 deviceorientation 的 gamma / beta；收不到数据时（电脑、iOS 未授权、无陀螺仪机型）改为在视差画面上拖动手指模拟，保证任何设备都能看到远近景物的错动。</p>
         <p style="margin:10px 0 0"><a href="mobile-events.html">← 任务一</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
     </div>
+
+    <h2 class="LJR_px_h">真机演示录像</h2>
+    <p class="LJR_sub" style="margin-bottom:0">李嘉蕊 · 24002120526 · 摇一摇抽菜谱与倾斜视差的实际操作录屏。</p>
+    <!-- 李嘉蕊：controls 手动播放，playsinline 避免 iOS 自动全屏 -->
+    <video class="LJR_video" src="media/sensor-demo.mp4" controls playsinline preload="metadata"></video>
 </div>
 
 <script>
