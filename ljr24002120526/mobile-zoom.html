@@ -108,6 +108,15 @@
 
     .LJR_ops button:active { background: #f1eee6; }
 
+    /* 李嘉蕊：演示视频，宽度自适应、圆角、黑底 */
+    .LJR_video {
+        display: block;
+        width: 100%;
+        max-height: 460px;
+        border-radius: 12px;
+        background: #14121d;
+    }
+
     .LJR_note {
         margin-top: 20px;
         padding: 14px 16px;
@@ -155,6 +164,11 @@
             <li>不逐帧累加角度（会累积误差），每帧都用「起始角 + 总差值」重算，松手再开始新一轮。</li>
             <li>旋转与缩放共用同一轮手势：<code>transform: translate() scale() rotate()</code> 顺序固定，互不干扰。</li>
         </ol>
+
+        <p style="margin:16px 0 8px"><b>真机演示录像：</b></p>
+        <!-- 李嘉蕊：手机实拍演示，controls 供手动播放，playsinline 防止 iOS 自动全屏 -->
+        <video class="LJR_video" src="media/zoom-demo.mp4" controls playsinline preload="metadata"></video>
+
         <p style="margin:8px 0 0"><a href="mobile-sensor.html">任务四 · 摇一摇 →</a> &nbsp;·&nbsp; <a href="../index.html">返回目录</a></p>
     </div>
 </div>
