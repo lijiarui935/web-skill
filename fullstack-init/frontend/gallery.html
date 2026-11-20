@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图文列表 · 李嘉蕊 24002120526</title>
+<!-- 姓名：李嘉蕊 | 学号：24002120526 | 时间：2026-11-20 | 大模型：DeepSeek-V4.1-Flash -->
+<link rel="stylesheet" href="css/LJR_main.css">
+</head>
+<body>
+<div class="LJR_page">
+
+    <header class="LJR_top">
+        <div class="LJR_brand"><span class="LJR_dot"></span>星轨 · STELLAR TRACK</div>
+        <nav>
+            <a href="index.html">首页</a>
+            <a href="database.html">数据库测试</a>
+            <a href="news.html">科技新闻</a>
+            <a class="LJR_active" href="gallery.html">图文列表</a>
+        </nav>
+    </header>
+
+    <section class="LJR_head">
+        <span class="LJR_kicker">STEP 6 · GALLERY</span>
+        <h1>图文列表</h1>
+        <p>数据来自 MySQL 表 <b>LJR_gallery</b>，网格布局展示"上图下文"卡片，图片为本地生成。</p>
+    </section>
+
+    <section class="LJR_panel">
+        <div class="LJR_api_bar">
+            <span>当前调用接口：</span>
+            <code id="LJR_api_url">/api/gallery</code>
+            <a id="LJR_api_link" href="/api/gallery" target="_blank" rel="noopener">直接打开接口 →</a>
+        </div>
+
+        <p class="LJR_loading" id="LJR_loading">正在加载图文……</p>
+        <div class="LJR_grid" id="LJR_gallery_grid"></div>
+    </section>
+
+    <footer class="LJR_foot">
+        <span>李嘉蕊 · 24002120526 · 高级网页设计</span>
+        <span>GET /api/gallery</span>
+    </footer>
+
+</div>
+<script src="js/LJR_gallery.js"></script>
+</body>
+</html>

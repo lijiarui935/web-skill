@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据库连接测试 · 李嘉蕊 24002120526</title>
+<!-- 姓名：李嘉蕊 | 学号：24002120526 | 时间：2026-11-20 | 大模型：DeepSeek-V4.1-Flash -->
+<link rel="stylesheet" href="css/LJR_main.css">
+</head>
+<body>
+<div class="LJR_page">
+
+    <header class="LJR_top">
+        <div class="LJR_brand"><span class="LJR_dot"></span>星轨 · STELLAR TRACK</div>
+        <nav>
+            <a href="index.html">首页</a>
+            <a class="LJR_active" href="database.html">数据库测试</a>
+            <a href="news.html">科技新闻</a>
+            <a href="gallery.html">图文列表</a>
+        </nav>
+    </header>
+
+    <section class="LJR_head">
+        <span class="LJR_kicker">STEP 4 · DATABASE</span>
+        <h1>数据库连接测试</h1>
+        <p>输入 MySQL 用户名和密码，浏览器把凭据发给后端，由后端尝试连接并返回数据库版本。</p>
+    </section>
+
+    <section class="LJR_panel">
+        <div class="LJR_api_bar">
+            <span>当前调用接口：</span>
+            <code id="LJR_api_url">/api/db-test</code>
+            <a href="/api/health" target="_blank" rel="noopener">健康检查 →</a>
+        </div>
+
+        <form class="LJR_form" id="LJR_db_form" autocomplete="off">
+            <div class="LJR_field">
+                <label for="LJR_username">数据库用户名</label>
+                <input id="LJR_username" name="username" type="text" value="root" placeholder="默认 root">
+            </div>
+            <div class="LJR_field">
+                <label for="LJR_password">数据库密码</label>
+                <input id="LJR_password" name="password" type="password" placeholder="请输入本机 MySQL 的 root 密码">
+            </div>
+            <button class="LJR_btn" id="LJR_submit" type="submit">测试连接</button>
+        </form>
+
+        <div class="LJR_result" id="LJR_result">等待测试……</div>
+
+        <p class="LJR_hint" style="margin:14px 0 0">
+            说明：密码只用于本次连接测试，不会被写入日志或数据库；页面也不预填密码，避免随代码提交到仓库泄露。
+            后端正式连接用的凭据放在 <code>backend/.env</code>，该文件已加入 <code>.gitignore</code>。
+        </p>
+    </section>
+
+    <footer class="LJR_foot">
+        <span>李嘉蕊 · 24002120526 · 高级网页设计</span>
+        <span>POST /api/db-test</span>
+    </footer>
+
+</div>
+<script src="js/LJR_database.js"></script>
+</body>
+</html>

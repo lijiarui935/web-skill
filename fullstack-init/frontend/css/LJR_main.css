@@ -1,0 +1,468 @@
+/* 姓名：李嘉蕊 | 学号：24002120526 | 时间：2026-11-20 | 大模型：DeepSeek-V4.1-Flash
+   全站样式：深空科技风，纸感留白 + 冷色高光 */
+
+:root {
+    --LJR_bg: #060910;
+    --LJR_bg2: #0b1220;
+    --LJR_ink: #e8eefc;
+    --LJR_muted: #8b9ab5;
+    --LJR_line: rgba(140, 170, 220, .16);
+    --LJR_cyan: #5ee0d0;
+    --LJR_blue: #7c8cff;
+    --LJR_gold: #ffb86b;
+    --LJR_ok: #4ade80;
+    --LJR_bad: #ff7a7a;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(900px 600px at 12% -10%, rgba(124, 140, 255, .18), transparent 60%),
+        radial-gradient(700px 500px at 92% 6%, rgba(94, 224, 208, .12), transparent 60%),
+        linear-gradient(180deg, var(--LJR_bg2), var(--LJR_bg) 42%);
+    background-attachment: fixed;
+    color: var(--LJR_ink);
+    font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+    line-height: 1.7;
+}
+
+.LJR_page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 26px 20px 64px;
+}
+
+/* 顶部栏 */
+.LJR_top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--LJR_line);
+}
+
+.LJR_brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Georgia, "Songti SC", serif;
+    letter-spacing: .06em;
+    font-size: 17px;
+}
+
+.LJR_dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--LJR_cyan), var(--LJR_blue));
+    box-shadow: 0 0 14px rgba(94, 224, 208, .8);
+}
+
+.LJR_top nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.LJR_top nav a {
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: var(--LJR_muted);
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid transparent;
+    transition: .2s;
+}
+
+.LJR_top nav a:hover,
+.LJR_top nav a.LJR_active {
+    color: var(--LJR_ink);
+    border-color: var(--LJR_line);
+    background: rgba(255, 255, 255, .04);
+}
+
+/* 页头 */
+.LJR_head {
+    padding: 34px 0 8px;
+}
+
+.LJR_kicker {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: rgba(94, 224, 208, .1);
+    border: 1px solid rgba(94, 224, 208, .28);
+    color: var(--LJR_cyan);
+    font-size: 12px;
+    letter-spacing: .1em;
+}
+
+.LJR_head h1 {
+    margin: 14px 0 8px;
+    font-family: Georgia, "Songti SC", serif;
+    font-size: clamp(28px, 4.6vw, 46px);
+    font-weight: 400;
+    letter-spacing: .02em;
+}
+
+.LJR_head p {
+    margin: 0;
+    color: var(--LJR_muted);
+    font-size: 14px;
+    max-width: 620px;
+}
+
+/* 首页 Canvas 舞台 */
+.LJR_hero {
+    position: relative;
+    margin-top: 22px;
+    border: 1px solid var(--LJR_line);
+    border-radius: 20px;
+    overflow: hidden;
+    background: radial-gradient(600px 300px at 20% 10%, rgba(124, 140, 255, .18), transparent 70%), #070c16;
+}
+
+#LJR_canvas {
+    display: block;
+    width: 100%;
+    height: 340px;
+}
+
+.LJR_hero_inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px 32px;
+    pointer-events: none;
+}
+
+.LJR_hero_inner h2 {
+    margin: 0 0 10px;
+    font-family: Georgia, "Songti SC", serif;
+    font-size: clamp(24px, 3.4vw, 36px);
+    font-weight: 400;
+}
+
+.LJR_meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.LJR_meta span {
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--LJR_line);
+    background: rgba(10, 18, 32, .7);
+    color: #cdd9f0;
+    font-size: 12.5px;
+}
+
+/* 导航卡片 */
+.LJR_cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.LJR_card {
+    position: relative;
+    display: block;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--LJR_line);
+    background: linear-gradient(160deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .015));
+    text-decoration: none;
+    color: var(--LJR_ink);
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.LJR_card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(94, 224, 208, .45);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, .35);
+}
+
+.LJR_card_sn {
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: var(--LJR_cyan);
+    letter-spacing: .12em;
+}
+
+.LJR_card h3 {
+    margin: 8px 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.LJR_card p {
+    margin: 0;
+    color: var(--LJR_muted);
+    font-size: 13px;
+}
+
+.LJR_card .LJR_card_api {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: var(--LJR_gold);
+}
+
+/* 面板 */
+.LJR_panel {
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid var(--LJR_line);
+    background: rgba(255, 255, 255, .03);
+}
+
+.LJR_api_bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px dashed rgba(94, 224, 208, .4);
+    background: rgba(94, 224, 208, .06);
+    font-size: 13px;
+    color: #bfe9e2;
+}
+
+.LJR_api_bar code {
+    font-family: Consolas, monospace;
+    color: var(--LJR_cyan);
+    word-break: break-all;
+}
+
+.LJR_api_bar a {
+    color: var(--LJR_gold);
+    text-decoration: none;
+    font-size: 12.5px;
+}
+
+/* 表单 */
+.LJR_form {
+    display: grid;
+    gap: 14px;
+    max-width: 460px;
+    margin-top: 6px;
+}
+
+.LJR_field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--LJR_muted);
+}
+
+.LJR_field input {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--LJR_line);
+    background: rgba(6, 12, 22, .8);
+    color: var(--LJR_ink);
+    font-size: 14px;
+    outline: none;
+    transition: .2s;
+}
+
+.LJR_field input:focus {
+    border-color: rgba(94, 224, 208, .6);
+    box-shadow: 0 0 0 3px rgba(94, 224, 208, .12);
+}
+
+.LJR_btn {
+    justify-self: start;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--LJR_cyan), var(--LJR_blue));
+    color: #041018;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.LJR_btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.LJR_result {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--LJR_line);
+    background: rgba(6, 12, 22, .6);
+    font-size: 13.5px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.LJR_result.LJR_ok {
+    border-color: rgba(74, 222, 128, .5);
+    color: var(--LJR_ok);
+    background: rgba(74, 222, 128, .07);
+}
+
+.LJR_result.LJR_bad {
+    border-color: rgba(255, 122, 122, .5);
+    color: var(--LJR_bad);
+    background: rgba(255, 122, 122, .07);
+}
+
+.LJR_hint {
+    color: var(--LJR_muted);
+    font-size: 12.5px;
+}
+
+/* 新闻列表 */
+.LJR_news {
+    margin-top: 16px;
+    display: grid;
+    gap: 12px;
+}
+
+.LJR_news_item {
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--LJR_line);
+    background: linear-gradient(150deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));
+    transition: border-color .2s, transform .2s;
+}
+
+.LJR_news_item:hover {
+    border-color: rgba(124, 140, 255, .45);
+    transform: translateX(3px);
+}
+
+.LJR_news_item h3 {
+    margin: 0 0 6px;
+    font-size: 16.5px;
+    font-weight: 600;
+}
+
+.LJR_news_item p {
+    margin: 0 0 8px;
+    color: var(--LJR_muted);
+    font-size: 13.5px;
+}
+
+.LJR_news_meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #6f7f9c;
+}
+
+.LJR_news_meta b {
+    color: var(--LJR_cyan);
+    font-weight: 500;
+}
+
+/* 图文网格 */
+.LJR_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.LJR_tile {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--LJR_line);
+    background: rgba(255, 255, 255, .03);
+    transition: transform .2s, border-color .2s;
+}
+
+.LJR_tile:hover {
+    transform: translateY(-3px);
+    border-color: rgba(94, 224, 208, .4);
+}
+
+.LJR_tile img {
+    display: block;
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    background: #101a2c;
+}
+
+.LJR_tile .LJR_tile_body {
+    padding: 14px 16px 16px;
+}
+
+.LJR_tile h3 {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+}
+
+.LJR_tile p {
+    margin: 0;
+    color: var(--LJR_muted);
+    font-size: 13px;
+}
+
+.LJR_tag {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(124, 140, 255, .14);
+    color: #b7c2ff;
+    font-size: 11.5px;
+}
+
+/* 页脚与其他 */
+.LJR_foot {
+    margin-top: 34px;
+    padding-top: 16px;
+    border-top: 1px solid var(--LJR_line);
+    color: #5f6f8c;
+    font-size: 12.5px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.LJR_loading {
+    color: var(--LJR_muted);
+    font-size: 13.5px;
+}
+
+a.LJR_link {
+    color: var(--LJR_gold);
+    text-decoration: none;
+}
+
+@media (max-width: 560px) {
+    .LJR_page { padding: 18px 14px 48px; }
+    #LJR_canvas { height: 260px; }
+    .LJR_hero_inner { padding: 20px; }
+    .LJR_meta span { font-size: 11.5px; }
+}

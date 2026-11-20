@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科技新闻 · 李嘉蕊 24002120526</title>
+<!-- 姓名：李嘉蕊 | 学号：24002120526 | 时间：2026-11-20 | 大模型：DeepSeek-V4.1-Flash -->
+<link rel="stylesheet" href="css/LJR_main.css">
+</head>
+<body>
+<div class="LJR_page">
+
+    <header class="LJR_top">
+        <div class="LJR_brand"><span class="LJR_dot"></span>星轨 · STELLAR TRACK</div>
+        <nav>
+            <a href="index.html">首页</a>
+            <a href="database.html">数据库测试</a>
+            <a class="LJR_active" href="news.html">科技新闻</a>
+            <a href="gallery.html">图文列表</a>
+        </nav>
+    </header>
+
+    <section class="LJR_head">
+        <span class="LJR_kicker">STEP 5 · NEWS</span>
+        <h1>科技新闻</h1>
+        <p>数据来自 MySQL 表 <b>LJR_news</b>，按发布时间倒序排列。</p>
+    </section>
+
+    <section class="LJR_panel">
+        <div class="LJR_api_bar">
+            <span>当前调用接口：</span>
+            <code id="LJR_api_url">/api/news</code>
+            <a id="LJR_api_link" href="/api/news" target="_blank" rel="noopener">直接打开接口 →</a>
+        </div>
+
+        <p class="LJR_loading" id="LJR_loading">正在加载新闻……</p>
+        <div class="LJR_news" id="LJR_news_list"></div>
+    </section>
+
+    <footer class="LJR_foot">
+        <span>李嘉蕊 · 24002120526 · 高级网页设计</span>
+        <span>GET /api/news</span>
+    </footer>
+
+</div>
+<script src="js/LJR_news.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星轨科技资讯站 · 李嘉蕊 24002120526</title>
+<!-- 姓名：李嘉蕊 | 学号：24002120526 | 时间：2026-11-20 | 大模型：DeepSeek-V4.1-Flash -->
+<link rel="stylesheet" href="css/LJR_main.css">
+</head>
+<body>
+<div class="LJR_page">
+
+    <header class="LJR_top">
+        <div class="LJR_brand"><span class="LJR_dot"></span>星轨 · STELLAR TRACK</div>
+        <nav>
+            <a class="LJR_active" href="index.html">首页</a>
+            <a href="database.html">数据库测试</a>
+            <a href="news.html">科技新闻</a>
+            <a href="gallery.html">图文列表</a>
+        </nav>
+    </header>
+
+    <section class="LJR_hero" id="LJR_hero">
+        <canvas id="LJR_canvas"></canvas>
+        <div class="LJR_hero_inner">
+            <span class="LJR_kicker">FULL-STACK · 项目初始化</span>
+            <h2>星轨科技资讯站</h2>
+            <div class="LJR_meta">
+                <span>姓名：李嘉蕊</span>
+                <span>学号：24002120526</span>
+                <span>项目名称：星轨科技资讯站</span>
+                <span>项目类别：模仿（课堂案例复刻）</span>
+                <span>端口：8526</span>
+            </div>
+        </div>
+    </section>
+
+    <main class="LJR_cards">
+        <a class="LJR_card" href="index.html">
+            <span class="LJR_card_sn">01 / HOME</span>
+            <h3>首页</h3>
+            <p>项目说明、姓名学号、页面导航与 Canvas 粒子连线背景动画。</p>
+            <span class="LJR_card_api">canvas 动画 + 响应式导航</span>
+        </a>
+        <a class="LJR_card" href="database.html">
+            <span class="LJR_card_sn">02 / DATABASE</span>
+            <h3>数据库连接测试</h3>
+            <p>输入 MySQL 用户名与密码，实测连接，成功与失败都有明确提示。</p>
+            <span class="LJR_card_api">POST /api/db-test</span>
+        </a>
+        <a class="LJR_card" href="news.html">
+            <span class="LJR_card_sn">03 / NEWS</span>
+            <h3>科技新闻列表</h3>
+            <p>数据来自 MySQL 的 LJR_news 表，按发布时间倒序展示。</p>
+            <span class="LJR_card_api">GET /api/news</span>
+        </a>
+        <a class="LJR_card" href="gallery.html">
+            <span class="LJR_card_sn">04 / GALLERY</span>
+            <h3>图文列表</h3>
+            <p>数据来自 MySQL 的 LJR_gallery 表，网格布局展示上图下文卡片。</p>
+            <span class="LJR_card_api">GET /api/gallery</span>
+        </a>
+    </main>
+
+    <section class="LJR_panel">
+        <div class="LJR_api_bar">
+            <span>后端健康检查接口：</span>
+            <code id="LJR_health_url">/api/health</code>
+            <a id="LJR_health_link" href="/api/health" target="_blank" rel="noopener">打开接口 →</a>
+            <span id="LJR_health_state" class="LJR_hint">检测中…</span>
+        </div>
+        <p class="LJR_hint" style="margin:12px 0 0">
+            本地运行：双击项目根目录 <code>start.bat</code>，或执行 <code>cd backend &amp;&amp; npm run dev</code>，
+            然后访问 http://localhost:8526/ 。
+        </p>
+    </section>
+
+    <footer class="LJR_foot">
+        <span>李嘉蕊 · 24002120526 · 高级网页设计</span>
+        <span>Node.js + Express + MySQL · 端口 8526</span>
+    </footer>
+
+</div>
+<script src="js/LJR_index.js"></script>
+</body>
+</html>
