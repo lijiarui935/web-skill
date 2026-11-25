@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安全自查与 AI 应用 · 李嘉蕊 24002120526</title>
+<!-- 姓名：李嘉蕊 | 学号：24002120526 | 时间：2026-11-25 | 大模型：DeepSeek-V4.1-Flash -->
+<style>
+    :root {
+        --ink: #18242d;
+        --muted: #65727b;
+        --paper: #f7f5ef;
+        --card: #fffdf8;
+        --coral: #e87961;
+        --line: rgba(24, 36, 45, .13);
+        --ok: #2f7d52;
+        --no: #b4432f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        line-height: 1.7;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        opacity: .4;
+        background-image: radial-gradient(rgba(24, 36, 45, .08) .7px, transparent .7px);
+        background-size: 14px 14px;
+        pointer-events: none;
+    }
+
+    .LJR_wrap { width: min(1080px, calc(100% - 36px)); margin: 0 auto; padding: 28px 0 56px; }
+
+    .LJR_top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .LJR_mark { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--ink); letter-spacing: .06em; }
+    .LJR_dot { width: 12px; height: 12px; background: var(--coral); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+    .LJR_top a { color: var(--muted); text-decoration: none; }
+    .LJR_top a:hover { color: var(--coral); }
+
+    .LJR_hero { padding: 42px 0 10px; }
+    .LJR_kicker {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #fdeee9;
+        color: #b4553f;
+        font-size: 11.5px;
+        letter-spacing: .12em;
+    }
+    .LJR_hero h1 {
+        margin: 14px 0 10px;
+        font-family: Georgia, "Songti SC", serif;
+        font-weight: 400;
+        font-size: clamp(30px, 4.4vw, 46px);
+        line-height: 1.2;
+    }
+    .LJR_hero p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .LJR_sec { margin-top: 34px; }
+    .LJR_sec_head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+    .LJR_sec_head h2 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-weight: 400;
+        font-size: 23px;
+    }
+    .LJR_sec_head span { color: #a9a295; font-size: 11.5px; letter-spacing: .14em; }
+
+    .LJR_panel {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--card);
+        box-shadow: 0 14px 34px rgba(49, 52, 43, .07);
+    }
+
+    .LJR_fig { margin: 0 0 20px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #0b1120; }
+    .LJR_fig:last-child { margin-bottom: 0; }
+    .LJR_fig img { display: block; width: 100%; height: auto; }
+    .LJR_fig figcaption { padding: 10px 14px; font-size: 12.5px; color: #9fb0c9; border-top: 1px solid rgba(255, 255, 255, .08); }
+    .LJR_fig figcaption b { color: #fff; }
+
+    .LJR_table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px; }
+    .LJR_table th, .LJR_table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    .LJR_table th { background: #f4f1e9; font-weight: 600; }
+    .LJR_ok { color: var(--ok); }
+    .LJR_no { color: var(--no); }
+
+    .LJR_pre {
+        margin: 0 0 18px;
+        padding: 16px 18px;
+        border-radius: 12px;
+        background: #141a24;
+        color: #cfe3ff;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 13px;
+        line-height: 1.9;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .LJR_h3 { margin: 22px 0 10px; font-size: 16px; }
+    .LJR_h3:first-child { margin-top: 0; }
+    .LJR_ol { margin: 0 0 6px; padding-left: 20px; font-size: 13.5px; }
+    .LJR_ol li { margin-bottom: 7px; }
+    .LJR_ol b { color: #111; }
+
+    .LJR_note { margin-top: 16px; padding: 12px 14px; border-left: 3px solid var(--coral); background: #fdf7f1; border-radius: 0 10px 10px 0; font-size: 13px; color: #5d5347; }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        color: #9a9384;
+        font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+        .LJR_wrap { width: calc(100% - 24px); }
+        .LJR_panel { padding: 16px; }
+        .LJR_table { font-size: 12px; }
+    }
+</style>
+</head>
+<body>
+<div class="LJR_wrap">
+
+    <header class="LJR_top">
+        <div class="LJR_mark"><span class="LJR_dot"></span>高级网页设计 · 作业证据</div>
+        <a href="../index.html">← 返回课堂目录</a>
+    </header>
+
+    <section class="LJR_hero">
+        <span class="LJR_kicker">TASK 1 &amp; TASK 2 · EVIDENCE</span>
+        <h1>安全自查与 AI 应用</h1>
+        <p>李嘉蕊 · 24002120526 · 任务一 Key 自查 4 张、任务二 客服约束 2 张、任务三 双平台聊天 2 张、任务四 知识库、任务五 图像识别、任务六 语音识别，共 11 张截图。</p>
+    </section>
+
+    <section class="LJR_sec">
+        <div class="LJR_sec_head">
+            <h2>任务一 · API Key 安全自查</h2>
+            <span>KEY HYGIENE</span>
+        </div>
+        <div class="LJR_panel">
+            <table class="LJR_table">
+                <thead>
+                    <tr><th>检查项</th><th>结果</th><th>证据</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>.env</code> 是否在 <code>.gitignore</code> 中</td><td class="LJR_ok">是，第 2 行</td><td>截图 1</td></tr>
+                    <tr><td><code>.env</code> 是否被 Git 跟踪</td><td class="LJR_ok">否，<code>git ls-files</code> 无输出</td><td>截图 1</td></tr>
+                    <tr><td>前端代码是否残留 Key</td><td class="LJR_ok">否，<code>sk-</code> 在 frontend 中 0 命中</td><td>截图 2</td></tr>
+                    <tr><td><code>.env</code> 截图是否打码</td><td class="LJR_ok">是，统一为 <code>sk-****</code></td><td>截图 3</td></tr>
+                    <tr><td>Key 失效时是否有友好提示（加分项）</td><td class="LJR_ok">有，红色错误提示而非白屏</td><td>截图 4</td></tr>
+                </tbody>
+            </table>
+
+            <figure class="LJR_fig">
+                <img src="images/01-gitignore-git-untracked.png" alt=".gitignore 与 Git 未跟踪验证">
+                <figcaption><b>截图 1</b> · <code>.gitignore</code> 第 2 行为 <code>.env</code>；<code>git check-ignore</code> 命中该规则；<code>git ls-files</code> 查不到 <code>.env</code>，说明从未被提交。</figcaption>
+            </figure>
+
+            <figure class="LJR_fig">
+                <img src="images/02-frontend-no-key.png" alt="前端搜索不到 Key">
+                <figcaption><b>截图 2</b> · 在 <code>frontend/</code> 中搜索 <code>sk-</code> 无结果。前端只调用 <code>/api/*</code>，密钥只存在后端。</figcaption>
+            </figure>
+
+            <figure class="LJR_fig">
+                <img src="images/03-env-masked.png" alt=".env 打码截图">
+                <figcaption><b>截图 3</b> · <code>backend/.env</code> 中两组 Key 均打成 <code>sk-****</code>，文档与截图不出现明文。</figcaption>
+            </figure>
+
+            <figure class="LJR_fig">
+                <img src="images/04-invalid-key-hint.png" alt="Key 失效时的友好提示">
+                <figcaption><b>截图 4（加分项）</b> · 故意把 Key 改错一个字符，页面显示红色「Key 无效（401）」，不会白屏，也不会把 Key 回显到前端。</figcaption>
+            </figure>
+
+            <h3 class="LJR_h3">可能泄露 Key 的 3 个地方</h3>
+            <ol class="LJR_ol">
+                <li><b>前端代码</b>：HTML/JS 公开，F12 就能看源码与网络请求，Key 写进请求头等于公开。本项目前端只请求自己的后端，Key 只在 <code>backend/.env</code>。</li>
+                <li><b>Git 仓库</b>：<code>.env</code> 不写进 <code>.gitignore</code>，一次 <code>git add .</code> 就会提交，且历史记录删不干净。本项目已忽略，并用两条命令验证从未被跟踪。</li>
+                <li><b>文档与截图</b>：作业文档、聊天记录、演示截图贴明文 Key，文件外发即泄露。本项目一律写 <code>sk-****</code>，截图前先打码。</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="LJR_sec">
+        <div class="LJR_sec_head">
+            <h2>任务二 · 客服被「管住」的证据</h2>
+            <span>SYSTEM PROMPT</span>
+        </div>
+        <div class="LJR_panel">
+            <h3 class="LJR_h3">system 提示词</h3>
+            <div class="LJR_pre">你是「中华美食街」的在线客服，只回答以下三类问题：
+1. 营业时间：每天 10:00–22:00，节假日照常营业；
+2. 招牌菜：麻辣香锅、手工水饺、桂花酒酿圆子；
+3. 配送范围：门店 3 公里内配送，起送 20 元，配送费 3 元。
+遇到这三类之外的问题（写代码、天气、闲聊、其他商家等），不要回答，
+统一礼貌回复：「抱歉，这个问题我这边查不到，您可以留下手机号，稍后由店长联系您。」
+回答保持简短、口语化，不要编造营业信息。</div>
+
+            <figure class="LJR_fig">
+                <img src="images/05-service-answer.png" alt="客服回答营业时间与招牌菜">
+                <figcaption><b>截图 5</b> · 第 1、2 问：营业时间与招牌菜，回答限定在给定事实内，没有额外发挥。</figcaption>
+            </figure>
+
+            <h3 class="LJR_h3">5 个测试问题（3 个该答、2 个该拒）</h3>
+            <table class="LJR_table">
+                <thead>
+                    <tr><th>#</th><th>问题</th><th>类型</th><th>期望</th><th>实际结果</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>你们店几点开门？</td><td>营业时间</td><td class="LJR_ok">该答</td><td class="LJR_ok">每天 10:00 开门，22:00 打烊，节假日照常</td></tr>
+                    <tr><td>2</td><td>招牌菜有哪些推荐？</td><td>招牌菜</td><td class="LJR_ok">该答</td><td class="LJR_ok">麻辣香锅、手工水饺、桂花酒酿圆子</td></tr>
+                    <tr><td>3</td><td>能送到哪些区域？</td><td>配送范围</td><td class="LJR_ok">该答</td><td class="LJR_ok">门店 3 公里内，起送 20 元，配送费 3 元</td></tr>
+                    <tr><td>4</td><td>帮我写一段 Java 代码</td><td>越界（编程）</td><td class="LJR_no">该拒</td><td class="LJR_no">抱歉，这个问题我这边查不到，您可以留下手机号…</td></tr>
+                    <tr><td>5</td><td>今天天气怎么样？</td><td>越界（天气）</td><td class="LJR_no">该拒</td><td class="LJR_no">抱歉，这个问题我这边查不到，您可以留下手机号…</td></tr>
+                </tbody>
+            </table>
+
+            <figure class="LJR_fig">
+                <img src="images/06-service-refuse.png" alt="客服拒答写代码与天气">
+                <figcaption><b>截图 6</b> · 第 3 问答配送；第 4、5 问（写代码、天气）均按统一话术拒答并引导留言。</figcaption>
+            </figure>
+
+            <h3 class="LJR_h3">为什么这样写能「管住」模型</h3>
+            <ol class="LJR_ol">
+                <li><b>先给身份，再给边界</b>：开头「你是中华美食街的在线客服」定义角色，模型后续输出会围绕这个身份组织，不会自由切换成通用助手。</li>
+                <li><b>白名单式枚举</b>：只列三类可答内容并给出标准答案，模型只需判断问题是否落在这三格里，不需要「推理」业务知识，减少编造空间。</li>
+                <li><b>越界给固定话术</b>：明确写「不要回答」并给出唯一回复模板。给模板比只说「不要回答」更有效，模型有了明确的可执行动作，不会临场编一句。</li>
+                <li><b>禁止编造 + 简短口语化</b>：末尾两条约束收紧语气和长度，避免把「10:00–22:00」扩展成不存在的分店或优惠活动。</li>
+                <li><b>低温度 + 单一人设</b>：接口温度设 0.3，输出更稳定；同一套 <code>/api/chat</code> 只换 system，就能从通用聊天切成客服，说明约束来自提示词而不是代码硬编码。</li>
+                <li><b>拒答也要可落地</b>：拒答不是冷冰冰地说「不知道」，而是引导留手机号，既守住边界又不丢客户。</li>
+            </ol>
+
+            <p class="LJR_note">结论：能答的 3 个问题都答在事实范围内，2 个越界问题都走了同一句拒答话术，说明 system 提示词确实把模型限制在了客服角色里。</p>
+        </div>
+    </section>
+
+    <section class="LJR_sec">
+        <div class="LJR_sec_head">
+            <h2>任务三 · 双平台切换与 AI 聊天</h2>
+            <span>AI CHAT · DUAL PROVIDER</span>
+        </div>
+        <div class="LJR_panel">
+            <p style="margin:0 0 14px;font-size:13.5px;color:var(--muted)">
+                同一个聊天页面右上角下拉切换平台，前端始终只调 <code>/api/chat</code>，后端按选择换接口地址和 Key，页面其余代码不变。
+            </p>
+            <figure class="LJR_fig">
+                <img src="images/09-chat-siliconflow.png" alt="硅基流动平台聊天截图">
+                <figcaption><b>截图 9</b> · 平台选「硅基流动」：模型 <code>deepseek-ai/DeepSeek-V4-Flash</code>，问「用三句话介绍量子计算」，耗时 9750 ms。</figcaption>
+            </figure>
+            <figure class="LJR_fig">
+                <img src="images/10-chat-qiniu.png" alt="七牛平台聊天截图">
+                <figcaption><b>截图 10</b> · 平台切到「七牛」：模型 <code>deepseek/deepseek-v4-flash</code>，同一问题与「HTML、CSS、JS 各负责什么」两轮对话正常，耗时 5540 ms。</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section class="LJR_sec">
+        <div class="LJR_sec_head">
+            <h2>任务四 · 知识库问答（RAG）</h2>
+            <span>RETRIEVAL AUGMENTED</span>
+        </div>
+        <div class="LJR_panel">
+            <p style="margin:0 0 14px;font-size:13.5px;color:var(--muted)">
+                上传 Word / PowerPoint 两个知识库文件，后端解析、切片并生成向量；提问时先检索最相关的片段再交给大模型，命中 2 段，答案只依据资料作答。
+            </p>
+            <figure class="LJR_fig">
+                <img src="images/11-kb-rag.png" alt="知识库上传与问答截图">
+                <figcaption><b>截图 11</b> · 知识库已入库 2 个文件（服务手册 docx 288 字、项目说明 pptx 307 字），问「招牌菜有哪些」命中 2 段，7533 ms 返回。</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section class="LJR_sec">
+        <div class="LJR_sec_head">
+            <h2>任务五 · 图像识别</h2>
+            <span>VISION</span>
+        </div>
+        <div class="LJR_panel">
+            <p style="margin:0 0 14px;font-size:13.5px;color:var(--muted)">
+                上传一张花艺照片，视觉模型按「主体 / 场景 / 细节」三句话返回描述，单张图片只在内存中中转，不落盘。
+            </p>
+            <figure class="LJR_fig">
+                <img src="images/07-vision-result.png" alt="图像识别结果截图">
+                <figcaption><b>截图 7</b> · 本地 <code>vision.html</code>：选择花艺照片后返回文字描述，显示文件信息与耗时 4582 ms。</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section class="LJR_sec">
+        <div class="LJR_sec_head">
+            <h2>任务六 · 语音识别</h2>
+            <span>SPEECH TO TEXT</span>
+        </div>
+        <div class="LJR_panel">
+            <p style="margin:0 0 14px;font-size:13.5px;color:var(--muted)">
+                上传一段英文篮球解说音频，七牛 Qwen-Audio-3.0-ASR-Flash 直接转出文字，说明模型支持中英混合场景。
+            </p>
+            <figure class="LJR_fig">
+                <img src="images/08-asr-result.png" alt="语音识别结果截图">
+                <figcaption><b>截图 8</b> · 本地 <code>asr.html</code>：6 秒 mp3 识别为英文解说文本，耗时 1963 ms；页面同时显示文件名、类型与大小。</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <footer>
+        <span>李嘉蕊 · 24002120526 · 高级网页设计</span>
+        <span>任务一 Key 自查 · 任务二 客服约束 · 任务三 双平台 · 任务四 知识库 · 任务五 图像识别 · 任务六 语音识别</span>
+    </footer>
+
+</div>
+</body>
+</html>
